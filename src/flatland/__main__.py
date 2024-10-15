@@ -13,7 +13,7 @@ from pathlib import Path
 # Flatland
 # from flatland.xuml.xuml_classdiagram import XumlClassDiagram
 # from flatland.xuml.xuml_statemachine_diagram import XumlStateMachineDiagram
-# from flatland.configuration.config import Config
+# from flatland.configuration.configuration import Config
 from flatland import version
 
 _logpath = Path("flatland.log")
@@ -40,8 +40,8 @@ def parse(cl_input):
                         help='Name of file to generate, .pdf extension automatically added')
     parser.add_argument('-D', '--docs', action='store_true',
                         help='Copy the project documentation directory into the local directory')
-    parser.add_argument('-CF', '--config', action='store_true',
-                        help="Create a new config directory in user's flatland home")
+    parser.add_argument('-CF', '--configuration', action='store_true',
+                        help="Create a new configuration directory in user's flatland home")
     parser.add_argument('-E', '--examples', action='store_true',
                         help='Create a directory of examples in the current directory')
     parser.add_argument('-L', '--log', action='store_true',
@@ -89,11 +89,11 @@ def main():
     #     from flatland.drawing_domain.styledb import StyleDB
     #     StyleDB(print_colors=True)
     #
-    # if args.config:
-    #     # Copy user startup config files to their .flatland/config dir, creating it if it doesn't yet exist
+    # if args.configuration:
+    #     # Copy user startup configuration files to their .flatland/configuration dir, creating it if it doesn't yet exist
     #     import shutil
     #     user_home = Path.home() / '.flatland'
-    #     user_config_home = user_home / 'config'
+    #     user_config_home = user_home / 'configuration'
     #     user_config_home.mkdir(parents=True, exist_ok=True)
     #     user_startup = Path(__file__).parent / 'configuration' / 'user_startup'
     #     for f in user_startup.iterdir():
