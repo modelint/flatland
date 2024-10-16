@@ -11,7 +11,7 @@ import argparse
 from pathlib import Path
 
 # Flatland
-# from flatland.xuml.xuml_classdiagram import XumlClassDiagram
+from flatland.xuml.xuml_classdiagram import XumlClassDiagram
 # from flatland.xuml.xuml_statemachine_diagram import XumlStateMachineDiagram
 # from flatland.configuration.configuration import Config
 from flatland import version
@@ -125,13 +125,13 @@ def main():
     #         logger.info("Copying doc directory to users local directory")
     #         shutil.copytree(docs_path, local_docs_path)
     #
-    # if args.model and not args.layout:
-    #     logger.error("A layout file must be specified for your model.")
-    #     sys.exit(1)
-    #
-    # if args.layout and not args.model:
-    #     logger.error("A model file must be specified to layout.")
-    #     sys.exit(1)
+    if args.model and not args.layout:
+        logger.error("A layout file must be specified for your model.")
+        sys.exit(1)
+
+    if args.layout and not args.model:
+        logger.error("A model file must be specified to layout.")
+        sys.exit(1)
 
     # At this point we either have both model and layout or neither
     # If neither, the only thing we might do at this point is rebuild the database if requested
@@ -141,22 +141,22 @@ def main():
     # if not already_configured:
     #     Config(rebuild_db=args.rebuild)
     #
-    # if args.model and args.layout:  # Just making sure we have them both
-    #     model_path = Path(args.model)
-    #     layout_path = Path(args.layout)
-    #     diagram_path = Path(args.diagram)
-    #
-    #     # Generate the xuml class diagram (we don't do anything with the returned variable yet)
-    #     mtype = model_path.suffix
-    #     if mtype == '.xmm' or mtype == '.xcm':
-    #         class_diagram = XumlClassDiagram(
-    #             xuml_model_path=model_path,
-    #             flatland_layout_path=layout_path,
-    #             diagram_file_path=diagram_path,
-    #             show_grid=args.grid,
-    #             nodes_only=args.nodes_only,
-    #             no_color=args.no_color,
-    #         )
+    if args.model and args.layout:  # Just making sure we have them both
+        model_path = Path(args.model)
+        layout_path = Path(args.layout)
+        diagram_path = Path(args.diagram)
+
+        # Generate the xuml class diagram (we don't do anything with the returned variable yet)
+        mtype = model_path.suffix
+        if mtype == '.xcm':
+            class_diagram = XumlClassDiagram(
+                xuml_model_path=model_path,
+                flatland_layout_path=layout_path,
+                diagram_file_path=diagram_path,
+                show_grid=args.grid,
+                nodes_only=args.nodes_only,
+                no_color=args.no_color,
+            )
     #     elif mtype == '.xsm':
     #         statemodel_diagram = XumlStateMachineDiagram(
     #             xuml_model_path=model_path,
