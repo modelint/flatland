@@ -9,9 +9,10 @@ from pathlib import Path
 from typing import Optional, Dict
 from collections import namedtuple
 from xcm_parser.class_model_parser import ClassModelParser
+from mls_parser.layout_parser import LayoutParser
 
 # Flatland
-from flatland.exceptions import FlatlandIOException
+from flatland.exceptions import FlatlandIOException, ModelParseError, LayoutParseError
 # from flatland.exceptions import MultipleFloatsInSameBranch
 # from flatland.flatland_exceptions import LayoutParseError, ModelParseError
 # from flatland.input.model_parser import ModelParser
@@ -45,25 +46,22 @@ class XumlClassDiagram:
 
         self.logger.info("Parsing the model")
         # Parse the model
-        pass
-        self.model = ClassModelParser.parse_file(file_input=self.xuml_model_path, debug=False)
-        pass
-        # try:
-        #     self.model = ClassModelParser.parse_file(file_input=self.xuml_model_path, debug=False)
-        #     # self.model = ModelParser(model_file_path=self.xuml_model_path, debug=False)
-        # except FlatlandIOException as e:
-        #     sys.exit(e)
+        try:
+            self.model = ClassModelParser.parse_file(file_input=self.xuml_model_path, debug=False)
+            # self.model = ModelParser(model_file_path=self.xuml_model_path, debug=False)
+        except ModelParseError as e:
+            sys.exit(e)
         # try:
         #     self.subsys = self.model.parse()
         # except ModelParseError as e:
         #     sys.exit(e)
 
-        # self.logger.info("Parsing the layout")
-        # # Parse the layout
-        # try:
-        #     self.layout = LayoutParser(layout_file_path=self.flatland_layout_path, debug=False)
-        # except FlatlandIOException as e:
-        #     sys.exit(e)
+        self.logger.info("Parsing the layout")
+        # Parse the layout
+        try:
+            self.layout = LayoutParser.parse_file(file_input=self.flatland_layout_path, debug=False)
+        except LayoutParseError as e:
+            sys.exit(e)
         # try:
         #     self.layout = self.layout.parse()
         # except LayoutParseError as e:
