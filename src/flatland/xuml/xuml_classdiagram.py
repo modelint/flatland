@@ -6,18 +6,14 @@ xUML_class_diagram.py – Generates an xuml diagram for an xuml model using the 
 import sys
 import logging
 from pathlib import Path
-from typing import Optional, Dict
 from collections import namedtuple
 from xcm_parser.class_model_parser import ClassModelParser
 from mls_parser.layout_parser import LayoutParser
 
 # Flatland
-from flatland.exceptions import FlatlandIOException, ModelParseError, LayoutParseError
+from flatland.exceptions import ModelParseError, LayoutParseError
 # from flatland.exceptions import MultipleFloatsInSameBranch
-# from flatland.flatland_exceptions import LayoutParseError, ModelParseError
-# from flatland.input.model_parser import ModelParser
-# from flatland.input.layout_parser import LayoutParser
-# from flatland.node_subsystem.canvas import Canvas
+from flatland.diagram.canvas import Canvas
 # from flatland.sheet_subsystem.frame import Frame
 # from flatland.node_subsystem.single_cell_node import SingleCellNode
 # from flatland.node_subsystem.spanning_node import SpanningNode
@@ -51,10 +47,6 @@ class XumlClassDiagram:
             # self.model = ModelParser(model_file_path=self.xuml_model_path, debug=False)
         except ModelParseError as e:
             sys.exit(e)
-        # try:
-        #     self.subsys = self.model.parse()
-        # except ModelParseError as e:
-        #     sys.exit(e)
 
         self.logger.info("Parsing the layout")
         # Parse the layout
@@ -62,7 +54,32 @@ class XumlClassDiagram:
             self.layout = LayoutParser.parse_file(file_input=self.flatland_layout_path, debug=False)
         except LayoutParseError as e:
             sys.exit(e)
-        # try:
-        #     self.layout = self.layout.parse()
-        # except LayoutParseError as e:
-        #     sys.exit(e)
+
+        # Draw the blank canvas of the appropriate size, diagram type and presentation style
+        self.logger.info("Creating the canvas")
+        self.flatland_canvas = self.create_canvas()
+
+        # Draw the frame and title block if one was supplied
+        if self.layout.layout_spec.frame:
+            self.logger.info("Creating the frame")
+            self.frame = Frame(
+                name=self.layout.layout_spec.frame, presentation=self.layout.layout_spec.frame_presentation,
+                canvas=self.flatland_canvas, metadata=self.subsys.metadata
+            )
+
+    def create_canvas(self) -> Canvas:
+        """Create a blank canvas"""
+        lspec = self.layout.layout_spec
+        return Canvas(
+            diagram_type=lspec.dtype,
+            presentation=lspec.pres,
+            notation=lspec.notation,
+            standard_sheet_name=lspec.sheet,
+            orientation=lspec.orientation,
+            diagram_padding=lspec.padding,
+            drawoutput=self.diagram_file_path,
+            show_grid=self.show_grid,
+            no_color=self.no_color,
+            color=lspec.color,
+        )
+
