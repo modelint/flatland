@@ -1,5 +1,3 @@
-/// Flatland Sheet Subsystem
-/// Executable model markup
 metadata
     Title : Flatland Sheet Subsystem Class Diagram
     Author : Leon Starr
@@ -9,7 +7,8 @@ metadata
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
     Organization logo > mint
-subsystem Sheet
+domain Flatland, FLAT
+subsystem Sheet, SHEET 300-349
 class Box
 attributes
     ID : Boundary ID {I}
@@ -146,78 +145,104 @@ relationships
     R300
     size fits, Mc Frame
     is sized to overlay, 1 Sheet
+    Frame.Sheet -> Sheet.Name
 --
     R301
     scales, Mc Title Block Pattern
     is scaled to look good in, Mc Sheet Size Group
     1 Scaled Title Block
+    Scaled Title Block.Title Block Pattern -> Title Block Pattern.Name
+    Scaled Title Block.Sheet size group -> Sheet Size Group.Name
 --
     R302
     splits, 1 Compartment Box
     is split by, 1 Partition
+    Partition.(Compartment box, Pattern) -> Compartment.(ID, Pattern)
 --
     R303
     defines a nested rectangular hierarchy of, M Box
     is rectangle in nested hierarchy defined by, 1 Title Block Pattern
+    Box.Pattern -> Title Block Pattern.Name
+--
+    OR304
+    stack above / stack below, Box Text Line
+    Order : I2
 --
     R305
     Field +
         Open Field
         Boxed Field
+    <subclass>.(Metadata, Frame, Sheet, Orientation) -> Field.(Metadata, Frame, Sheet, Orientation)
 --
     R306
     stacks, Mc Metadata
     is stacked in, Mc Data Box
     1 Body Text Line
+    Box Text Line.Metadata -> Metadata.Name
+    Box Text Line.(Box + Title block pattern) -> Data Box.(ID, Pattern)
 --
     R307
     displays, Mc Metadata
     is displayed in, Mc Frame
     1 Frame Metadata
+    Frame Metadata.Name -> Metadata.Name
+    Frame Metadata.(Frame, Sheet, Orientation) -> Frame.(Name, Sheet, Orientation)
 --
     R308
     Box +
         Envelope Box
         Section Box
         Data Box
+    <subclass>.(ID, Pattern) -> Box.(ID, Pattern)
 --
     R312
     Compartment Box +
         Envelope Box
         Section Box
+    <subclass>.(ID, Pattern) -> Compartment Box.(ID, Pattern)
 --
     R313
     Partitioned Box +
         Data Box
         Section Box
+    <subclass>.(ID, Pattern) -> Partitioned Box.(ID, Pattern)
 --
     R315
     places, 1c Scaled Title Block
     is placed in, Mc Frame
     1 Title Block Placement
+    Title Block Placement.(Frame, Sheet, Orientation) -> Frame.(Name, Sheet, Orientation)
+    Title Block Placement.(Title block pattern, Sheet, Orientation) -> Scaled Title Block.(Title block pattern, Sheet size group)
 --
     R316
     is rough size of, M Sheet
     is roughly sized as, 1 Sheet Size Group
+    Sheet.Size group -> Sheet Size Group.Name
 --
     R317
     shows, 1 Frame Metadata
     appears in, 1c Boxed Field
+    Boxed Field.(Metadata, Frame, Sheet, Orientation) -> Fraem Metadata.(Name, Frame, Sheet, Orientation)
 --
     R318
     determines placement of, M Box
     placement is determined by, Mc Title Block Placement
     1 Box Placement
+    Box Placement.(Frame, Sheet, Orientation) -> Title Block Placement.(Frame, Sheet, Orientation)
+    Box Placement.(Box, Title block pattern) -> Box.(ID, Pattern)
 --
     R319
     appears in, 1c Open Field
     shows, 1 Frame Metadata
+    Open Field.(Metadata, Frame, Sheet, Orientation) -> Frame Metadata.(Name, Frame, Sheet, Orientation)
 --
     R320
     must appear in, M Field
     must show, 1 Frame Metadata
+    Field.(Metadata, Frame, Sheet, Orientation) -> Frame Metadata.(Name, Frame, Sheet, Orientation)
 --
     R321
     places, Mc Boxed Field
     is placed on, 1 Box Text Line
+    Boxed Field.(Metadata, Box, Title block pattern) -> Boxed Text Line.(Metadata, Box, Title block pattern)
 --
