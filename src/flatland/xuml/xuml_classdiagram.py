@@ -14,7 +14,7 @@ from mls_parser.layout_parser import LayoutParser
 from flatland.exceptions import ModelParseError, LayoutParseError
 # from flatland.exceptions import MultipleFloatsInSameBranch
 from flatland.diagram.canvas import Canvas
-# from flatland.sheet_subsystem.frame import Frame
+from flatland.sheet_subsystem.frame import Frame
 # from flatland.node_subsystem.single_cell_node import SingleCellNode
 # from flatland.node_subsystem.spanning_node import SpanningNode
 # from flatland.connector_subsystem.tree_connector import TreeConnector
@@ -26,7 +26,7 @@ from flatland.diagram.canvas import Canvas
 # from flatland.datatypes.connection_types import ConnectorName, OppositeFace, StemName
 # from flatland.text.text_block import TextBlock
 
-BranchLeaves = namedtuple('BranchLeaves', 'leaf_stems local_graft next_graft floating_leaf_stem')
+# BranchLeaves = namedtuple('BranchLeaves', 'leaf_stems local_graft next_graft floating_leaf_stem')
 
 class XumlClassDiagram:
 

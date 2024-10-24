@@ -13,7 +13,7 @@ from pathlib import Path
 # Flatland
 from flatland.xuml.xuml_classdiagram import XumlClassDiagram
 # from flatland.xuml.xuml_statemachine_diagram import XumlStateMachineDiagram
-# from flatland.configuration.configuration import Config
+from flatland.configuration.configDB import ConfigDB
 from flatland import version
 
 _logpath = Path("flatland.log")
@@ -138,8 +138,8 @@ def main():
 
     # Do any configuration tasks necessary before starting up the app
     # The database will be rebuilt if requested
-    # if not already_configured:
-    #     Config(rebuild_db=args.rebuild)
+    if not already_configured:
+        ConfigDB(rebuild_db=args.rebuild)
     #
     if args.model and args.layout:  # Just making sure we have them both
         model_path = Path(args.model)

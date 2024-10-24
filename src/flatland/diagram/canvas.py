@@ -8,15 +8,17 @@ import sys
 import logging
 from typing import Dict
 
+# Model Integration
+from tabletqt.tablet import Tablet, Rect_Size
+
 # Flatland
-from tabletqt.tablet import Tablet
 from flatland.exceptions import InvalidOrientation, NonSystemInitialLayer
-from flatland.diagram.diagram_layout_specification import DiagramLayoutSpecification
-from flatland.connector_subsystem.connector_layout_specification import ConnectorLayoutSpecification
-from flatland.datatypes.geometry_types import Rect_Size
-from flatland.diagram.diagram import Diagram
+# from flatland.diagram.diagram_layout_specification import DiagramLayoutSpecification
+# from flatland.connector_subsystem.connector_layout_specification import ConnectorLayoutSpecification
+# from flatland.datatypes.geometry_types import Rect_Size
+# from flatland.diagram.diagram import Diagram
 from flatland.sheet_subsystem.sheet import Sheet, Group
-from flatland.decoration_subsystem.symbol import Symbol
+# from flatland.decoration_subsystem.symbol import Symbol
 
 # All sheet and canvas related constants are kept together here for easy review and editing
 points_in_cm = 28.3465
@@ -58,8 +60,8 @@ class Canvas:
         """
         self.logger = logging.getLogger(__name__)
         # Load layout specifications
-        DiagramLayoutSpecification()
-        ConnectorLayoutSpecification()
+        # DiagramLayoutSpecification()
+        # ConnectorLayoutSpecification()
 
         self.Sheet = Sheet(standard_sheet_name)  # Ensure that the user has specified a known sheet size
         if orientation not in ('portrait', 'landscape'):
@@ -75,7 +77,7 @@ class Canvas:
             height=int(round(h * factor)),
             width=int(round(w * factor))
         )
-        self.Margin = DiagramLayoutSpecification.Default_margin
+        # self.Margin = DiagramLayoutSpecification.Default_margin
         self.Color = color
 
         # Create the one and only Tablet instance and initialize it with the Presentation on the diagram
@@ -97,13 +99,13 @@ class Canvas:
             self.Tablet.add_layer(name="sheet", presentation=presentation, drawing_type="background",
                                   fill=self.Color)
 
-        self.Diagram = Diagram(
-            self, diagram_type_name=diagram_type, layer=self.Tablet.layers['diagram'],
-            notation_name=notation, padding=diagram_padding, show_grid=show_grid
-        )
+        # self.Diagram = Diagram(
+        #     self, diagram_type_name=diagram_type, layer=self.Tablet.layers['diagram'],
+        #     notation_name=notation, padding=diagram_padding, show_grid=show_grid
+        # )
         # Load symbol data
         self.logger.info("Loading symbol decoration data from flatland database")
-        Symbol(diagram_type=self.Diagram.Diagram_type.Name, notation=self.Diagram.Notation)
+        # Symbol(diagram_type=self.Diagram.Diagram_type.Name, notation=self.Diagram.Notation)
 
     def render(self):
         """

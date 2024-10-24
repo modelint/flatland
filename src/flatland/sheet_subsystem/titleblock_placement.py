@@ -1,15 +1,15 @@
 """
 titleblock_placement.py -  Title Block Placement class modeled in the Sheet Subsystem
 """
-from sqlalchemy import select, and_
+# from sqlalchemy import select, and_
 from collections import namedtuple
-from flatland.database.flatlanddb import FlatlandDB as fdb
+# from flatland.database.flatlanddb import FlatlandDB as fdb
 from flatland.datatypes.geometry_types import Position, Rect_Size
-from flatland.node_subsystem.canvas import points_in_mm
+from flatland.diagram.canvas import points_in_mm
 from typing import Dict, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from flatland.drawing_domain.layer import Layer
+    from tabletqt.drawing_domain.layer import Layer
     from flatland.sheet_subsystem.sheet import Sheet
 
 CompartmentBox = namedtuple("_CompartmentBox", "distance upper_box lower_box")
