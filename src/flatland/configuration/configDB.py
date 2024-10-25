@@ -18,6 +18,7 @@ from mi_config.config import Config
 
 # Flatland
 # from flatland.database.flatlanddb import FlatlandDB
+from flatland.database.flatland_db import FlatlandDB
 from flatland.sheet_subsystem.titleblock_placement import TitleBlockPlacement
 TableSpec = namedtuple("TableSpec", "header folder")
 
@@ -211,16 +212,20 @@ class ConfigDB:
         :param rebuild_db: True if the database needs to be rebuilt
         """
         if rebuild_db:
+            FlatlandDB.create_db()
+
+
+        # if rebuild_db:
             # Before rebuilding, generate any new instance population files
-            update_populations()
+            # update_populations()
 
         # Initialize and possible reload the flatland database
-        FlatlandDB(rebuild=rebuild_db)
+        # FlatlandDB(rebuild=rebuild_db)
 
         # Regen title blocks and insert into the flatland database
         # TODO: Make this part of the population update
-        if rebuild_db:
-            TitleBlockPlacement()
+        # if rebuild_db:
+        #     TitleBlockPlacement()
 
 
 if __name__ == '__main__':
