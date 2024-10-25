@@ -212,7 +212,7 @@ relationships
     is placed in, Mc Frame
     1 Title Block Placement
     Title Block Placement.(Frame, Sheet, Orientation) -> Frame.(Name, Sheet, Orientation)
-    Title Block Placement.(Title block pattern, Sheet, Orientation) -> Scaled Title Block.(Title block pattern, Sheet size group)
+    Title Block Placement.(Title block pattern, Sheet size group) -> Scaled Title Block.(Title block pattern, Sheet size group)
 --
     R316
     is rough size of, M Sheet

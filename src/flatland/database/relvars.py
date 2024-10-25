@@ -8,10 +8,23 @@ models.
 Consult those models to understand all of these relvars and their constraints,
 They should be available on the Flatland github wiki.
 """
-from pyral.rtypes import Attribute, Mult as DBMult
+from pyral.rtypes import Attribute, Mult
 from collections import namedtuple
 
+# Here is a mapping from metamodel multiplcity notation to that used by the target TclRAL tclral
+# When interacting with PyRAL we must supply the tclral specific value
+mult_tclral = {
+    'M': Mult.AT_LEAST_ONE,
+    '1': Mult.EXACTLY_ONE,
+    'Mc':Mult.ZERO_ONE_OR_MANY,
+    '1c': Mult.ZERO_OR_ONE
+}
+
 Header = namedtuple('Header', ['attrs', 'ids'])
+SimpleAssoc = namedtuple('SimpleAssoc', ['name', 'from_class', 'from_mult', 'from_attrs', 'to_class', 'to_mult', 'to_attrs'])
+AssocRel = namedtuple('AssocRel', ['name', 'assoc_class', 'a_ref', 'b_ref'])
+Ref = namedtuple('AssocRef', ['to_class', 'mult', 'from_attrs', 'to_attrs'])
+GenRel = namedtuple('GenRel', ['name', 'super_class', 'super_attrs', 'subrefs'])
 
 class FlatlandSchema:
 
@@ -87,3 +100,29 @@ class FlatlandSchema:
             Attribute(name='max_height', type='int'),
         ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation']}),
     }
+
+    rels = [
+        SimpleAssoc(name='R316',
+                    from_class='sheet', from_mult=mult_tclral['M'], from_attrs=['Size_group'],
+                    to_class='sheet_size_group', to_mult=mult_tclral['1'], to_attrs=['Name'],
+                    ),
+        AssocRel(name='R315', assoc_class='title_block_placement',
+                 a_ref=Ref(to_class='frame', mult=mult_tclral['Mc'],
+                           from_attrs=['Frame, Sheet, Orientation'],
+                           to_attrs=['Name', 'Sheet', 'Orientation']),
+                 b_ref=Ref(to_class='scaled_title_block', mult=mult_tclral['1'],
+                           from_attrs=['Title_block_pattern, Sheet size group'],
+                           to_attrs=['Title_block_pattern, Sheet size group'])
+                 ),
+        AssocRel(name='R318', assoc_class='box_placement',
+                 a_ref=Ref(to_class='title_block_placement', mult=mult_tclral['Mc'],
+                           from_attrs=['Frame, Sheet, Orientation'],
+                           to_attrs=['Frame', 'Sheet', 'Orientation']),
+                 b_ref=Ref(to_class='box', mult=mult_tclral['M'],
+                           from_attrs=['Box, Title_block_pattern'],
+                           to_attrs=['ID, Pattern'])
+                 ),
+        GenRel(name='305'
+
+        )
+    ]
