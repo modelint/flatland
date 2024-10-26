@@ -2,8 +2,8 @@ metadata
     Title : Flatland Sheet Subsystem Class Diagram
     Author : Leon Starr
     Document ID : mint.flatland.td.6a
-    Version : 0.7.0
-    Modification date : May 11, 2021
+    Version : 0.8.1
+    Modification date : October 26, 2024
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
     Organization logo > mint
@@ -11,59 +11,61 @@ domain Flatland, FLAT
 subsystem Sheet, SHEET 300-349
 class Box
 attributes
-    ID : Boundary ID {I}
-    Pattern {I, R303}
+    ID : Box ID {I}
+    Pattern : Pattern Name {I, R303}
 --
 class Box Placement
 attributes
-    Frame {I, R318}
-    Sheet {I, R318}
-    Orientation {I, R318}
-    Box {I, R318}
-    Title block pattern {I, R318}
+    Frame : Frame Name {I, R318}
+    Sheet : Sheet Name {I, R318}
+    Orientation : Portrait Landscape {I, R318}
+    Box : Box ID {I, R318}
+    Title block pattern : Pattern Name {I, R318}
     Placement : Position
     Box size : Rect Size
 --
-class Box Text Line
-attributes
-    Metadata [I, R306}
-    Box {I, I2, R306}
-    Title block pattern {I, I2, R306}
-    Order : Ordinal {I2, OR304}
---
 class Boxed Field
 attributes
-    Metadata {I, R305, R317}
-    Frame {I, R305, R317}
-    Sheet {I, R305, R317}
-    Orientation {I, R305, R317}
-    Box {R321c}
-    Title block pattern {R321}
+    Metadata : Metadata Name {I, R306}
+    Frame : Frame Name {I, R306}
+    Sheet : Sheet Name {I, R306}
+    Orientation : Portrait Landscape {I, R306}
+    Placement : Position {I, R306}
+    Data box : Box ID {I, R306}
+    Title block pattern : Pattern Name {R306}
+    Stack order : Ordinal {R306}
 --
 class Compartment Box
 attributes
-    ID {I, UR312}
-    Pattern {I, U312}
+    ID : Box ID {I}
+    Pattern : Pattern Name {I}
+    Partition distance : Relative Distance
+    Parittion orientation : Horiz Vert
+--
+class Data Box Line
+attributes
+    Data box : Box ID {I, R309}
+    Title block pattern : Pattern Name {I, R309}
+    Order : Ordinal {I, OR304}
 --
 class Data Box
 attributes
-    ID {I, R308, R313}
-    Pattern {I, I2, R308, R313}
+    ID : Box ID {I, R308, R313}
+    Pattern : Pattern Name {I, I2, R308, R313}
     Alignment : VH Align
     Style : Box Style Name
 --
 class Envelope Box
 attributes
-    ID {I, R308, R312}
-    Pattern {R314, R308, R312}
+    ID : Box ID {I, R308, R312}
+    Pattern : Pattern Name {R314, R308, R312}
 --
 class Field
 attributes
-    Metadata {I, R320}
-    Frame {I, R320}
-    Sheet {I, R320}
-    Orientation {I, R320}
-    Type: Open Box {I}
+    Metadata : Metadata Name {I, R307}
+    Frame : Frame Name {I, R307}
+    Sheet : Sheet Name {I, R307}
+    Orientation : Portrait Landscape {I, R307}
     Placement : Position
     Max area : Rect Size
 --
@@ -73,56 +75,33 @@ attributes
     Sheet {I, R300}
     Orientation : Portrait Landscape {I}
 --
-class Frame Metadata
-attributes
-    Name {I, R307}
-    Frame {I, R307}
-    Sheet {I, R307}
-    Orientation {I, R307}
---
 class Metadata
 attributes
-    Name : Name {I}
---
-class Open Field
-attributes
-    Metadata {I, R305, R319}
-    Frame {I, R305, R319}
-    Sheet {I, R305, R319}
-    Orientation {I, R305, R319}
---
-class Partition
-attributes
-    Compartment box {I, R302}
-    Pattern {I, U312}
-    Distance : Relative Distance
-    Orientation : Horiz Vert
-    Upper box {R310}
-    Lower box {R311}
+    Name : Metadata Name {I}
 --
 class Partitioned Box
 attributes
-    ID {I, UR313}
-    Pattern {I, UR313}
+    ID : Box ID {I}
+    Pattern : Pattern Name {I}
 --
 class Scaled Title Block
 attributes
-    Title block pattern {I, R301}
-    Sheet size group {I, R301}
+    Title block pattern : Pattern Name {I, R301}
+    Sheet size group : Sheet Group Name {I, R301}
     Block size : Rect Size
     Margin : HV Spacing
 --
 class Section Box
 attributes
-    ID {I, R308, R312, R313}
-    Pattern {R308, R312, R313}
+    ID : Box ID {I, R308, R312, R313}
+    Pattern : Pattern Name {R308, R312, R313}
 --
 class Sheet
 attributes
     Name : Sheet Name {I}
     Size : Sheet Size
     Units : US Metric
-    Size group {R316}
+    Size group : Sheet Group Name {R316}
 --
 class Sheet Size Group
 attributes
@@ -130,15 +109,15 @@ attributes
 --
 class Title Block Pattern
 attributes
-    Name : Name {I}
+    Name : Pattern Name {I}
 --
 class Title Block Placement
 attributes
-    Frame {I, R315}
-    Sheet {I, R315c}
-    Orientation {I, R315}
-    Title block pattern {R315}
-    Sheet size group {R315}
+    Frame : Frame Name {I, R315}
+    Sheet : Sheet Name {I, R315c}
+    Orientation : Portrait Landscape {I, R315}
+    Title block pattern : Pattern Name {R315}
+    Sheet size group : Sheet Group Name {R315}
     Placement : Position
 --
 relationships
@@ -165,28 +144,22 @@ relationships
     Box.Pattern -> Title Block Pattern.Name
 --
     OR304
-    stack above / stack below, Box Text Line
-    Order : I2
---
-    R305
-    Field +
-        Open Field
-        Boxed Field
-    <subclass>.(Metadata, Frame, Sheet, Orientation) -> Field.(Metadata, Frame, Sheet, Orientation)
+    stack above / stack below, Data Box Line
+    Stack order : I
 --
     R306
-    stacks, Mc Metadata
-    is stacked in, Mc Data Box
-    1 Body Text Line
-    Box Text Line.Metadata -> Metadata.Name
-    Box Text Line.(Box + Title block pattern) -> Data Box.(ID, Pattern)
+    is placed on, 1c Data Box Line
+    places, Mc Field
+    1 Boxed Field
+    Boxed Field.(Metadata, Frame, Sheet, Orientation, Placement) -> Field.(Metadata, Frame, Sheet, Orientation, Placement)
+    Boxed Field.(Data box, Title block pattern, Stack order) -> Data Box Line.(Data box, Title block pattern, Stack order)
 --
     R307
     displays, Mc Metadata
     is displayed in, Mc Frame
-    1 Frame Metadata
-    Frame Metadata.Name -> Metadata.Name
-    Frame Metadata.(Frame, Sheet, Orientation) -> Frame.(Name, Sheet, Orientation)
+    M Field
+    Field.Name -> Metadata.Name
+    Field.(Frame, Sheet, Orientation) -> Frame.(Name, Sheet, Orientation)
 --
     R308
     Box +
@@ -194,6 +167,11 @@ relationships
         Section Box
         Data Box
     <subclass>.(ID, Pattern) -> Box.(ID, Pattern)
+--
+    R309
+    stacks, M Data Box Line
+    is stacked in, 1 Data Box
+    Data Box Line.(Data box, Title block pattern) -> Data Box.(ID, Pattern)
 --
     R312
     Compartment Box +
@@ -219,30 +197,10 @@ relationships
     is roughly sized as, 1 Sheet Size Group
     Sheet.Size group -> Sheet Size Group.Name
 --
-    R317
-    shows, 1 Frame Metadata
-    appears in, 1c Boxed Field
-    Boxed Field.(Metadata, Frame, Sheet, Orientation) -> Fraem Metadata.(Name, Frame, Sheet, Orientation)
---
     R318
     determines placement of, M Box
     placement is determined by, Mc Title Block Placement
     1 Box Placement
     Box Placement.(Frame, Sheet, Orientation) -> Title Block Placement.(Frame, Sheet, Orientation)
     Box Placement.(Box, Title block pattern) -> Box.(ID, Pattern)
---
-    R319
-    appears in, 1c Open Field
-    shows, 1 Frame Metadata
-    Open Field.(Metadata, Frame, Sheet, Orientation) -> Frame Metadata.(Name, Frame, Sheet, Orientation)
---
-    R320
-    must appear in, M Field
-    must show, 1 Frame Metadata
-    Field.(Metadata, Frame, Sheet, Orientation) -> Frame Metadata.(Name, Frame, Sheet, Orientation)
---
-    R321
-    places, Mc Boxed Field
-    is placed on, 1 Box Text Line
-    Boxed Field.(Metadata, Box, Title block pattern) -> Boxed Text Line.(Metadata, Box, Title block pattern)
 --
