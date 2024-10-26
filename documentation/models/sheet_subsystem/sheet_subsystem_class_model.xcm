@@ -2,7 +2,7 @@ metadata
     Title : Flatland Sheet Subsystem Class Diagram
     Author : Leon Starr
     Document ID : mint.flatland.td.6a
-    Version : 0.8.1
+    Version : 0.8.2
     Modification date : October 26, 2024
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
@@ -24,29 +24,12 @@ attributes
     Placement : Position
     Box size : Rect Size
 --
-class Boxed Field
-attributes
-    Metadata : Metadata Name {I, R306}
-    Frame : Frame Name {I, R306}
-    Sheet : Sheet Name {I, R306}
-    Orientation : Portrait Landscape {I, R306}
-    Placement : Position {I, R306}
-    Data box : Box ID {I, R306}
-    Title block pattern : Pattern Name {R306}
-    Stack order : Ordinal {R306}
---
 class Compartment Box
 attributes
     ID : Box ID {I}
     Pattern : Pattern Name {I}
     Partition distance : Relative Distance
     Parittion orientation : Horiz Vert
---
-class Data Box Line
-attributes
-    Data box : Box ID {I, R309}
-    Title block pattern : Pattern Name {I, R309}
-    Order : Ordinal {I, OR304}
 --
 class Data Box
 attributes
@@ -84,6 +67,12 @@ attributes
     ID : Box ID {I}
     Pattern : Pattern Name {I}
 --
+class Region
+attributes
+    Data box : Box ID {I, R309}
+    Title block pattern : Pattern Name {I, R309}
+    Order : Ordinal {I, OR304}
+--
 class Scaled Title Block
 attributes
     Title block pattern : Pattern Name {I, R301}
@@ -106,6 +95,17 @@ attributes
 class Sheet Size Group
 attributes
     Name : Sheet Group Name {I}
+--
+class Title Block Field
+attributes
+    Metadata : Metadata Name {I, R306}
+    Frame : Frame Name {I, R306}
+    Sheet : Sheet Name {I, R306}
+    Orientation : Portrait Landscape {I, R306}
+    Placement : Position {I, R306}
+    Data box : Box ID {I, R306}
+    Title block pattern : Pattern Name {R306}
+    Stack order : Ordinal {R306}
 --
 class Title Block Pattern
 attributes
@@ -133,26 +133,21 @@ relationships
     Scaled Title Block.Title Block Pattern -> Title Block Pattern.Name
     Scaled Title Block.Sheet size group -> Sheet Size Group.Name
 --
-    R302
-    splits, 1 Compartment Box
-    is split by, 1 Partition
-    Partition.(Compartment box, Pattern) -> Compartment.(ID, Pattern)
---
     R303
     defines a nested rectangular hierarchy of, M Box
     is rectangle in nested hierarchy defined by, 1 Title Block Pattern
     Box.Pattern -> Title Block Pattern.Name
 --
     OR304
-    stack above / stack below, Data Box Line
+    stack above / stack below, Region
     Stack order : I
 --
     R306
-    is placed on, 1c Data Box Line
+    is placed within, 1c Region
     places, Mc Field
-    1 Boxed Field
-    Boxed Field.(Metadata, Frame, Sheet, Orientation, Placement) -> Field.(Metadata, Frame, Sheet, Orientation, Placement)
-    Boxed Field.(Data box, Title block pattern, Stack order) -> Data Box Line.(Data box, Title block pattern, Stack order)
+    1 Title Block Field
+    Title Block Field.(Metadata, Frame, Sheet, Orientation, Placement) -> Field.(Metadata, Frame, Sheet, Orientation, Placement)
+    Title Block Field.(Data box, Title block pattern, Stack order) -> Region.(Data box, Title block pattern, Stack order)
 --
     R307
     displays, Mc Metadata
@@ -169,9 +164,9 @@ relationships
     <subclass>.(ID, Pattern) -> Box.(ID, Pattern)
 --
     R309
-    stacks, M Data Box Line
+    stacks, M Region
     is stacked in, 1 Data Box
-    Data Box Line.(Data box, Title block pattern) -> Data Box.(ID, Pattern)
+    Region.(Data box, Title block pattern) -> Data Box.(ID, Pattern)
 --
     R312
     Compartment Box +
