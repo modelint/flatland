@@ -105,8 +105,8 @@ class FlatlandSchema:
                 Attribute(name='Height', type='string'),
                 Attribute(name='Width', type='string'),
                 # Block size
-                Attribute(name='Margin_h', type='integer'),
-                Attribute(name='Margin_v', type='integer'),
+                Attribute(name='Margin_h', type='int'),
+                Attribute(name='Margin_v', type='int'),
             ], ids={1: ['Title_block_pattern', 'Sheet_size_group']}),
             'Section_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
