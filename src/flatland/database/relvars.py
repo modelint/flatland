@@ -33,9 +33,13 @@ class FlatlandSchema:
     """
 
     relvars = {
-        'sheet': {
+        'Sheet': {
             # Sheet subsystem relvars
-            'box_placement': Header(attrs=[
+            'Box': Header(attrs=[
+                Attribute(name='ID', type='int'),
+                Attribute(name='Pattern', type='string'),
+            ], ids={1: ['ID', 'Pattern']}),
+            'Box_Placement': Header(attrs=[
                 Attribute(name='Frame', type='string'),
                 Attribute(name='Sheet', type='string'),
                 Attribute(name='Orientation', type='string'),
@@ -46,21 +50,24 @@ class FlatlandSchema:
                 Attribute(name='Width', type='double'),
                 Attribute(name='Height', type='double'),
             ], ids={1: ['Frame', 'Sheet', 'Orientation', 'Title_block_pattern', 'Box']}),
-            'compartment_box': Header(attrs=[
+            'Compartment_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
                 Attribute(name='Pattern', type='string'),
                 Attribute(name='Partition_distance', type='double'),
                 Attribute(name='Partition_orientation', type='string'),
             ], ids={1: ['ID', 'Pattern']}),
-            'data_box': Header(attrs=[
+            'Data_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
                 Attribute(name='Pattern', type='string'),
                 Attribute(name='H_align', type='string'),
                 Attribute(name='V_align', type='string'),
                 Attribute(name='Style', type='string'),
             ], ids={1: ['ID', 'Pattern']}),
-            # Envelope Box folded into Compartment Box since it has only ref attrs
-            'field': Header(attrs=[
+            'Envelope_Box': Header(attrs=[
+                Attribute(name='ID', type='int'),
+                Attribute(name='Pattern', type='string'),
+            ], ids={1: ['ID', 'Pattern']}),
+            'Field': Header(attrs=[
                 Attribute(name='Metadata', type='string'),
                 Attribute(name='Frame', type='string'),
                 Attribute(name='Sheet', type='string'),
@@ -74,21 +81,24 @@ class FlatlandSchema:
                 # TODO: Make use of TclRAL tuple data type to combine the above attributes
                 # TODO: to match the model attributes
             ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'x_position', 'y_position']}),
-            'frame': Header(attrs=[
+            'Frame': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 Attribute(name='Sheet', type='string'),
                 Attribute(name='Orientation', type='string'),
             ], ids={1: ['Name', 'Sheet', 'Orientation']}),
-            'metadata': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
-            # Paritioned Box has only ref attrs so it's folded into Data and Compartment Box
-            'region': Header(attrs=[
+            'Metadata': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
+            'Partitioned_Box': Header(attrs=[
+                Attribute(name='ID', type='int'),
+                Attribute(name='Pattern', type='string'),
+            ], ids={1: ['ID', 'Pattern']}),
+            'Region': Header(attrs=[
                 Attribute(name='Data_box', type='int'),
                 Attribute(name='Title_block_pattern', type='string'),
                 Attribute(name='Stack_order', type='int'),
             ], ids={
                 1: ['Data_box', 'Title_block_pattern', 'Stack_order']}
             ),
-            'scaled_title_block': Header(attrs=[
+            'Scaled_Title_Block': Header(attrs=[
                 Attribute(name='Title_block_pattern', type='string'),
                 Attribute(name='Sheet_size_group', type='string'),
                 Attribute(name='Height', type='string'),
@@ -97,8 +107,11 @@ class FlatlandSchema:
                 Attribute(name='Margin_h', type='integer'),
                 Attribute(name='Margin_v', type='integer'),
             ], ids={1: ['Title_block_pattern', 'Sheet_size_group']}),
-            # Section Box folded into Compartment Box since it has only ref attrs
-            'sheet': Header(attrs=[
+            'Section_Box': Header(attrs=[
+                Attribute(name='ID', type='int'),
+                Attribute(name='Pattern', type='string'),
+            ], ids={1: ['ID', 'Pattern']}),
+            'Sheet': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 # Size
                 Attribute(name='Height', type='string'),
@@ -106,8 +119,8 @@ class FlatlandSchema:
                 Attribute(name='Units', type='string'),
                 Attribute(name='Size_group', type='string'),
             ], ids={1: ['Name']}),
-            'sheet_size_group': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
-            'title_block_field': Header(attrs=[
+            'Sheet_Size_Group': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
+            'Title_Block_Field': Header(attrs=[
                 Attribute(name='Metadata', type='string'),
                 Attribute(name='Frame', type='string'),
                 Attribute(name='Sheet', type='string'),
@@ -119,8 +132,8 @@ class FlatlandSchema:
                 Attribute(name='Title_block_pattern', type='string'),
                 Attribute(name='Stack_order', type='int'),
             ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'x_position', 'y_position']}),
-            'title_block_pattern': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
-            'title_block_placement': Header(attrs=[
+            'Title_Block_Pattern': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
+            'Title_Block_Placement': Header(attrs=[
                 Attribute(name='Frame', type='string'),
                 Attribute(name='Sheet', type='string'),
                 Attribute(name='Orientation', type='string'),
@@ -133,7 +146,32 @@ class FlatlandSchema:
     }
 
     rels = {
-        'sheet': [
+        'Sheet': [
+            SimpleAssoc(name='R300',
+                        from_class='Frame', from_mult=mult_tclral['Mc'], from_attrs=['Sheet'],
+                        to_class='Sheet', to_mult=mult_tclral['1'], to_attrs=['Name'],
+                        ),
+            AssocRel(name='R301', assoc_class='Scaled_Title_Block',
+                     a_ref=Ref(to_class='Sheet_Size_Group', mult=mult_tclral['Mc'],
+                               from_attrs=['Sheet_size_group'],
+                               to_attrs=['Name']),
+                     b_ref=Ref(to_class='Title_Block_Pattern', mult=mult_tclral['Mc'],
+                               from_attrs=['Title_block_pattern'],
+                               to_attrs=['Name'])
+                     ),
+            SimpleAssoc(name='R303',
+                        from_class='Box', from_mult=mult_tclral['M'], from_attrs=['Pattern'],
+                        to_class='Title_Block_Pattern', to_mult=mult_tclral['1'], to_attrs=['Name'],
+                        ),
+            AssocRel(name='R306', assoc_class='Title_Block_Field',
+                     a_ref=Ref(to_class='Field', mult=mult_tclral['Mc'],
+                               from_attrs=['Metadata', 'Frame', 'Sheet', 'Orientation', 'x_position', 'y_position'],
+                               to_attrs=['Metadata', 'Frame', 'Sheet', 'Orientation', 'x_position', 'y_position'],
+                               ),
+                     b_ref=Ref(to_class='Region', mult=mult_tclral['1c'],
+                               from_attrs=['Data_box', 'Title_block_pattern', 'Stack_order'],
+                               to_attrs=['Data_box', 'Title_block_pattern', 'Stack_order'])
+                     ),
             SimpleAssoc(name='R316',
                         from_class='sheet', from_mult=mult_tclral['M'], from_attrs=['Size_group'],
                         to_class='sheet_size_group', to_mult=mult_tclral['1'], to_attrs=['Name'],
