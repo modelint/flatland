@@ -24,7 +24,7 @@ Header = namedtuple('Header', ['attrs', 'ids'])
 SimpleAssoc = namedtuple('SimpleAssoc', ['name', 'from_class', 'from_mult', 'from_attrs', 'to_class', 'to_mult', 'to_attrs'])
 AssocRel = namedtuple('AssocRel', ['name', 'assoc_class', 'a_ref', 'b_ref'])
 Ref = namedtuple('AssocRef', ['to_class', 'mult', 'from_attrs', 'to_attrs'])
-GenRel = namedtuple('GenRel', ['name', 'super_class', 'super_attrs', 'subrefs'])
+GenRel = namedtuple('GenRel', ['name', 'superclass', 'superattrs', 'subrefs'])
 
 class FlatlandSchema:
     """
@@ -172,18 +172,47 @@ class FlatlandSchema:
                                from_attrs=['Data_box', 'Title_block_pattern', 'Stack_order'],
                                to_attrs=['Data_box', 'Title_block_pattern', 'Stack_order'])
                      ),
-            SimpleAssoc(name='R316',
-                        from_class='sheet', from_mult=mult_tclral['M'], from_attrs=['Size_group'],
-                        to_class='sheet_size_group', to_mult=mult_tclral['1'], to_attrs=['Name'],
+            AssocRel(name='R307', assoc_class='Field',
+                     a_ref=Ref(to_class='Metadata', mult=mult_tclral['Mc'],
+                               from_attrs=['Metadata'],
+                               to_attrs=['Name'],
+                               ),
+                     b_ref=Ref(to_class='Frame', mult=mult_tclral['Mc'],
+                               from_attrs=['Frame', 'Sheet', 'Orientation'],
+                               to_attrs=['Name', 'Sheet', 'Orientation'])
+                     ),
+            GenRel(name='308', superclass='Box', superattrs=['ID', 'Pattern'],
+                   subrefs={
+                       'Envelope_Box': ['ID', 'Pattern'],
+                       'Section_Box': ['ID', 'Pattern'],
+                       'Data_Box': ['ID', 'Pattern']
+                   }),
+            SimpleAssoc(name='R309',
+                        from_class='Region', from_mult=mult_tclral['M'], from_attrs=['Data_box', 'Title_block_pattern'],
+                        to_class='Data_Box', to_mult=mult_tclral['1'], to_attrs=['ID', 'Pattern'],
                         ),
+            GenRel(name='R312', superclass='Compartment_Box', superattrs=['ID', 'Pattern'],
+                   subrefs={
+                       'Envelope_Box': ['ID', 'Pattern'],
+                       'Section_Box': ['ID', 'Pattern'],
+                   }),
+            GenRel(name='R313', superclass='Partitioned_Box', superattrs=['ID', 'Pattern'],
+                   subrefs={
+                       'Envelope_Box': ['ID', 'Pattern'],
+                       'Section_Box': ['ID', 'Pattern'],
+                   }),
             AssocRel(name='R315', assoc_class='title_block_placement',
                      a_ref=Ref(to_class='frame', mult=mult_tclral['Mc'],
                                from_attrs=['Frame, Sheet, Orientation'],
                                to_attrs=['Name', 'Sheet', 'Orientation']),
-                     b_ref=Ref(to_class='scaled_title_block', mult=mult_tclral['1'],
-                               from_attrs=['Title_block_pattern, Sheet size group'],
-                               to_attrs=['Title_block_pattern, Sheet size group'])
+                     b_ref=Ref(to_class='scaled_title_block', mult=mult_tclral['1c'],
+                               from_attrs=['Title_block_pattern, Sheet_size_group'],
+                               to_attrs=['Title_block_pattern, Sheet_size_group'])
                      ),
+            SimpleAssoc(name='R316',
+                        from_class='sheet', from_mult=mult_tclral['M'], from_attrs=['Size_group'],
+                        to_class='sheet_size_group', to_mult=mult_tclral['1'], to_attrs=['Name'],
+                        ),
             AssocRel(name='R318', assoc_class='box_placement',
                      a_ref=Ref(to_class='title_block_placement', mult=mult_tclral['Mc'],
                                from_attrs=['Frame, Sheet, Orientation'],
@@ -192,7 +221,4 @@ class FlatlandSchema:
                                from_attrs=['Box, Title_block_pattern'],
                                to_attrs=['ID, Pattern'])
                      ),
-            GenRel(name='305'
-
-        )
     ]
