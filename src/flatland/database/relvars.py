@@ -6,7 +6,7 @@ this is the schema definition for the database. These relvars are derived from t
 models.
 
 Consult those models to understand all of these relvars and their constraints,
-They should be available on the Flatland github wiki.
+They should be available on the Flatland GitHub wiki.
 """
 from pyral.rtypes import Attribute, Mult
 from collections import namedtuple
@@ -16,12 +16,13 @@ from collections import namedtuple
 mult_tclral = {
     'M': Mult.AT_LEAST_ONE,
     '1': Mult.EXACTLY_ONE,
-    'Mc':Mult.ZERO_ONE_OR_MANY,
+    'Mc': Mult.ZERO_ONE_OR_MANY,
     '1c': Mult.ZERO_OR_ONE
 }
 
 Header = namedtuple('Header', ['attrs', 'ids'])
-SimpleAssoc = namedtuple('SimpleAssoc', ['name', 'from_class', 'from_mult', 'from_attrs', 'to_class', 'to_mult', 'to_attrs'])
+SimpleAssoc = namedtuple('SimpleAssoc', ['name', 'from_class', 'from_mult', 'from_attrs',
+                                         'to_class', 'to_mult', 'to_attrs'])
 AssocRel = namedtuple('AssocRel', ['name', 'assoc_class', 'a_ref', 'b_ref'])
 Ref = namedtuple('AssocRef', ['to_class', 'mult', 'from_attrs', 'to_attrs'])
 GenRel = namedtuple('GenRel', ['name', 'superclass', 'superattrs', 'subrefs'])
@@ -221,4 +222,5 @@ class FlatlandSchema:
                                from_attrs=['Box, Title_block_pattern'],
                                to_attrs=['ID, Pattern'])
                      ),
-    ]
+        ]
+    }
