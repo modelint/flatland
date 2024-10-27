@@ -29,7 +29,7 @@ attributes
     ID : Box ID {I}
     Pattern : Pattern Name {I}
     Partition distance : Relative Distance
-    Parittion orientation : Horiz Vert
+    Partition orientation : Horiz Vert
 --
 class Data Box
 attributes
