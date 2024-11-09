@@ -2,18 +2,21 @@
 
 # System
 from collections import namedtuple
+from pathlib import Path
+from typing import NamedTuple
 
 # Model Integration
 from pyral.database import Database
 from pyral.rtypes import Attribute, Mult as DBMult
 from pyral.relvar import Relvar
+from mi_config.config import Config
 
 # Flatland
 from flatland.database.relvars import FlatlandSchema, SimpleAssoc, AssocRel, GenRel
+from flatland.database.pop_sheet_subsys import SheetSubsysDB
 
 Header = namedtuple('Header', ['attrs', 'ids'])
-
-
+SheetInstance = namedtuple('SheetInstance', 'standard height width size_group')
 
 
 class FlatlandDB:
@@ -23,7 +26,17 @@ class FlatlandDB:
     db_name = 'flatland'
     db = None
     relvar_names = None
-    rel_names= None
+    rel_names = None
+
+    @classmethod
+    def pop_sheet(cls):
+        """
+        Populate the Sheet Size Group and Sheet classes
+
+        :param sheets:
+        :return:
+        """
+        pass
 
     @classmethod
     def create_db(cls):
@@ -49,14 +62,20 @@ class FlatlandDB:
                                               to_relvar=r.to_class, to_mult=r.to_mult, to_attrs=r.to_attrs)
                 if isinstance(r, AssocRel):
                     Relvar.create_correlation(db=cls.db_name, name=r.name, correlation_relvar=r.assoc_class,
-                                              correl_a_attrs=r.a_ref.from_attrs, a_mult=r.a_ref.mult, a_relvar=r.a_ref.to_class, a_ref_attrs=r.a_ref.to_attrs,
-                                              correl_b_attrs=r.b_ref.from_attrs, b_mult=r.b_ref.mult, b_relvar=r.b_ref.to_class, b_ref_attrs=r.b_ref.to_attrs,
+                                              correl_a_attrs=r.a_ref.from_attrs, a_mult=r.a_ref.mult,
+                                              a_relvar=r.a_ref.to_class, a_ref_attrs=r.a_ref.to_attrs,
+                                              correl_b_attrs=r.b_ref.from_attrs, b_mult=r.b_ref.mult,
+                                              b_relvar=r.b_ref.to_class, b_ref_attrs=r.b_ref.to_attrs,
                                               )
                 if isinstance(r, GenRel):
-                    Relvar.create_partition(db=cls.db_name, name=r.name, superclass_name=r.superclass, super_attrs=r.superattrs, subs=r.subrefs)
+                    Relvar.create_partition(db=cls.db_name, name=r.name, superclass_name=r.superclass,
+                                            super_attrs=r.superattrs, subs=r.subrefs)
 
         cls.rel_names = Database.constraint_names(db='flatland')
 
+        # Load sheet population
+        SheetSubsysDB.pop_sheets()
+        Relvar.printall('flatland')
+
+
         pass
-
-

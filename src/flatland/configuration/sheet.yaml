@@ -6,17 +6,17 @@
 # If your title block needs to go up or down a size, consider changing the size group value
 
 # US sizes (specified in inches)
-letter: {Group: us, Height: 8.5, Width: 11, Size group: small}
-tabloid: {Group: us, Height: 11, Width: 17, Size group: medium}
+letter: {standard: us, height: 8.5, width: 11, size_group: small}
+tabloid: {standard: us, height: 11, width: 17, size_group: medium}
 
 # ANSI Architectural (specified in inches)
-C: {Group: us, Height: 18, Width: 24, Size group: large}
-D: {Group: us, Height: 24, Width: 36, Size group: large}
-E: {Group: us, Height: 36, Width: 48, Size group: large}
+C: {standard: us, height: 18, width: 24, size_group: large}
+D: {standard: us, height: 24, width: 36, size_group: large}
+E: {standard: us, height: 36, width: 48, size_group: large}
 
 # International sizes (specified in millimeters)
-A4: {Group: int, Height: 210, Width: 297, Size group: small}
-A3: {Group: int, Height: 297, Width: 420, Size group: medium}
-A2: {Group: int, Height: 420, Width: 594, Size group: medium}
-A1: {Group: int, Height: 594, Width: 841, Size group: large}
-A0: {Group: int, Height: 841, Width: 1189, Size group: large}
+A4: {standard: int, height: 210, width: 297, size_group: small}
+A3: {standard: int, height: 297, width: 420, size_group: medium}
+A2: {standard: int, height: 420, width: 594, size_group: medium}
+A1: {standard: int, height: 594, width: 841, size_group: large}
+A0: {standard: int, height: 841, width: 1189, size_group: large}
