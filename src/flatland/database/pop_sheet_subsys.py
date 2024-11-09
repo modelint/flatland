@@ -32,6 +32,10 @@ class SheetSubsysDB:
     config_path = Path(__file__).parent.parent / "configuration"
 
     @classmethod
+    def pop_title_blocks(cls):
+        pass
+
+    @classmethod
     def pop_sheets(cls):
         """
         Populate all Sheet Size Group and Sheet class data
@@ -49,5 +53,3 @@ class SheetSubsysDB:
                            for k, v in sheets.items()]
         Relvar.insert(db=app, relvar='Sheet', tuples=sheet_instances, tr="sgroup")
         Transaction.execute(db=app, name="sgroup")
-
-        pass
