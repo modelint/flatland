@@ -73,6 +73,17 @@ class SheetSubsysDB:
         tbp_spec = {'titleblock': None}
         c = Config(app_name=app, lib_config_dir=cls.config_path, fspec=tbp_spec)
         tblocks = c.loaded_data['titleblock']
+        for tbp in tblocks:
+            for name, v in tbp.items():
+                # Populate each Title Block Pattern in a single transaction
+                tr_name = name.replace(' ', '_')  # Use the tbp name for the transaction name for easy debugging
+                Transaction.open(db=app, name=tr_name)
+                # Populate a single Title Block Pattern instance
+                tbp_inst = [TitleBlockPatternInstance(Name=name)]
+                Relvar.insert(db=app, relvar='Title_Block_Pattern', tuples=tbp_inst, tr=tr_name)
+                # Poulate all of the Compartment Boxes and super/subclasses
+                pass
+            pass
         pass
 
 
