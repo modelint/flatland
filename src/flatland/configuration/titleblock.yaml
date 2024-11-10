@@ -3,23 +3,31 @@
 # Here you can create your own custom unscaled title block pattern
 # See github wiki for an illustrated example under Sheet Subsystem
 
+# No Metamodel elements are assigned here and the x,y coordinates of each rectangle
+# in the pattern are not defined here
+# This is just a scalable specification of the rectangular subdivisions, text styling
+# and relative proportions in the Title Block Patterns
+
+# The idea being that you can use the same pattern with a wide variety of Sheet sizes
+# and have it scale automatically with the same internal proportions
+
 - 'SE simple': # Name of a title block pattern
-    'compartment boxes': # A container box that is divided horizontally or vertically
-      # Example:
-        # Box 1 is split horizontally with a divider 25% of its height moving up the y axis
-        # This creates upper Box 2 and lower Box 3
-      {'ID': 1, 'Orientation': 'H', 'Distance': .25, 'Up': 2, 'Down': 3}
-      {'ID': 2, 'Orientation': 'V', 'Distance': .66, 'Right': 4, 'Left': 5}
-      {'ID': 4, 'Orientation': 'H', 'Distance': .5, 'Up': 6, 'Down': 7}
-    'data boxes': # Box that is not subdivided with metadata assignable in one or more regions
-      # Example:
-        # Box 3 (created by splitting Box 1, above) is defined with:
-        # Text left and center aligned using the specified text style
-        # A single region spans the interior so only one Metadata item may be assigned
-      {'ID': 3, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 1}
-      {'ID': 5, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block title', 'Regions': 1}
-      {'ID': 6, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 2}
-      {'ID': 7, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 2}
+      'compartment boxes': # A container box that is divided horizontally or vertically
+          # Example:
+          # Box 1 is split horizontally with a divider 25% of its height moving up the y axis
+          # This creates upper Box 2 and lower Box 3
+          - {'ID': 1, 'Orientation': 'H', 'Distance': 0.25, 'Up': 2, 'Down': 3}
+          - {'ID': 2, 'Orientation': 'V', 'Distance': 0.66, 'Right': 4, 'Left': 5}
+          - {'ID': 4, 'Orientation': 'H', 'Distance': 0.5, 'Up': 6, 'Down': 7}
+      'data boxes': # Box that is not subdivided with metadata assignable in one or more regions
+          # Example:
+            # Box 3 (created by splitting Box 1, above) is defined with:
+            # Text left and center aligned using the specified text style
+            # A single region spans the interior so only one Metadata item may be assigned
+          - {'ID': 3, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 1}
+          - {'ID': 5, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block title', 'Regions': 1}
+          - {'ID': 6, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 2}
+          - {'ID': 7, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 2}
 
       # Name of title block pattern is a user supplied alphanumeric string with spaces or underscores permitted
       # ID is a unique integer >= one

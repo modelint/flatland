@@ -1,7 +1,6 @@
 """ pop_sheet_subsys.py - Populate the sheet subsystem classes """
 
 # System
-from collections import namedtuple
 from typing import NamedTuple
 from pathlib import Path
 
@@ -17,9 +16,44 @@ class SheetData(NamedTuple):
     width: float
     size_group: str
 
+class DividerInstance(NamedTuple):
+    Box_above: int
+    Box_below: int
+    Compartment_box: int
+    Parition_distance: float
+    Parition_orientation: str
 
-SheetInstance = namedtuple('SheetInstance', 'Name Height Width Units Size_group')
-SheetSizeGroupHeader = namedtuple('SheetSizeGroupHeader', 'Name')
+class DataBoxInstance(NamedTuple):
+    ID: int
+    Pattern: str
+    Alignment: str
+    Style: str
+
+class Region(NamedTuple):
+    Data_box: int
+    Title_block_pattern: str
+    Stack_order: int
+
+class BoxInstance(NamedTuple):
+    ID: int
+    Pattern: str
+
+class TitleBlockPatternInstance(NamedTuple):
+    Name: str
+
+class SheetInstance(NamedTuple):
+    Name: str
+    Height: float
+    Width: float
+    Units: str
+    Size_group: str
+
+class SheetSizeGroupInstance(NamedTuple):
+    Name: str
+
+
+# SheetInstance = namedtuple('SheetInstance', 'Name Height Width Units Size_group')
+# SheetSizeGroupHeader = namedtuple('SheetSizeGroupHeader', 'Name')
 
 app = "flatland"  # Client name supplied to flatland services
 
@@ -33,7 +67,14 @@ class SheetSubsysDB:
 
     @classmethod
     def pop_title_blocks(cls):
+        """
+        Populate all Title Block Patterns
+        """
+        tbp_spec = {'titleblock': None}
+        c = Config(app_name=app, lib_config_dir=cls.config_path, fspec=tbp_spec)
+        tblocks = c.loaded_data['titleblock']
         pass
+
 
     @classmethod
     def pop_sheets(cls):
@@ -45,7 +86,7 @@ class SheetSubsysDB:
         sheets = c.loaded_data['sheet']
         # get a set of group names
         size_group_names = {s.size_group for s in sheets.values()}
-        sgroup_instances = [SheetSizeGroupHeader(Name=n) for n in size_group_names]
+        sgroup_instances = [SheetSizeGroupInstance(Name=n) for n in size_group_names]
         Transaction.open(db=app, name="sgroup")
         Relvar.insert(db=app, relvar='Sheet_Size_Group', tuples=sgroup_instances, tr="sgroup")
         sheet_instances = [SheetInstance(Name=k, Height=v.height, Width=v.width, Size_group=v.size_group,
