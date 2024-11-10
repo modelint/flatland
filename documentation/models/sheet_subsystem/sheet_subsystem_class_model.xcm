@@ -2,8 +2,8 @@ metadata
     Title : Flatland Sheet Subsystem Class Diagram
     Author : Leon Starr
     Document ID : mint.flatland.td.6a
-    Version : 0.8.2
-    Modification date : October 26, 2024
+    Version : 0.8.5
+    Modification date : November 9, 2024
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
     Organization logo > mint
@@ -28,8 +28,6 @@ class Compartment Box
 attributes
     ID : Box ID {I}
     Pattern : Pattern Name {I}
-    Partition distance : Relative Distance
-    Partition orientation : Horiz Vert
 --
 class Data Box
 attributes
@@ -37,6 +35,15 @@ attributes
     Pattern : Pattern Name {I, I2, R308, R313}
     Alignment : VH Align
     Style : Box Style Name
+--
+class Divider
+attributes
+    Box above : Box ID {I, R310}
+    Box below : Box ID {I2, R310}
+    Pattern : Pattern Name {I, I2, R310, R311}
+    Compartment box : Box ID {R311}
+    Partition distance : Relative Distance
+    Partition orientation : Horiz Vert
 --
 class Envelope Box
 attributes
@@ -167,6 +174,18 @@ relationships
     stacks, M Region
     is stacked in, 1 Data Box
     Region.(Data box, Title block pattern) -> Data Box.(ID, Pattern)
+--
+    R310
+    is split above, 1 Partitioned Box
+    is split below, 1 Partitioned Box
+    1 Divider
+    Divider.(Box above, Compartment box) -> Partitioned Box.(ID, Pattern)
+    Divider.(Box below, Compartment box) -> Partitioned Box.(ID, Pattern)
+--
+    R311
+    partitions, 1 Compartment Box
+    is partitioned with, 1 Divider
+    Divider.(Compartment Box, Pattern) -> Compartment Box.(ID, Pattern)
 --
     R312
     Compartment Box +
