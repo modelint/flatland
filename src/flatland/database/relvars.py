@@ -54,8 +54,6 @@ class FlatlandSchema:
             'Compartment_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
                 Attribute(name='Pattern', type='string'),
-                Attribute(name='Partition_distance', type='double'),
-                Attribute(name='Partition_orientation', type='string'),
             ], ids={1: ['ID', 'Pattern']}),
             'Data_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
@@ -64,6 +62,14 @@ class FlatlandSchema:
                 Attribute(name='V_align', type='string'),
                 Attribute(name='Style', type='string'),
             ], ids={1: ['ID', 'Pattern']}),
+            'Divider': Header(attrs=[
+                Attribute(name='Box_above', type='int'),
+                Attribute(name='Box_below', type='int'),
+                Attribute(name='Pattern', type='string'),
+                Attribute(name='Compartment_box', type='int'),
+                Attribute(name='Partition_distance', type='double'),
+                Attribute(name='Partition_orientation', type='string'),
+            ], ids={1: ['Box_above', 'Pattern'], 2:['Box_below', 'Pattern']}),
             'Envelope_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
                 Attribute(name='Pattern', type='string'),
@@ -199,8 +205,8 @@ class FlatlandSchema:
                    }),
             GenRel(name='R313', superclass='Partitioned_Box', superattrs=['ID', 'Pattern'],
                    subrefs={
-                       'Envelope_Box': ['ID', 'Pattern'],
                        'Section_Box': ['ID', 'Pattern'],
+                       'Data_Box': ['ID', 'Pattern'],
                    }),
             AssocRel(name='R315', assoc_class='Title_Block_Placement',
                      a_ref=Ref(to_class='Frame', mult=mult_tclral['Mc'],

@@ -44,7 +44,7 @@ class FlatlandDB:
 
         """
         # Create a TclRAL session with an empty tclral
-        cls.db = Database.open_session(name='flatland')
+        cls.db= Database.open_session(name='flatland')
 
         # Create all the relvars
         for subsys_name, subsys_relvars in FlatlandSchema.relvars.items():
@@ -77,6 +77,4 @@ class FlatlandDB:
         SheetSubsysDB.pop_sheets()
         SheetSubsysDB.pop_title_blocks()
         Relvar.printall('flatland')
-
-
         pass
