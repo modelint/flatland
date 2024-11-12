@@ -9,6 +9,8 @@ from pyral.relvar import Relvar
 from pyral.transaction import Transaction
 from mi_config.config import Config
 
+# Flatland
+from flatland.database.instances.sheet_subsystem import *
 
 class SheetData(NamedTuple):
     standard: str
@@ -16,49 +18,8 @@ class SheetData(NamedTuple):
     width: float
     size_group: str
 
-class DividerInstance(NamedTuple):
-    Box_above: int
-    Box_below: int
-    Pattern: str
-    Compartment_box: int
-    Partition_distance: float
-    Partition_orientation: str
-
-class DataBoxInstance(NamedTuple):
-    ID: int
-    Pattern: str
-    H_align: str
-    V_align: str
-    Style: str
-
-class RegionInstance(NamedTuple):
-    Data_box: int
-    Title_block_pattern: str
-    Stack_order: int
-
-class BoxInstance(NamedTuple):
-    ID: int
-    Pattern: str
-
-class TitleBlockPatternInstance(NamedTuple):
-    Name: str
-
-class SheetInstance(NamedTuple):
-    Name: str
-    Height: float
-    Width: float
-    Units: str
-    Size_group: str
-
-class SheetSizeGroupInstance(NamedTuple):
-    Name: str
-
-
-# SheetInstance = namedtuple('SheetInstance', 'Name Height Width Units Size_group')
-# SheetSizeGroupHeader = namedtuple('SheetSizeGroupHeader', 'Name')
 
 app = "flatland"  # Client name supplied to flatland services
-
 
 class SheetSubsysDB:
     """
@@ -71,6 +32,10 @@ class SheetSubsysDB:
     def pop_frames(cls):
         frame_spec = {'frame': None}
         f = Config(app_name=app, lib_config_dir=cls.config_path, fspec=frame_spec)
+        fstyles = f.loaded_data['frame']
+        for k,v in fstyles.items():
+            frame_tr = k
+            pass
         pass
 
     @classmethod
