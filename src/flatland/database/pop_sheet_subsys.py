@@ -68,6 +68,12 @@ class SheetSubsysDB:
     config_path = Path(__file__).parent.parent / "configuration"
 
     @classmethod
+    def pop_frames(cls):
+        frame_spec = {'frame': None}
+        f = Config(app_name=app, lib_config_dir=cls.config_path, fspec=frame_spec)
+        pass
+
+    @classmethod
     def pop_title_blocks(cls):
         """
         Populate all Title Block Patterns
