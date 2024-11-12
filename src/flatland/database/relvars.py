@@ -93,6 +93,9 @@ class FlatlandSchema:
                 Attribute(name='Sheet', type='string'),
                 Attribute(name='Orientation', type='string'),
             ], ids={1: ['Name', 'Sheet', 'Orientation']}),
+            'Frame_Style': Header(attrs=[
+                Attribute(name='Name', type='string'),
+            ], ids={1: ['Name']}),
             'Metadata': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
             'Partitioned_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
@@ -164,6 +167,14 @@ class FlatlandSchema:
                                to_attrs=['Name']),
                      b_ref=Ref(to_class='Title_Block_Pattern', mult=mult_tclral['Mc'],
                                from_attrs=['Title_block_pattern'],
+                               to_attrs=['Name'])
+                     ),
+            AssocRel(name='R302', assoc_class='Frame',
+                     a_ref=Ref(to_class='Frame_Style', mult=mult_tclral['Mc'],
+                               from_attrs=['Name'],
+                               to_attrs=['Name']),
+                     b_ref=Ref(to_class='Sheet', mult=mult_tclral['M'],
+                               from_attrs=['Sheet'],
                                to_attrs=['Name'])
                      ),
             SimpleAssoc(name='R303',
