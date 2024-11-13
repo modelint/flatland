@@ -35,6 +35,14 @@ class SheetSubsysDB:
         fstyles = f.loaded_data['frame']
         for k,v in fstyles.items():
             frame_tr = k
+            tr_name = frame_tr.replace(' ', '_')  # Use the tbp name for the transaction name for easy debugging
+            Transaction.open(db=app, name=tr_name)
+
+            # Populate Frame Style
+            r = [FrameStyleInstance(Name=tr_name)]
+            Relvar.insert(db=app, relvar='Frame_Style', tuples=r, tr=tr_name)
+
+
             pass
         pass
 
