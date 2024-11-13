@@ -60,8 +60,8 @@ class FlatlandSchema:
                 Attribute(name='Pattern', type='string'),
                 Attribute(name='H_align', type='string'),
                 Attribute(name='V_align', type='string'),
-                Attribute(name='Style', type='string'),
-            ], ids={1: ['ID', 'Pattern']}),
+                Attribute(name='Name', type='string'),
+            ], ids={1: ['ID', 'Pattern'], 2:['Name', 'Pattern']}),
             'Divider': Header(attrs=[
                 Attribute(name='Box_above', type='int'),
                 Attribute(name='Box_below', type='int'),
@@ -74,29 +74,33 @@ class FlatlandSchema:
                 Attribute(name='ID', type='int'),
                 Attribute(name='Pattern', type='string'),
             ], ids={1: ['ID', 'Pattern']}),
-            'Field': Header(attrs=[
+            'Fitted Frame': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Sheet', type='string'),
+                Attribute(name='Orientation', type='string'),
+            ], ids={1: ['Name', 'Sheet', 'Orientation']}),
+            'Frame': Header(attrs=[
+                Attribute(name='Name', type='string'),
+            ], ids={1: ['Name']}),
+            'Framed_Title_Block': Header(attrs=[
+                Attribute(name='Frame', type='string'),
+                Attribute(name='Title_block_pattern', type='string'),
+            ], ids={1: ['Frame']}),
+            'Free Field': Header(attrs=[
                 Attribute(name='Metadata', type='string'),
                 Attribute(name='Frame', type='string'),
                 Attribute(name='Sheet', type='string'),
                 Attribute(name='Orientation', type='string'),
                 # Placement
-                Attribute(name='x_position', type='int'),
-                Attribute(name='y_position', type='int'),
+                Attribute(name='X', type='int'),
+                Attribute(name='Y', type='int'),
                 # Max area
-                Attribute(name='max_width', type='int'),
-                Attribute(name='max_height', type='int'),
+                Attribute(name='Max_width', type='int'),
+                Attribute(name='Max_height', type='int'),
                 # TODO: Make use of TclRAL tuple data type to combine the above attributes
                 # TODO: to match the model attributes
             ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'x_position', 'y_position']}),
-            'Frame': Header(attrs=[
-                Attribute(name='Name', type='string'),
-                Attribute(name='Sheet', type='string'),
-                Attribute(name='Orientation', type='string'),
-            ], ids={1: ['Name', 'Sheet', 'Orientation']}),
-            'Frame_Style': Header(attrs=[
-                Attribute(name='Name', type='string'),
-            ], ids={1: ['Name']}),
-            'Metadata': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
+            'Metadata_Item': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
             'Partitioned_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
                 Attribute(name='Pattern', type='string'),
@@ -105,8 +109,7 @@ class FlatlandSchema:
                 Attribute(name='Data_box', type='int'),
                 Attribute(name='Title_block_pattern', type='string'),
                 Attribute(name='Stack_order', type='int'),
-            ], ids={
-                1: ['Data_box', 'Title_block_pattern', 'Stack_order']}
+            ], ids={1: ['Data_box', 'Title_block_pattern', 'Stack_order']}
             ),
             'Scaled_Title_Block': Header(attrs=[
                 Attribute(name='Title_block_pattern', type='string'),
@@ -133,15 +136,10 @@ class FlatlandSchema:
             'Title_Block_Field': Header(attrs=[
                 Attribute(name='Metadata', type='string'),
                 Attribute(name='Frame', type='string'),
-                Attribute(name='Sheet', type='string'),
-                Attribute(name='Orientation', type='string'),
-                # Placement
-                Attribute(name='x_position', type='int'),
-                Attribute(name='y_position', type='int'),
                 Attribute(name='Data_box', type='int'),
                 Attribute(name='Title_block_pattern', type='string'),
                 Attribute(name='Stack_order', type='int'),
-            ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'x_position', 'y_position']}),
+            ], ids={1: ['Metadata', 'Frame']}),
             'Title_Block_Pattern': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
             'Title_Block_Placement': Header(attrs=[
                 Attribute(name='Frame', type='string'),

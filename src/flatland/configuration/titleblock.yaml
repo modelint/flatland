@@ -11,30 +11,31 @@
 # The idea being that you can use the same pattern with a wide variety of Sheet sizes
 # and have it scale automatically with the same internal proportions
 
-- 'SE Simple': # Name of a title block pattern
+- SE Simple: # Name of a title block pattern
       # Systems Engineer Simple
-      'compartment boxes': # A container box that is divided horizontally or vertically
+      compartment boxes: # A container box that is divided horizontally or vertically
           # Example:
           # Box 1 is split horizontally with a divider 25% of its height moving up the y axis
           # This creates upper Box 2 and lower Box 3
-          - {'ID': 1, 'Orientation': 'H', 'Distance': 0.25, 'Up': 2, 'Down': 3}
-          - {'ID': 2, 'Orientation': 'V', 'Distance': 0.66, 'Right': 4, 'Left': 5}
-          - {'ID': 4, 'Orientation': 'H', 'Distance': 0.5, 'Up': 6, 'Down': 7}
-      'data boxes': # Box that is not subdivided with metadata assignable in one or more regions
+          1: {Orientation: H, Distance: 0.25, Up: 2, Down: 3}
+          2: {Orientation: V, Distance: 0.66, Right: 4, Left: 5}
+          4: {Orientation: H, Distance: 0.5, Up: 6, Down: 7}
+      data boxes: # Box that is not subdivided with metadata assignable in one or more regions
           # Example:
-            # Box 3 (created by splitting Box 1, above) is defined with:
+            # Box 3 named 'Bottom' (created by splitting Box 1, above) is defined with:
             # Text left and center aligned using the specified text style
             # A single region spans the interior so only one Metadata item may be assigned
-          - {'ID': 3, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 1}
-          - {'ID': 5, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block title', 'Regions': 1}
-          - {'ID': 6, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 2}
-          - {'ID': 7, 'H align': 'LEFT', 'V align': 'CENTER', 'Style': 'Block body', 'Regions': 2}
+          3 : {Name: Bottom, H align: LEFT, V align: CENTER, Style: Block body, Regions: 1}
+          5 : {Name: Main, H align: LEFT, V align: CENTER, Style: Block title, Regions: 1}
+          6 : {Name: Rtop, H align: LEFT, V align: CENTER, Style: Block body, Regions: 2}
+          7 : {Name: Rbottom, H align: LEFT, V align: CENTER, Style: Block body, Regions: 2}
 
       # Name of title block pattern is a user supplied alphanumeric string with spaces or underscores permitted
       # ID is a unique integer >= one
       # Orientation is H / V
       # Distance is a rational number > 0 and < 1
       # Up, Down, Left, Right specifies ID of a new Partitioned Box
+      # Name describes location or purpose of a Data Box (easier to remember than a number)
       # Alignment options are H: LEFT / RIGHT and V: TOP / CENTER / BOTTOM
       # Regions must be an integer >= one
       # Available style names are defined in the mi_tablet folder in your config directory
