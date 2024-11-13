@@ -11,7 +11,8 @@
 # The idea being that you can use the same pattern with a wide variety of Sheet sizes
 # and have it scale automatically with the same internal proportions
 
-- 'SE simple': # Name of a title block pattern
+- 'SE Simple': # Name of a title block pattern
+      # Systems Engineer Simple
       'compartment boxes': # A container box that is divided horizontally or vertically
           # Example:
           # Box 1 is split horizontally with a divider 25% of its height moving up the y axis

@@ -1,9 +1,12 @@
 # system/frame.yaml – System defined frames
 
-Modeler:
-  - Sheet: letter
-    Orientation: landscape
-    Fields:
+- Model Integration Snippet: # Frame name
+  # Frame for small model examples, no title block to maximize space
+
+  # Each Fitted Frame keyed by sheet name-orientation for the above Frame
+  letter-landscape: # name-orientation   (name defined in sheets.yaml, orientation either portrait or landscape)
+    fields:  # positioned freely on sheet outside of any title block (Free Field)
+      # Each key is a Metadata Item defined in metadata.yaml
       Title: { X: 8, Y: 202, Max width: 254, Max height: 13 }
       Copyright notice: { X: 8, Y: 31, Max width: 254, Max height: 57 }
       Organization logo: { X: 5, Y: 4, Max width: 180, Max height: 24 }
@@ -12,9 +15,8 @@ Modeler:
       Document ID: { X: 230, Y: 14, Max width: 20, Max height: 5 }
       Version: { X: 230, Y: 10, Max width: 20, Max height: 5 }
 
-  - Sheet: letter
-    Orientation: portrait
-    Fields:
+  letter-portrait:
+    fields:
       Title: { X: 8, Y: 265, Max width: 254, Max height: 13 }
       Copyright notice: { X: 10, Y: 31, Max width: 254, Max height: 57 }
       Organization logo: { X: 8, Y: 5, Max width: 180, Max height: 24 }
@@ -23,66 +25,71 @@ Modeler:
       Document ID: { X: 170, Y: 14, Max width: 20, Max height: 5 }
       Version: { X: 170, Y: 10, Max width: 20, Max height: 5 }
 
-  - Sheet: tabloid
-    Orientation: landscape
-    Fields:
+- Model Integration Diagram:
+  # Frame for medium ot large diagrams with a Title Block in the lower right corner
+
+  # All Fitted Frames below will use this Title Block Pattern
+  title-block-pattern:
+    Name: SE Simple  # Name of the Title Block Pattern defined in titleblock.yaml
+    # Each key is the ID of an data box defined in titleblock.yaml
+    # Each value is one or more Metadata Items defined in metadata.yaml
+    3: Organization  # Put the org name in Data Box 3
+    5: Title
+    6: Author, Modification date  # Stack these two in Data Box 6 with Author on top and Modification date underneath
+    7: Document ID, Version
+
+  tabloid-landscape:
+    title block placement: { X: 275, Y: 9 }
+    fields:  # Note that the Title is displayed both in a Data Box and in a Free Field for easy visibility
       Title: { X: 8, Y: 264, Max width: 254, Max height: 13 }
       Copyright notice: { X: 8, Y: 28, Max width: 254, Max height: 57 }
       Organization logo: { X: 8, Y: 9, Max width: 180, Max height: 24 }
-    Title block: { Name: SE Simple, X: 275, Y: 9 }
 
-  - Sheet: tabloid
-    Orientation: portrait
-    Fields:
+  tabloid-portrait:
+    title block placement: { X: 150, Y: 9 }
+    fields:
       Title: { X: 10, Y: 415, Max width: 254, Max height: 13 }
       Copyright notice: { X: 8, Y: 25, Max width: 254, Max height: 57 }
       Organization logo: { X: 5, Y: 10, Max width: 180, Max height: 24 }
-    Title block: { Name: SE Simple, X: 150, Y: 9 }
 
-  - Sheet: C
-    Orientation: landscape
-    Fields:
+  C-landscape:
+    title block placement: { X: 460, Y: 15 }
+    fields:
       Title: { X: 15, Y: 440, Max width: 254, Max height: 25 }
       Copyright notice: { X: 157, Y: 30, Max width: 254, Max height: 57 }
       Organization logo: { X: 15, Y: 30, Max width: 191, Max height: 25 }
-    Title block: { Name: SE Simple, X: 460, Y: 15 }
 
-  - Sheet: C
-    Orientation: portrait
-    Fields:
+  C-portrait:
+    title block placement: { X: 300, Y: 15 }
+    fields:
       Title: { X: 18, Y: 584, Max width: 254, Max height: 25 }
       Copyright notice: { X: 400, Y: 38, Max width: 254, Max height: 57 }
       Organization logo: { X: 19, Y: 18, Max width: 191, Max height: 25 }
-    Title block: { Name: SE Simple, X: 300, Y: 15 }
 
-  - Sheet: D
-    Orientation: landscape
-    Fields:
+  D-landscape:
+    title block placement: { X: 753, Y: 38 }
+    fields:
       Title: { X: 19, Y: 584, Max width: 254, Max height: 25 }
       Copyright notice: { X: 400, Y: 38, Max width: 254, Max height: 57 }
       Organization logo: { X: 19, Y: 38, Max width: 191, Max height: 25 }
-    Title block: { Name: SE Simple, X: 753, Y: 38 }
 
-  - Sheet: D
-    Orientation: portrait
-    Fields:
+  D-portrait:
+    title block placement: { X: 553, Y: 38 }
+    fields:
       Title: { X: 18, Y: 584, Max width: 254, Max height: 25 }
       Copyright notice: { X: 400, Y: 38, Max width: 254, Max height: 57 }
       Organization logo: { X: 19, Y: 18, Max width: 191, Max height: 25 }
-    Title block: { Name: SE Simple, X: 553, Y: 38 }
 
-  - Sheet: E
-    Orientation: landscape
-    Fields:
+  E-landscape:
+    title block placement: { X: 1025, Y: 38 }
+    fields:
       Title: { X: 30, Y: 884, Max width: 254, Max height: 25 }
       Copyright notice: { X: 500, Y: 38, Max width: 254, Max height: 57 }
       Organization logo: { X: 30, Y: 38, Max width: 191, Max height: 25 }
-    Title block: { Name: SE Simple, X: 1025, Y: 38 }
 
-  - Sheet: E
-    Orientation: portrait
-    Fields:
+  E-portrait:
+    title block placement: { X: 740, Y: 25 }
+    fields:
       Title: { X: 30, Y: 1180, Max width: 254, Max height: 25 }
       Copyright notice: { X: 220, Y: 30, Max width: 254, Max height: 57 }
       Organization logo: { X: 30, Y: 30, Max width: 191, Max height: 25 }
-    Title block: { Name: SE Simple, X: 740, Y: 25 }

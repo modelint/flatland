@@ -23,7 +23,7 @@ app = "flatland"  # Client name supplied to flatland services
 
 class SheetSubsysDB:
     """
-    Laod all Sheet Subsystem yaml data into the database
+    Load all Sheet Subsystem yaml data into the database
     """
 
     config_path = Path(__file__).parent.parent / "configuration"
