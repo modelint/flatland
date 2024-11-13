@@ -1,7 +1,7 @@
 # system/frame.yaml – System defined frames
 
-- Model Integration Snippet: # Frame name
-  # Frame for small model examples, no title block to maximize space
+Model Integration Snippet: # Frame name
+# Frame for small model examples, no title block to maximize space
 
   # Each Fitted Frame keyed by sheet name-orientation for the above Frame
   letter-landscape: # name-orientation   (name defined in sheets.yaml, orientation either portrait or landscape)
@@ -25,8 +25,8 @@
       Document ID: { X: 170, Y: 14, Max width: 20, Max height: 5 }
       Version: { X: 170, Y: 10, Max width: 20, Max height: 5 }
 
-- Model Integration Diagram:
-  # Frame for medium ot large diagrams with a Title Block in the lower right corner
+Model Integration Diagram:
+# Frame for medium ot large diagrams with a Title Block in the lower right corner
 
   # All Fitted Frames below will use this Title Block Pattern
   title-block-pattern:
