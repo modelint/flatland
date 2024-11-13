@@ -2,8 +2,8 @@ metadata
     Title : Flatland Sheet Subsystem Class Diagram
     Author : Leon Starr
     Document ID : mint.flatland.td.6a
-    Version : 0.8.5
-    Modification date : November 9, 2024
+    Version : 0.9.3
+    Modification date : November 13, 2024
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
     Organization logo > mint
@@ -34,7 +34,7 @@ attributes
     ID : Box ID {I, R308, R313}
     Pattern : Pattern Name {I, I2, R308, R313}
     Alignment : VH Align
-    Style : Box Style Name
+    Name : Box Name {I2}
 --
 class Divider
 attributes
@@ -50,7 +50,22 @@ attributes
     ID : Box ID {I, R308, R312}
     Pattern : Pattern Name {R314, R308, R312}
 --
-class Field
+class Fitted Frame
+attributes
+    Name : Frame Name {I}
+    Sheet {I, R300}
+    Orientation : Portrait Landscape {I}
+--
+class Frame
+attributes
+    Name : Frame Name {I}
+--
+class Frame Title Block
+attributes
+    Frame : Frame Name {I, R305}
+    Title block pattern : Pattern Name {I, R305}
+--
+class Free Field
 attributes
     Metadata : Metadata Name {I, R307}
     Frame : Frame Name {I, R307}
@@ -59,13 +74,7 @@ attributes
     Placement : Position
     Max area : Rect Size
 --
-class Frame
-attributes
-    Name : Frame Name {I}
-    Sheet {I, R300}
-    Orientation : Portrait Landscape {I}
---
-class Metadata
+class Metadata Item
 attributes
     Name : Metadata Name {I}
 --
@@ -105,11 +114,8 @@ attributes
 --
 class Title Block Field
 attributes
-    Metadata : Metadata Name {I, R306}
-    Frame : Frame Name {I, R306}
-    Sheet : Sheet Name {I, R306}
-    Orientation : Portrait Landscape {I, R306}
-    Placement : Position {I, R306}
+    Metadata : Metadata Name {I, R302}
+    Frame : Frame Name {I, R302}
     Data box : Box ID {I, R306}
     Title block pattern : Pattern Name {R306}
     Stack order : Ordinal {R306}
@@ -129,16 +135,23 @@ attributes
 --
 relationships
     R300
-    size fits, Mc Frame
-    is sized to overlay, 1 Sheet
-    Frame.Sheet -> Sheet.Name
+    supports content fitted by, Mc Frame
+    fits content onto, M Sheet
+    1 Fitted Frame
+    Fitted Frame.Frame -> Frame.Name
+    Fitted Frame.Sheet -> Sheet.Name
 --
     R301
     scales, Mc Title Block Pattern
     is scaled to look good in, Mc Sheet Size Group
     1 Scaled Title Block
-    Scaled Title Block.Title Block Pattern -> Title Block Pattern.Name
+    Scaled Title Block.Title block pattern -> Title Block Pattern.Name
     Scaled Title Block.Sheet size group -> Sheet Size Group.Name
+--
+    R302
+    establishes position of, Mc Metadata Item
+    is positioned within, Mc Framed Title Block
+    1 Title Block Field
 --
     R303
     defines a nested rectangular hierarchy of, M Box
@@ -149,19 +162,24 @@ relationships
     stack above / stack below, Region
     Stack order : I
 --
+    R305
+    boxes metadata for, Mc Frame
+    has metadata boxed within, 1c Title Block Pattern
+    1 Framed Title Block
+    Framed Title Block.Frame -> Frame.Name
+    Framed Title Block.Title block pattern -> Title Block Pattern.Name
+--
     R306
-    is placed within, 1c Region
-    places, Mc Field
-    1 Title Block Field
-    Title Block Field.(Metadata, Frame, Sheet, Orientation, Placement) -> Field.(Metadata, Frame, Sheet, Orientation, Placement)
+    occupies, 1 Region
+    is occupied by, Mc Text Block Field
     Title Block Field.(Data box, Title block pattern, Stack order) -> Region.(Data box, Title block pattern, Stack order)
 --
     R307
-    displays, Mc Metadata
-    is displayed in, Mc Frame
-    M Field
-    Field.Name -> Metadata.Name
-    Field.(Frame, Sheet, Orientation) -> Frame.(Name, Sheet, Orientation)
+    positions, Mc Metadata Item
+    is positioned by, Mc Fitted Frame
+    1 Free Field
+    Free Field.Name -> Metadata Item.Name
+    Free Field.(Frame, Sheet, Orientation) -> Fitted Frame.(Name, Sheet, Orientation)
 --
     R308
     Box +
@@ -201,9 +219,9 @@ relationships
 --
     R315
     places, 1c Scaled Title Block
-    is placed in, Mc Frame
+    is placed in, M Fitted Frame
     1 Title Block Placement
-    Title Block Placement.(Frame, Sheet, Orientation) -> Frame.(Name, Sheet, Orientation)
+    Title Block Placement.(Frame, Sheet, Orientation) -> Fitted Frame.(Frame, Sheet, Orientation)
     Title Block Placement.(Title block pattern, Sheet size group) -> Scaled Title Block.(Title block pattern, Sheet size group)
 --
     R316
