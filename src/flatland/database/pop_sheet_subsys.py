@@ -57,7 +57,7 @@ class SheetSubsysDB:
             # Populate Title Block Placements
             tbp_instances = []
             bp_instances = []
-            if (tb_spec := v.get('title-block-pattern')):
+            if tb_spec := v.get('title-block-pattern'):
                 pattern_name = tb_spec[0]
                 for fr_spec, layout in v.items():
                     if fr_spec != 'title-block-pattern':
@@ -65,27 +65,39 @@ class SheetSubsysDB:
                         R = f"Name:<{s}>"
                         sheet = Relation.restrict(db=app, relation='Sheet', restriction=R)
                         sg_name = sheet.body[0]['Size_group']
-                        tbp_instances.append(TitleBlockPlacementInstance(Frame=f, Sheet=s, Orientation=o,
-                                                                         Title_block_pattern=pattern_name,
-                                                                         Sheet_size_group=sg_name,
-                                                                         X=layout['title block placement']['X'],
-                                                                         Y=layout['title block placement']['Y'])
-                                             )
-                        # Populate the envelopes placement
-                        R = f"Title_block_pattern:<{pattern_name}>, <{sg_name}>"
+                        tr_env = f'envelope-{pattern_name}'  # Transaction to create one Envelope Box Placement
+                        Transaction.open(db=app, name=tr_env)
+                        env_tbp = TitleBlockPlacementInstance(Frame=f, Sheet=s, Orientation=o,
+                                                              Title_block_pattern=pattern_name,
+                                                              Sheet_size_group=sg_name,
+                                                              X=layout['title block placement']['X'],
+                                                              Y=layout['title block placement']['Y'])
+                        Relvar.insert(db=app, relvar='Title_Block_Placement', tuples=[env_tbp], tr=tr_env)
+
+                        # Determine the Envelope's Box Placement
+                        R = f"Title_block_pattern:<{pattern_name}>, Sheet_size_group:<{sg_name}>"
                         stb = Relation.restrict(db=app, relation='Scaled_Title_Block', restriction=R)
-                        env_height = sheet.body[0]['Height']
-                        env_width = sheet.body[0]['Height']
+                        env_height = stb.body[0]['Height']
+                        env_width = stb.body[0]['Width']
+                        env_bp = BoxPlacementInstance(Frame=f, Sheet=s, Orientation=o, Box=1,
+                                                      Title_block_pattern=pattern_name,
+                                                      X=layout['title block placement']['X'],
+                                                      Y=layout['title block placement']['Y'],
+                                                      Height=env_height, Width=env_width)
+                        Relvar.insert(db=app, relvar='Box_Placement', tuples=[env_bp], tr=tr_env)
 
-                        bp_instances.append(BoxPlacementInstance(Frame=f, Sheet=s, Orientation=o, Box=1,
-                                                                 Title_block_pattern=pattern_name,
-                                                                 X=layout['title block placement']['X'],
-                                                                 Y=layout['title block placement']['Y'],
-                                                                 Height=env_height, Width=env_width))
+                        # Now get all the Dividers
+                        R = f"Pattern:<{pattern_name}>"
+                        dividers = Relation.restrict(db=app, relation='Divider', restriction=R)
+                        pass
 
-            Transaction.open('scaled')
+                        pass
 
-            Relvar.insert(db=app, relvar='Title_Block_Placement', tuples=tbp_instances, tr='scaled')
+                Transaction.open('scaled')
+                Relvar.insert(db=app, relvar='Title_Block_Placement', tuples=tbp_instances, tr='scaled')
+                R = f"Pattern:<{pattern_name}>"
+                dividers = Relation.restrict(db=app, relation='Divider', restriction=R)
+                pass
 
         # Free Fields
         free_fields = []
