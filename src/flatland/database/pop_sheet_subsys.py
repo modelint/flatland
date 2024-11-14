@@ -133,3 +133,15 @@ class SheetSubsysDB:
                            for k, v in sheets.items()]
         Relvar.insert(db=app, relvar='Sheet', tuples=sheet_instances, tr="sgroup")
         Transaction.execute(db=app, name="sgroup")
+
+    @classmethod
+    def pop_metadata(cls):
+        """
+        Populate all Metadata Items
+        """
+        metadata_spec = {'metadata': None}
+        c = Config(app_name=app, lib_config_dir=cls.config_path, fspec=metadata_spec)
+        metadata_items = c.loaded_data['metadata']
+        mditem_instances = [MetadataItemInstance(Name=n) for n in metadata_items]
+        Relvar.insert(db=app, relvar='Metadata_Item', tuples=mditem_instances)
+

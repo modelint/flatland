@@ -74,6 +74,7 @@ class FlatlandDB:
         cls.rel_names = Database.constraint_names(db='flatland')
 
         # Load sheet population
+        SheetSubsysDB.pop_metadata()
         SheetSubsysDB.pop_sheets()
         SheetSubsysDB.pop_title_blocks()
         Relvar.printall('flatland')

@@ -23,7 +23,7 @@ class DataBoxInstance(NamedTuple):
     Pattern: str
     H_align: str
     V_align: str
-    Style: str
+    Name: str
 
 class DividerInstance(NamedTuple):
     Box_above: int
@@ -33,25 +33,29 @@ class DividerInstance(NamedTuple):
     Partition_distance: float
     Partition_orientation: str
 
-class FieldInstance(NamedTuple):
+class FittedFrameInstance(NamedTuple):
+    Name: str
+    Sheet: str
+    Orientation: str
+
+class FrameInstance(NamedTuple):
+    Name: str
+
+class FramedTitleBlockInstance(NamedTuple):
+    Frame: str
+    Title_block_pattern: str
+
+class FreeFieldInstance(NamedTuple):
     Metadata: str
     Frame: str
     Sheet: str
     Orientation: str
-    Placement_x: int
-    Placement_y: int
-    Max_area_h: int
-    Max_area_w: int
+    X: int
+    Y: int
+    Max_width: int
+    Max_height: int
 
-class FrameInstance(NamedTuple):
-    Name: str
-    Sheet: str
-    Orientation: str
-
-class FrameStyleInstance(NamedTuple):
-    Name: str
-
-class MetadataInstance(NamedTuple):
+class MetadataItemInstance(NamedTuple):
     Name: str
 
 class RegionInstance(NamedTuple):
@@ -80,10 +84,6 @@ class SheetSizeGroupInstance(NamedTuple):
 class TitleBlockFieldInstance(NamedTuple):
     Metadata: str
     Frame: str
-    Sheet: str
-    Orientation: str
-    Placement_x: int
-    Placement_y: int
     Data_box: int
     Title_block_pattern: str
     Stack_order: int
