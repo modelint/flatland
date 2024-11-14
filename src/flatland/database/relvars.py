@@ -238,7 +238,7 @@ class FlatlandSchema:
                        'Data_Box': ['ID', 'Pattern'],
                    }),
             AssocRel(name='R315', assoc_class='Title_Block_Placement',
-                     a_ref=Ref(to_class='Fitted_Frame', mult=mult_tclral['M'],
+                     a_ref=Ref(to_class='Fitted_Frame', mult=mult_tclral['Mc'],
                                from_attrs=['Frame', 'Sheet', 'Orientation'],
                                to_attrs=['Frame', 'Sheet', 'Orientation']),
                      b_ref=Ref(to_class='Scaled_Title_Block', mult=mult_tclral['1c'],

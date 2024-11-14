@@ -54,6 +54,18 @@ class SheetSubsysDB:
             Relvar.insert(db=app, relvar='Fitted_Frame', tuples=fitted_frames, tr=tr_name)
             Transaction.execute(db=app, name=tr_name)
 
+            # Populate Scaled Title Blocks
+            if (tb_spec := v.get('title-block-pattern')):
+                pattern_name = tb_spec[0]
+                for fr_spec, layout in v.items():
+                    if fr_spec != 'title-block-pattern':
+                        s,o = fr_spec.split('-')
+                        pass
+
+        pass
+        # env_place = BoxPlacementInstance(Frame=f, )
+
+
         # Free Fields
         free_fields = []
         for f, v in fstyles.items():
@@ -80,6 +92,7 @@ class SheetSubsysDB:
                     Relvar.insert(db=app, relvar='Title_Block_Field', tuples=tbf_instances)
 
                 else:
+                    # Generate Free Field instances
                     sheet, orient = (content_type.split('-'))
                     for mdata, fld in fr_spec['fields'].items():
                         pass
@@ -88,8 +101,9 @@ class SheetSubsysDB:
                                               X=fld['X'], Y=fld['Y'],
                                               Max_width=fld['Max width'], Max_height=fld['Max height'])
                         )
-                    pass
+
             pass
+        # Populate all Free Fields
         Relvar.insert(db=app, relvar='Free_Field', tuples=free_fields)
         pass
 

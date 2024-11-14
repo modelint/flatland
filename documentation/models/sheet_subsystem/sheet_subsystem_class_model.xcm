@@ -2,8 +2,8 @@ metadata
     Title : Flatland Sheet Subsystem Class Diagram
     Author : Leon Starr
     Document ID : mint.flatland.td.6a
-    Version : 0.9.4
-    Modification date : November 13, 2024
+    Version : 0.9.5
+    Modification date : November 14, 2024
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
     Organization logo > mint
@@ -219,7 +219,7 @@ relationships
 --
     R315
     places, 1c Scaled Title Block
-    is placed in, M Fitted Frame
+    is placed in, Mc Fitted Frame
     1 Title Block Placement
     Title Block Placement.(Frame, Sheet, Orientation) -> Fitted Frame.(Frame, Sheet, Orientation)
     Title Block Placement.(Title block pattern, Sheet size group) -> Scaled Title Block.(Title block pattern, Sheet size group)
