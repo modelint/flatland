@@ -66,8 +66,8 @@ class SheetSubsysDB:
 
                 # Populate Box
                 # Collect all the box IDs for both data and compartment boxes
-                comp_box_ids = {c['ID'] for c in v['compartment boxes']}
-                data_box_ids = {d['ID'] for d in v['data boxes']}
+                comp_box_ids = {k for k in v['compartment boxes'].keys()}
+                data_box_ids = {k for k in v['data boxes'].keys()}
                 all_box_ids = comp_box_ids | data_box_ids
                 boxes = [BoxInstance(ID=i, Pattern=name) for i in all_box_ids]
                 Relvar.insert(db=app, relvar='Box', tuples=boxes, tr=tr_name)
@@ -85,19 +85,18 @@ class SheetSubsysDB:
 
                 # Populate the Dividers
                 dividers = []
-                for c in v['compartment boxes']:
+                for i,c in v['compartment boxes'].items():
                     (above, below) = (c.get('Up'), c.get('Down')) if c['Orientation'] == 'H' else (c.get('Right'), c.get('Left'))
                     dividers.append(
-                        DividerInstance(Box_above=above, Box_below=below, Pattern=name, Compartment_box=c['ID'],
+                        DividerInstance(Box_above=above, Box_below=below, Pattern=name, Compartment_box=i,
                                         Partition_distance=c['Distance'], Partition_orientation=c['Orientation'])
                     )
                 Relvar.insert(db=app, relvar='Divider', tuples=dividers, tr=tr_name)
 
                 # Populate the Data Boxes
                 dboxes = [
-                    DataBoxInstance(ID=d['ID'], Pattern=name,
-                                    V_align=d['V align'], H_align=d['H align'],
-                                    Style=d['Style']) for d in v['data boxes']
+                    DataBoxInstance(ID=i, Name=d['Name'], Pattern=name,
+                                    V_align=d['V align'], H_align=d['H align']) for i,d in v['data boxes'].items()
                 ]
                 Relvar.insert(db=app, relvar='Data_Box', tuples=dboxes, tr=tr_name)
 
@@ -106,8 +105,8 @@ class SheetSubsysDB:
                 Relvar.insert(db=app, relvar='Partitioned_Box', tuples=pboxes, tr=tr_name)
                 # Populate the Regions
                 regions = [
-                    RegionInstance(Data_box=d['ID'], Title_block_pattern=name, Stack_order=r)
-                    for d in v['data boxes']
+                    RegionInstance(Data_box=i, Title_block_pattern=name, Stack_order=r)
+                    for i,d in v['data boxes'].items()
                     for r in range(1, d['Regions'] + 1)
                 ]
                 Relvar.insert(db=app, relvar='Region', tuples=regions, tr=tr_name)

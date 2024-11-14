@@ -2,7 +2,7 @@ metadata
     Title : Flatland Sheet Subsystem Class Diagram
     Author : Leon Starr
     Document ID : mint.flatland.td.6a
-    Version : 0.9.3
+    Version : 0.9.4
     Modification date : November 13, 2024
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
@@ -194,8 +194,8 @@ relationships
     Region.(Data box, Title block pattern) -> Data Box.(ID, Pattern)
 --
     R310
-    is split above, 1 Partitioned Box
-    is split below, 1 Partitioned Box
+    is split above, 1c Partitioned Box
+    is split below, 1c Partitioned Box
     1 Divider
     Divider.(Box above, Compartment box) -> Partitioned Box.(ID, Pattern)
     Divider.(Box below, Compartment box) -> Partitioned Box.(ID, Pattern)
