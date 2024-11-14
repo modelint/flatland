@@ -33,18 +33,44 @@ class SheetSubsysDB:
         frame_spec = {'frame': None}
         f = Config(app_name=app, lib_config_dir=cls.config_path, fspec=frame_spec)
         fstyles = f.loaded_data['frame']
-        for k,v in fstyles.items():
-            frame_tr = k
+
+        # Populate all Frames and Fitted Frames
+        for f,v in fstyles.items():
+            frame_tr = f
             tr_name = frame_tr.replace(' ', '_')  # Use the tbp name for the transaction name for easy debugging
             Transaction.open(db=app, name=tr_name)
 
-            # Populate Frame Style
-            r = [FrameStyleInstance(Name=tr_name)]
-            Relvar.insert(db=app, relvar='Frame_Style', tuples=r, tr=tr_name)
+            # Frame
+            Relvar.insert(db=app, relvar='Frame', tuples=[FrameInstance(Name=f)], tr=tr_name)
+            # Fitted Frames
+            fitted_frames = [
+                FittedFrameInstance(Frame=f, Sheet=s, Orientation=o)
+                for i in v.keys() if i != 'title-block-pattern'
+                for s,o in [i.split('-')]
+            ]
+            Relvar.insert(db=app, relvar='Fitted_Frame', tuples=fitted_frames, tr=tr_name)
+            Transaction.execute(db=app, name=tr_name)
 
-
+        # Free Fields
+        free_fields = []
+        for f,v in fstyles.items():
+            for so, fr_spec in v.items():
+                if so != 'title-block-pattern':
+                    sheet, orient = (so.split('-'))
+                    for mdata,fld in fr_spec['fields'].items():
+                        pass
+                        free_fields.append(
+                            FreeFieldInstance(Metadata=mdata, Frame=f, Sheet=sheet, Orientation=orient,
+                                              X=fld['X'], Y=fld['Y'],
+                                              Max_width=fld['Max width'], Max_height=fld['Max height'])
+                        )
+                    pass
             pass
+        Relvar.insert(db=app, relvar='Free_Field', tuples=free_fields)
         pass
+
+
+
 
     @classmethod
     def pop_title_blocks(cls):

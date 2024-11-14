@@ -34,7 +34,7 @@ class DividerInstance(NamedTuple):
     Partition_orientation: str
 
 class FittedFrameInstance(NamedTuple):
-    Name: str
+    Frame: str
     Sheet: str
     Orientation: str
 
