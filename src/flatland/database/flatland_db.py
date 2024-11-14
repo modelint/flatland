@@ -77,7 +77,7 @@ class FlatlandDB:
         SheetSubsysDB.pop_metadata()
         SheetSubsysDB.pop_sheets()
         SheetSubsysDB.pop_title_blocks()
-        SheetSubsysDB.pop_frames()
         Relvar.printall('flatland')
+        # SheetSubsysDB.pop_frames()
 
         pass

@@ -175,6 +175,16 @@ class SheetSubsysDB:
 
                 Transaction.execute(db=app, name=tr_name)
 
+                # Populate Scaled Title Blocks
+                stbs = [
+                    ScaledTitleBlockInstance(Title_block_pattern=name, Sheet_size_group=sg,
+                                             Height=scale['height'], Width=scale['width'],
+                                             Margin_h=scale['margin h'], Margin_v=scale['margin v']
+                                             )
+                    for sg, scale in v['scale'].items()
+                ]
+                Relvar.insert(db=app, relvar='Scaled_Title_Block', tuples=stbs)
+
     @classmethod
     def pop_sheets(cls):
         """
