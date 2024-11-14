@@ -6,11 +6,13 @@ from pathlib import Path
 
 # Model Integration
 from pyral.relvar import Relvar
+from pyral.relation import Relation
 from pyral.transaction import Transaction
 from mi_config.config import Config
 
 # Flatland
 from flatland.database.instances.sheet_subsystem import *
+
 
 class SheetData(NamedTuple):
     standard: str
@@ -20,6 +22,7 @@ class SheetData(NamedTuple):
 
 
 app = "flatland"  # Client name supplied to flatland services
+
 
 class SheetSubsysDB:
     """
@@ -35,7 +38,7 @@ class SheetSubsysDB:
         fstyles = f.loaded_data['frame']
 
         # Populate all Frames and Fitted Frames
-        for f,v in fstyles.items():
+        for f, v in fstyles.items():
             frame_tr = f
             tr_name = frame_tr.replace(' ', '_')  # Use the tbp name for the transaction name for easy debugging
             Transaction.open(db=app, name=tr_name)
@@ -46,18 +49,39 @@ class SheetSubsysDB:
             fitted_frames = [
                 FittedFrameInstance(Frame=f, Sheet=s, Orientation=o)
                 for i in v.keys() if i != 'title-block-pattern'
-                for s,o in [i.split('-')]
+                for s, o in [i.split('-')]
             ]
             Relvar.insert(db=app, relvar='Fitted_Frame', tuples=fitted_frames, tr=tr_name)
             Transaction.execute(db=app, name=tr_name)
 
         # Free Fields
         free_fields = []
-        for f,v in fstyles.items():
-            for so, fr_spec in v.items():
-                if so != 'title-block-pattern':
-                    sheet, orient = (so.split('-'))
-                    for mdata,fld in fr_spec['fields'].items():
+        for f, v in fstyles.items():
+            for content_type, fr_spec in v.items():
+                if content_type == 'title-block-pattern':
+                    # Populate Framed Title Block
+                    pattern_name = fr_spec[0]
+                    ftb_inst = FramedTitleBlockInstance(Frame=f, Title_block_pattern=pattern_name)
+                    Relvar.insert(db=app, relvar='Framed_Title_Block', tuples=[ftb_inst])
+
+                    # Populate Title Block Fields
+                    tbf_instances = []
+                    for dbox_name, mi_items in fr_spec[1].items():
+                        for count, m in enumerate(reversed(mi_items)):
+                            R = f"Name:<{dbox_name}>, Pattern:<{pattern_name}>"
+                            dbox = Relation.restrict(db=app, relation='Data_Box', restriction=R)
+                            dbox_id = int(dbox.body[0]['ID'])
+                            pass
+                            tbf_instances.append(
+                                TitleBlockFieldInstance(Metadata=m, Frame=f, Data_box=dbox_id,
+                                                        Title_block_pattern=pattern_name,
+                                                        Stack_order=count + 1)
+                            )
+                    Relvar.insert(db=app, relvar='Title_Block_Field', tuples=tbf_instances)
+
+                else:
+                    sheet, orient = (content_type.split('-'))
+                    for mdata, fld in fr_spec['fields'].items():
                         pass
                         free_fields.append(
                             FreeFieldInstance(Metadata=mdata, Frame=f, Sheet=sheet, Orientation=orient,
@@ -68,9 +92,6 @@ class SheetSubsysDB:
             pass
         Relvar.insert(db=app, relvar='Free_Field', tuples=free_fields)
         pass
-
-
-
 
     @classmethod
     def pop_title_blocks(cls):
@@ -111,8 +132,9 @@ class SheetSubsysDB:
 
                 # Populate the Dividers
                 dividers = []
-                for i,c in v['compartment boxes'].items():
-                    (above, below) = (c.get('Up'), c.get('Down')) if c['Orientation'] == 'H' else (c.get('Right'), c.get('Left'))
+                for i, c in v['compartment boxes'].items():
+                    (above, below) = (c.get('Up'), c.get('Down')) if c['Orientation'] == 'H' else (
+                    c.get('Right'), c.get('Left'))
                     dividers.append(
                         DividerInstance(Box_above=above, Box_below=below, Pattern=name, Compartment_box=i,
                                         Partition_distance=c['Distance'], Partition_orientation=c['Orientation'])
@@ -122,7 +144,7 @@ class SheetSubsysDB:
                 # Populate the Data Boxes
                 dboxes = [
                     DataBoxInstance(ID=i, Name=d['Name'], Pattern=name,
-                                    V_align=d['V align'], H_align=d['H align']) for i,d in v['data boxes'].items()
+                                    V_align=d['V align'], H_align=d['H align']) for i, d in v['data boxes'].items()
                 ]
                 Relvar.insert(db=app, relvar='Data_Box', tuples=dboxes, tr=tr_name)
 
@@ -132,13 +154,12 @@ class SheetSubsysDB:
                 # Populate the Regions
                 regions = [
                     RegionInstance(Data_box=i, Title_block_pattern=name, Stack_order=r)
-                    for i,d in v['data boxes'].items()
+                    for i, d in v['data boxes'].items()
                     for r in range(1, d['Regions'] + 1)
                 ]
                 Relvar.insert(db=app, relvar='Region', tuples=regions, tr=tr_name)
 
                 Transaction.execute(db=app, name=tr_name)
-
 
     @classmethod
     def pop_sheets(cls):
@@ -169,4 +190,3 @@ class SheetSubsysDB:
         metadata_items = c.loaded_data['metadata']
         mditem_instances = [MetadataItemInstance(Name=n) for n in metadata_items]
         Relvar.insert(db=app, relvar='Metadata_Item', tuples=mditem_instances)
-

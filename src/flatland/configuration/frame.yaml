@@ -30,13 +30,20 @@ Model Integration Diagram:
 
   # All Fitted Frames below will use this Title Block Pattern
   title-block-pattern:
-    Name: SE Simple  # Name of the Title Block Pattern defined in titleblock.yaml
-    # Each key is the ID of an data box defined in titleblock.yaml
+    - SE Simple  # Name of the Title Block Pattern defined in titleblock.yaml
+
+    # Each key below is the Name of a data box defined in titleblock.yaml
     # Each value is one or more Metadata Items defined in metadata.yaml
-    Bottom: Organization  # Put the org name in Data Box 3
-    Main: Title
-    Rtop: Author, Modification date  # Stack these two in Data Box 6 with Author on top and Modification date underneath
-    Rbottom: Document ID, Version
+    - Bottom:
+        - Organization  # Put the org name in Data Box 3
+      Main:
+        - Title
+      Rtop:
+        - Author
+        - Modification date  # Stack these two in Data Box 6 with Author on top and Modification date underneath
+      Rbottom:
+        - Document ID
+        - Version
 
   tabloid-landscape:
     title block placement: { X: 275, Y: 9 }
