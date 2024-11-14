@@ -171,7 +171,7 @@ relationships
 --
     R306
     occupies, 1 Region
-    is occupied by, Mc Text Block Field
+    is occupied by, Mc Title Block Field
     Title Block Field.(Data box, Title block pattern, Stack order) -> Region.(Data box, Title block pattern, Stack order)
 --
     R307

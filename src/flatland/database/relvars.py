@@ -74,7 +74,7 @@ class FlatlandSchema:
                 Attribute(name='ID', type='int'),
                 Attribute(name='Pattern', type='string'),
             ], ids={1: ['ID', 'Pattern']}),
-            'Fitted Frame': Header(attrs=[
+            'Fitted_Frame': Header(attrs=[
                 Attribute(name='Frame', type='string'),
                 Attribute(name='Sheet', type='string'),
                 Attribute(name='Orientation', type='string'),
@@ -86,7 +86,7 @@ class FlatlandSchema:
                 Attribute(name='Frame', type='string'),
                 Attribute(name='Title_block_pattern', type='string'),
             ], ids={1: ['Frame']}),
-            'Free Field': Header(attrs=[
+            'Free_Field': Header(attrs=[
                 Attribute(name='Metadata', type='string'),
                 Attribute(name='Frame', type='string'),
                 Attribute(name='Sheet', type='string'),
@@ -99,7 +99,7 @@ class FlatlandSchema:
                 Attribute(name='Max_height', type='int'),
                 # TODO: Make use of TclRAL tuple data type to combine the above attributes
                 # TODO: to match the model attributes
-            ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'x_position', 'y_position']}),
+            ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'X', 'Y']}),
             'Metadata_Item': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
             'Partitioned_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
@@ -176,8 +176,8 @@ class FlatlandSchema:
                                from_attrs=['Metadata'],
                                to_attrs=['Name']),
                      b_ref=Ref(to_class='Framed_Title_Block', mult=mult_tclral['Mc'],
-                               from_attrs=['Frame', 'Title_block_pattern'],
-                               to_attrs=['Frame', 'Title_block_pattern'])
+                               from_attrs=['Frame'],
+                               to_attrs=['Frame'])
                      ),
             SimpleAssoc(name='R303',
                         from_class='Box', from_mult=mult_tclral['M'], from_attrs=['Pattern'],
@@ -191,17 +191,17 @@ class FlatlandSchema:
                                from_attrs=['Title_block_pattern'], to_attrs=['Name'])
                      ),
             SimpleAssoc(name='R306',
-                        from_class='Text_Block_Field', from_mult=mult_tclral['Mc'],
+                        from_class='Title_Block_Field', from_mult=mult_tclral['Mc'],
                         from_attrs=['Data_box', 'Title_block_pattern', 'Stack_order'],
                         to_class='Region', to_mult=mult_tclral['1'],
                         to_attrs=['Data_box', 'Title_block_pattern', 'Stack_order'],
                         ),
-            AssocRel(name='R307', assoc_class='Free Field',
-                     a_ref=Ref(to_class='Metadata', mult=mult_tclral['Mc'],
+            AssocRel(name='R307', assoc_class='Free_Field',
+                     a_ref=Ref(to_class='Metadata_Item', mult=mult_tclral['Mc'],
                                from_attrs=['Metadata'],
                                to_attrs=['Name'],
                                ),
-                     b_ref=Ref(to_class='Fitted Frame', mult=mult_tclral['Mc'],
+                     b_ref=Ref(to_class='Fitted_Frame', mult=mult_tclral['Mc'],
                                from_attrs=['Frame', 'Sheet', 'Orientation'],
                                to_attrs=['Frame', 'Sheet', 'Orientation'])
                      ),
@@ -238,7 +238,7 @@ class FlatlandSchema:
                        'Data_Box': ['ID', 'Pattern'],
                    }),
             AssocRel(name='R315', assoc_class='Title_Block_Placement',
-                     a_ref=Ref(to_class='Fitted Frame', mult=mult_tclral['M'],
+                     a_ref=Ref(to_class='Fitted_Frame', mult=mult_tclral['M'],
                                from_attrs=['Frame', 'Sheet', 'Orientation'],
                                to_attrs=['Frame', 'Sheet', 'Orientation']),
                      b_ref=Ref(to_class='Scaled_Title_Block', mult=mult_tclral['1c'],
