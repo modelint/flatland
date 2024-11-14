@@ -54,17 +54,38 @@ class SheetSubsysDB:
             Relvar.insert(db=app, relvar='Fitted_Frame', tuples=fitted_frames, tr=tr_name)
             Transaction.execute(db=app, name=tr_name)
 
-            # Populate Scaled Title Blocks
+            # Populate Title Block Placements
+            tbp_instances = []
+            bp_instances = []
             if (tb_spec := v.get('title-block-pattern')):
                 pattern_name = tb_spec[0]
                 for fr_spec, layout in v.items():
                     if fr_spec != 'title-block-pattern':
-                        s,o = fr_spec.split('-')
-                        pass
+                        s, o = fr_spec.split('-')
+                        R = f"Name:<{s}>"
+                        sheet = Relation.restrict(db=app, relation='Sheet', restriction=R)
+                        sg_name = sheet.body[0]['Size_group']
+                        tbp_instances.append(TitleBlockPlacementInstance(Frame=f, Sheet=s, Orientation=o,
+                                                                         Title_block_pattern=pattern_name,
+                                                                         Sheet_size_group=sg_name,
+                                                                         X=layout['title block placement']['X'],
+                                                                         Y=layout['title block placement']['Y'])
+                                             )
+                        # Populate the envelopes placement
+                        R = f"Title_block_pattern:<{pattern_name}>, <{sg_name}>"
+                        stb = Relation.restrict(db=app, relation='Scaled_Title_Block', restriction=R)
+                        env_height = sheet.body[0]['Height']
+                        env_width = sheet.body[0]['Height']
 
-        pass
-        # env_place = BoxPlacementInstance(Frame=f, )
+                        bp_instances.append(BoxPlacementInstance(Frame=f, Sheet=s, Orientation=o, Box=1,
+                                                                 Title_block_pattern=pattern_name,
+                                                                 X=layout['title block placement']['X'],
+                                                                 Y=layout['title block placement']['Y'],
+                                                                 Height=env_height, Width=env_width))
 
+            Transaction.open('scaled')
+
+            Relvar.insert(db=app, relvar='Title_Block_Placement', tuples=tbp_instances, tr='scaled')
 
         # Free Fields
         free_fields = []
@@ -83,7 +104,6 @@ class SheetSubsysDB:
                             R = f"Name:<{dbox_name}>, Pattern:<{pattern_name}>"
                             dbox = Relation.restrict(db=app, relation='Data_Box', restriction=R)
                             dbox_id = int(dbox.body[0]['ID'])
-                            pass
                             tbf_instances.append(
                                 TitleBlockFieldInstance(Metadata=m, Frame=f, Data_box=dbox_id,
                                                         Title_block_pattern=pattern_name,
@@ -148,7 +168,7 @@ class SheetSubsysDB:
                 dividers = []
                 for i, c in v['compartment boxes'].items():
                     (above, below) = (c.get('Up'), c.get('Down')) if c['Orientation'] == 'H' else (
-                    c.get('Right'), c.get('Left'))
+                        c.get('Right'), c.get('Left'))
                     dividers.append(
                         DividerInstance(Box_above=above, Box_below=below, Pattern=name, Compartment_box=i,
                                         Partition_distance=c['Distance'], Partition_orientation=c['Orientation'])
