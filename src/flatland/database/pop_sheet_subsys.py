@@ -84,20 +84,58 @@ class SheetSubsysDB:
                                                       X=layout['title block placement']['X'],
                                                       Y=layout['title block placement']['Y'],
                                                       Height=env_height, Width=env_width)
-                        Relvar.insert(db=app, relvar='Box_Placement', tuples=[env_bp], tr=tr_env)
 
+                        boxplacements = {1: env_bp}
                         # Now get all the Dividers
                         R = f"Pattern:<{pattern_name}>"
                         dividers = Relation.restrict(db=app, relation='Divider', restriction=R)
-                        pass
+                        for d in dividers.body:
+                            enclosing_box = boxplacements[int(d['Compartment_box'])]
+                            if d['Partition_orientation'] == 'H':
+                                x_down = enclosing_box.X
+                                y_down = enclosing_box.Y
+                                w_down = enclosing_box.Width
+                                h_down = round(float(d['Partition_distance']) * int(enclosing_box.Height), 2)
+                                down_box_id = int(d['Box_below'])
+                                boxplacements[down_box_id] = BoxPlacementInstance(
+                                    Frame=f, Sheet=s, Orientation=o, Box=down_box_id, Title_block_pattern=pattern_name,
+                                    X=x_down, Y=y_down, Height=h_down, Width=w_down
+                                )
+                                x_up = x_down
+                                w_up = w_down
+                                y_up = int(round(y_down + h_down, 2))
+                                h_up = round((int(enclosing_box.Height) - h_down), 2)
+                                up_box_id = int(d['Box_above'])
+                                boxplacements[up_box_id] = BoxPlacementInstance(
+                                    Frame=f, Sheet=s, Orientation=o, Box=up_box_id, Title_block_pattern=pattern_name,
+                                    X=x_up, Y=y_up, Height=h_up, Width=w_up
+                                )
+                            else:
+                                x_down = enclosing_box.X
+                                y_down = enclosing_box.Y
+                                w_down = round(float(d['Partition_distance']) * int(enclosing_box.Width), 2)
+                                h_down = round(enclosing_box.Height, 2)
+                                down_box_id = int(d['Box_below'])
+                                boxplacements[down_box_id] = BoxPlacementInstance(
+                                    Frame=f, Sheet=s, Orientation=o, Box=down_box_id, Title_block_pattern=pattern_name,
+                                    X=x_down, Y=y_down, Height=h_down, Width=w_down
+                                )
+                                x_up = int(round(x_down + w_down, 2))
+                                w_up = round((int(enclosing_box.Width) - w_down), 2)
+                                y_up = y_down
+                                h_up = h_down
+                                up_box_id = int(d['Box_above'])
+                                boxplacements[up_box_id] = BoxPlacementInstance(
+                                    Frame=f, Sheet=s, Orientation=o, Box=up_box_id, Title_block_pattern=pattern_name,
+                                    X=x_up, Y=y_up, Height=h_up, Width=w_up
+                                )
+                            pass
 
-                        pass
+                        bp_instances = [v for v in boxplacements.values()]
+                        Relvar.insert(db=app, relvar='Box_Placement', tuples=bp_instances, tr=tr_env)
+                        Transaction.execute(db=app, name=tr_env)
 
-                Transaction.open('scaled')
-                Relvar.insert(db=app, relvar='Title_Block_Placement', tuples=tbp_instances, tr='scaled')
-                R = f"Pattern:<{pattern_name}>"
-                dividers = Relation.restrict(db=app, relation='Divider', restriction=R)
-                pass
+
 
         # Free Fields
         free_fields = []
