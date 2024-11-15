@@ -15,6 +15,7 @@ class SheetSubsysDB:
     """
     Load all Sheet Subsystem yaml data into the database
     """
+
     @classmethod
     def populate(cls):
         """
@@ -37,19 +38,19 @@ class SheetSubsysDB:
         frame_data = ConfigDB.item_data['frame']
 
         # Populate all Frame data
-        for f, v in frame_data.items():
-            tr_name = f"frame_{f.replace(' ', '_')}"  # Name db transaction using the frame name
+        for frame_name, v in frame_data.items():
+            tr_name = f"frame_{frame_name.replace(' ', '_')}"  # Name db transaction using the frame name
             Transaction.open(db=app, name=tr_name)
 
             # Frame
             # Populate the current frame
-            Relvar.insert(db=app, relvar='Frame', tuples=[FrameInstance(Name=f)], tr=tr_name)
+            Relvar.insert(db=app, relvar='Frame', tuples=[FrameInstance(Name=frame_name)], tr=tr_name)
 
             # Fitted Frames
             # This Frame is fitted to a number of sheets and orientations
             # Generate a list of instance records for the current frame and then insert them all at once
             fitted_frames = [
-                FittedFrameInstance(Frame=f, Sheet=s, Orientation=o)
+                FittedFrameInstance(Frame=frame_name, Sheet=s, Orientation=o)
                 for i in v.keys() if i != 'title-block-pattern'  # Skip the frame's title block pattern key
                 for s, o in [i.split('-')]  # tabloid-landscape, for example, splits into sheet and orientation
             ]
@@ -58,107 +59,123 @@ class SheetSubsysDB:
             Transaction.execute(db=app, name=tr_name)
 
             # Title Block Placements
-            tbp_instances = []
-            bp_instances = []
             if tb_spec := v.get('title-block-pattern'):
-                pattern_name = tb_spec[0]
+                # This frame specifies an optional title block placement
+                pattern_name = tb_spec[0]  # Name of the title block pattern
                 for fr_spec, layout in v.items():
+                    # Proceed through each sheet-orientation (fitted frame spec)
                     if fr_spec != 'title-block-pattern':
-                        s, o = fr_spec.split('-')
+                        s, o = fr_spec.split('-')  # sheet, orientation
+                        # We need to get the Sheet Size Group for the current sheet (large, medium, ...?)
                         R = f"Name:<{s}>"
                         sheet = Relation.restrict(db=app, relation='Sheet', restriction=R)
-                        sg_name = sheet.body[0]['Size_group']
-                        tr_env = f'envelope-{pattern_name}'  # Transaction to create one Envelope Box Placement
-                        Transaction.open(db=app, name=tr_env)
-                        env_tbp = TitleBlockPlacementInstance(Frame=f, Sheet=s, Orientation=o,
-                                                              Title_block_pattern=pattern_name,
-                                                              Sheet_size_group=sg_name,
-                                                              X=layout['title block placement']['X'],
-                                                              Y=layout['title block placement']['Y'])
-                        Relvar.insert(db=app, relvar='Title_Block_Placement', tuples=[env_tbp], tr=tr_env)
+                        sg_name = sheet.body[0]['Size_group']  # size group name
+                        # Open transaction to create all Box Placements for a Fitted Frame
+                        tr_bp = f'bplace-{fr_spec}-{pattern_name}'  # bplace-D-landscape-SE Simple, for example
+                        Transaction.open(db=app, name=tr_bp)
+                        # Title Block Placement
+                        # (the whole title block pattern is effectively positioned for the Fitted Frame)
+                        tbp = TitleBlockPlacementInstance(Frame=frame_name, Sheet=s, Orientation=o,
+                                                          Title_block_pattern=pattern_name,
+                                                          Sheet_size_group=sg_name,
+                                                          X=layout['title block placement']['X'],
+                                                          Y=layout['title block placement']['Y'])
+                        Relvar.insert(db=app, relvar='Title_Block_Placement', tuples=[tbp], tr=tr_bp)
 
                         # Determine the Envelope's Box Placement
+                        # Get the related Scaled Title Block instance from the db
                         R = f"Title_block_pattern:<{pattern_name}>, Sheet_size_group:<{sg_name}>"
                         stb = Relation.restrict(db=app, relation='Scaled_Title_Block', restriction=R)
                         env_height = stb.body[0]['Height']
                         env_width = stb.body[0]['Width']
-                        env_bp = BoxPlacementInstance(Frame=f, Sheet=s, Orientation=o, Box=1,
+                        # Envelope box size matches that of the Scaled Title Block
+                        # and its position matches the Title Block Placement
+                        # since the Envelope spans the entire title block
+                        env_bp = BoxPlacementInstance(Frame=frame_name, Sheet=s, Orientation=o, Box=1,
                                                       Title_block_pattern=pattern_name,
                                                       X=layout['title block placement']['X'],
                                                       Y=layout['title block placement']['Y'],
                                                       Height=env_height, Width=env_width)
+                        # The remaining Box Placements are subdivisions of the Envelope and require
+                        # some computation. We'll need to maintain a dictionary as we descend through
+                        # the placements for each Partitioned Box (see model and tech note tn.4 on the wiki)
 
                         boxplacements = {1: env_bp}
-                        # Now get all the Dividers
+
+                        # Now get all the Dividers (they split up the Title Block Pattern into smaller boxes)
                         R = f"Pattern:<{pattern_name}>"
                         dividers = Relation.restrict(db=app, relation='Divider', restriction=R)
                         for d in dividers.body:
-                            enclosing_box = boxplacements[int(d['Compartment_box'])]
-                            if d['Partition_orientation'] == 'H':
+                            # Get the enclosing box (the one we are splitting in two)
+                            enclosing_box_id = int(d['Compartment_box'])  # Divider.Compartment_box attribute
+                            enclosing_box = boxplacements[enclosing_box_id]
+                            # The divider is either a horizontal or a vertical split
+                            if d['Partition_orientation'] == 'H':  # Horizontal split into upper/lower boxes
+                                # Compute position of lower Box
                                 x_down = enclosing_box.X
                                 y_down = enclosing_box.Y
                                 w_down = enclosing_box.Width
                                 h_down = round(float(d['Partition_distance']) * int(enclosing_box.Height), 2)
                                 down_box_id = int(d['Box_below'])
                                 boxplacements[down_box_id] = BoxPlacementInstance(
-                                    Frame=f, Sheet=s, Orientation=o, Box=down_box_id, Title_block_pattern=pattern_name,
+                                    Frame=frame_name, Sheet=s, Orientation=o, Box=down_box_id, Title_block_pattern=pattern_name,
                                     X=x_down, Y=y_down, Height=h_down, Width=w_down
                                 )
+                                # Compute position of higher Box
                                 x_up = x_down
                                 w_up = w_down
                                 y_up = int(round(y_down + h_down, 2))
                                 h_up = round((int(enclosing_box.Height) - h_down), 2)
                                 up_box_id = int(d['Box_above'])
                                 boxplacements[up_box_id] = BoxPlacementInstance(
-                                    Frame=f, Sheet=s, Orientation=o, Box=up_box_id, Title_block_pattern=pattern_name,
+                                    Frame=frame_name, Sheet=s, Orientation=o, Box=up_box_id, Title_block_pattern=pattern_name,
                                     X=x_up, Y=y_up, Height=h_up, Width=w_up
                                 )
-                            else:
-                                x_down = enclosing_box.X
-                                y_down = enclosing_box.Y
-                                w_down = round(float(d['Partition_distance']) * int(enclosing_box.Width), 2)
-                                h_down = round(enclosing_box.Height, 2)
-                                down_box_id = int(d['Box_below'])
-                                boxplacements[down_box_id] = BoxPlacementInstance(
-                                    Frame=f, Sheet=s, Orientation=o, Box=down_box_id, Title_block_pattern=pattern_name,
-                                    X=x_down, Y=y_down, Height=h_down, Width=w_down
+                            else:  # Vertical split into left/right boxes
+                                x_left = enclosing_box.X
+                                y_left = enclosing_box.Y
+                                w_left = round(float(d['Partition_distance']) * int(enclosing_box.Width), 2)
+                                h_left = round(enclosing_box.Height, 2)
+                                left_box_id = int(d['Box_below'])  # left is 'below' since x-coord is lower
+                                boxplacements[left_box_id] = BoxPlacementInstance(
+                                    Frame=frame_name, Sheet=s, Orientation=o, Box=left_box_id, Title_block_pattern=pattern_name,
+                                    X=x_left, Y=y_left, Height=h_left, Width=w_left
                                 )
-                                x_up = int(round(x_down + w_down, 2))
-                                w_up = round((int(enclosing_box.Width) - w_down), 2)
-                                y_up = y_down
-                                h_up = h_down
-                                up_box_id = int(d['Box_above'])
-                                boxplacements[up_box_id] = BoxPlacementInstance(
-                                    Frame=f, Sheet=s, Orientation=o, Box=up_box_id, Title_block_pattern=pattern_name,
-                                    X=x_up, Y=y_up, Height=h_up, Width=w_up
+                                x_right = int(round(x_left + w_left, 2))
+                                w_right = round((int(enclosing_box.Width) - w_left), 2)
+                                y_right = y_left
+                                h_right = h_left
+                                right_box_id = int(d['Box_above'])  # right is 'above' since x-coord is higher
+                                boxplacements[right_box_id] = BoxPlacementInstance(
+                                    Frame=frame_name, Sheet=s, Orientation=o, Box=right_box_id, Title_block_pattern=pattern_name,
+                                    X=x_right, Y=y_right, Height=h_right, Width=w_right
                                 )
-                            pass
 
+                        #  For the Title Block Placement, all bp positions and sizes have been computed
+                        #  and are in the dictionary. Each value in the dict is a bp instance
                         bp_instances = [v for v in boxplacements.values()]
-                        Relvar.insert(db=app, relvar='Box_Placement', tuples=bp_instances, tr=tr_env)
-                        Transaction.execute(db=app, name=tr_env)
+                        Relvar.insert(db=app, relvar='Box_Placement', tuples=bp_instances, tr=tr_bp)
+                        Transaction.execute(db=app, name=tr_bp)
 
-
-
-        # Free Fields
+        # Free Fields Framed Title Block, Title Block Fields
         free_fields = []
-        for f, v in frame_data.items():
+        for frame_name, v in frame_data.items():
             for content_type, fr_spec in v.items():
                 if content_type == 'title-block-pattern':
-                    # Populate Framed Title Block
+                    # Framed Title Block
                     pattern_name = fr_spec[0]
-                    ftb_inst = FramedTitleBlockInstance(Frame=f, Title_block_pattern=pattern_name)
+                    ftb_inst = FramedTitleBlockInstance(Frame=frame_name, Title_block_pattern=pattern_name)
                     Relvar.insert(db=app, relvar='Framed_Title_Block', tuples=[ftb_inst])
 
-                    # Populate Title Block Fields
+                    # Populate Title Block Fields for the current Frame
                     tbf_instances = []
-                    for dbox_name, mi_items in fr_spec[1].items():
-                        for count, m in enumerate(reversed(mi_items)):
+                    for dbox_name, mdata_items in fr_spec[1].items():
+                        for count, m in enumerate(reversed(mdata_items)):
                             R = f"Name:<{dbox_name}>, Pattern:<{pattern_name}>"
                             dbox = Relation.restrict(db=app, relation='Data_Box', restriction=R)
                             dbox_id = int(dbox.body[0]['ID'])
                             tbf_instances.append(
-                                TitleBlockFieldInstance(Metadata=m, Frame=f, Data_box=dbox_id,
+                                TitleBlockFieldInstance(Metadata=m, Frame=frame_name, Data_box=dbox_id,
                                                         Title_block_pattern=pattern_name,
                                                         Stack_order=count + 1)
                             )
@@ -168,17 +185,14 @@ class SheetSubsysDB:
                     # Generate Free Field instances
                     sheet, orient = (content_type.split('-'))
                     for mdata, fld in fr_spec['fields'].items():
-                        pass
                         free_fields.append(
-                            FreeFieldInstance(Metadata=mdata, Frame=f, Sheet=sheet, Orientation=orient,
+                            FreeFieldInstance(Metadata=mdata, Frame=frame_name, Sheet=sheet, Orientation=orient,
                                               X=fld['X'], Y=fld['Y'],
                                               Max_width=fld['Max width'], Max_height=fld['Max height'])
                         )
 
-            pass
         # Populate all Free Fields
         Relvar.insert(db=app, relvar='Free_Field', tuples=free_fields)
-        pass
 
     @classmethod
     def pop_title_blocks(cls):
@@ -262,16 +276,21 @@ class SheetSubsysDB:
         Populate all Sheet Size Group and Sheet class data
         """
         sheets = ConfigDB.item_data['sheet']
-        # get a set of group names
+
+        # Scan the data looking for all Sheet Size Group name references
         size_group_names = {s.size_group for s in sheets.values()}
+        # Create a Sheet Size Group instance for each found
         sgroup_instances = [SheetSizeGroupInstance(Name=n) for n in size_group_names]
-        Transaction.open(db=app, name="sgroup")
-        Relvar.insert(db=app, relvar='Sheet_Size_Group', tuples=sgroup_instances, tr="sgroup")
+
+        # Sheets and size groups must be populated as part of the same transaction
+        tr_name = "sheets"
+        Transaction.open(db=app, name=tr_name)
+        Relvar.insert(db=app, relvar='Sheet_Size_Group', tuples=sgroup_instances, tr=tr_name)
         sheet_instances = [SheetInstance(Name=k, Height=v.height, Width=v.width, Size_group=v.size_group,
                                          Units='in' if v.standard == "us" else 'cm')
                            for k, v in sheets.items()]
-        Relvar.insert(db=app, relvar='Sheet', tuples=sheet_instances, tr="sgroup")
-        Transaction.execute(db=app, name="sgroup")
+        Relvar.insert(db=app, relvar='Sheet', tuples=sheet_instances, tr=tr_name)
+        Transaction.execute(db=app, name=tr_name)
 
     @classmethod
     def pop_metadata(cls):
