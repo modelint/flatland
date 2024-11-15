@@ -1,7 +1,6 @@
 """ pop_sheet_subsys.py - Populate the sheet subsystem classes """
 
 # System
-from typing import NamedTuple
 from pathlib import Path
 
 # Model Integration
@@ -11,6 +10,7 @@ from pyral.transaction import Transaction
 from mi_config.config import Config
 
 # Flatland
+from flatland.names import app
 from flatland.database.instances.sheet_subsystem import *
 
 
@@ -19,9 +19,6 @@ class SheetData(NamedTuple):
     height: float
     width: float
     size_group: str
-
-
-app = "flatland"  # Client name supplied to flatland services
 
 
 class SheetSubsysDB:

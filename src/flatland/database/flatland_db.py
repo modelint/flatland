@@ -8,6 +8,7 @@ from pyral.database import Database
 from pyral.relvar import Relvar
 
 # Flatland
+from flatland.names import app
 from flatland.database.relvars import FlatlandSchema, SimpleAssoc, AssocRel, GenRel
 from flatland.database.pop_sheet_subsys import SheetSubsysDB
 
@@ -18,7 +19,6 @@ class FlatlandDB:
     """
     This class manages initialization and population of the Flatland database.
     """
-    db_name = 'flatland'  # Text name of the database
     db_id = None  # ID returned on successful db session initialization
     relvar_names = None
     rel_names = None
@@ -31,23 +31,23 @@ class FlatlandDB:
         # Create all the relvars
         for subsys_name, subsys_relvars in FlatlandSchema.relvars.items():
             for relvar_name, header in subsys_relvars.items():
-                Relvar.create_relvar(db=cls.db_name, name=relvar_name,
+                Relvar.create_relvar(db=app, name=relvar_name,
                                      attrs=header.attrs, ids=header.ids)
 
         # For diagnostics we confirm by obtaining a list of all relvars the database has created
-        cls.relvar_names = Database.names(db=cls.db_name)
+        cls.relvar_names = Database.names(db=app)
 
         # Create all the relationships
         for subsys_name, rels in FlatlandSchema.rels.items():
             for r in rels:
                 # Create all simple association relationships
                 if isinstance(r, SimpleAssoc):
-                    Relvar.create_association(db=cls.db_name, name=r.name,
+                    Relvar.create_association(db=app, name=r.name,
                                               from_relvar=r.from_class, from_mult=r.from_mult, from_attrs=r.from_attrs,
                                               to_relvar=r.to_class, to_mult=r.to_mult, to_attrs=r.to_attrs)
                 # Create all associative relationships
                 if isinstance(r, AssocRel):
-                    Relvar.create_correlation(db=cls.db_name, name=r.name, correlation_relvar=r.assoc_class,
+                    Relvar.create_correlation(db=app, name=r.name, correlation_relvar=r.assoc_class,
                                               correl_a_attrs=r.a_ref.from_attrs, a_mult=r.a_ref.mult,
                                               a_relvar=r.a_ref.to_class, a_ref_attrs=r.a_ref.to_attrs,
                                               correl_b_attrs=r.b_ref.from_attrs, b_mult=r.b_ref.mult,
@@ -55,11 +55,11 @@ class FlatlandDB:
                                               )
                 # Create all generalization relationships
                 if isinstance(r, GenRel):
-                    Relvar.create_partition(db=cls.db_name, name=r.name, superclass_name=r.superclass,
+                    Relvar.create_partition(db=app, name=r.name, superclass_name=r.superclass,
                                             super_attrs=r.superattrs, subs=r.subrefs)
 
         # For diagnostics we confirm by obtaining a list of all constraints the database has created
-        cls.rel_names = Database.constraint_names(db=cls.db_name)
+        cls.rel_names = Database.constraint_names(db=app)
 
     @classmethod
     def create_db(cls):
@@ -82,6 +82,9 @@ class FlatlandDB:
 
         # Populate each subsystem
         SheetSubsysDB.populate()
+
+        # Print out a depiction of the populated database as a set of filled out tables
+        # organized alphabetically by relvar name
         Relvar.printall('flatland')
 
         pass
