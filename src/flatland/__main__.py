@@ -13,7 +13,7 @@ from pathlib import Path
 # Flatland
 from flatland.xuml.xuml_classdiagram import XumlClassDiagram
 # from flatland.xuml.xuml_statemachine_diagram import XumlStateMachineDiagram
-from flatland.configuration.configDB import ConfigDB
+from flatland.database.flatland_db import FlatlandDB
 from flatland import version
 
 _logpath = Path("flatland.log")
@@ -139,24 +139,24 @@ def main():
     # Do any configuration tasks necessary before starting up the app
     # The database will be rebuilt if requested
     if not already_configured:
-        ConfigDB(rebuild_db=args.rebuild)
-    #
-    if args.model and args.layout:  # Just making sure we have them both
-        model_path = Path(args.model)
-        layout_path = Path(args.layout)
-        diagram_path = Path(args.diagram)
+        FlatlandDB.create_db(rebuild=args.rebuild)
 
-        # Generate the xuml class diagram (we don't do anything with the returned variable yet)
-        mtype = model_path.suffix
-        if mtype == '.xcm':
-            class_diagram = XumlClassDiagram(
-                xuml_model_path=model_path,
-                flatland_layout_path=layout_path,
-                diagram_file_path=diagram_path,
-                show_grid=args.grid,
-                nodes_only=args.nodes_only,
-                no_color=args.no_color,
-            )
+    # if args.model and args.layout:  # Just making sure we have them both
+    #     model_path = Path(args.model)
+    #     layout_path = Path(args.layout)
+    #     diagram_path = Path(args.diagram)
+    #
+    #     # Generate the xuml class diagram (we don't do anything with the returned variable yet)
+    #     mtype = model_path.suffix
+    #     if mtype == '.xcm':
+    #         class_diagram = XumlClassDiagram(
+    #             xuml_model_path=model_path,
+    #             flatland_layout_path=layout_path,
+    #             diagram_file_path=diagram_path,
+    #             show_grid=args.grid,
+    #             nodes_only=args.nodes_only,
+    #             no_color=args.no_color,
+    #         )
     #     elif mtype == '.xsm':
     #         statemodel_diagram = XumlStateMachineDiagram(
     #             xuml_model_path=model_path,
@@ -168,6 +168,7 @@ def main():
     #         )
 
     logger.info("No problemo")  # We didn't die on an exception, basically
+    print("No problemo")
 
 
 if __name__ == "__main__":

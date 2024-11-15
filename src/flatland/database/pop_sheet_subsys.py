@@ -1,33 +1,20 @@
 """ pop_sheet_subsys.py - Populate the sheet subsystem classes """
 
-# System
-from pathlib import Path
-
 # Model Integration
 from pyral.relvar import Relvar
 from pyral.relation import Relation
 from pyral.transaction import Transaction
-from mi_config.config import Config
 
 # Flatland
 from flatland.names import app
+from flatland.configuration.configDB import ConfigDB
 from flatland.database.instances.sheet_subsystem import *
-
-
-class SheetData(NamedTuple):
-    standard: str
-    height: float
-    width: float
-    size_group: str
 
 
 class SheetSubsysDB:
     """
     Load all Sheet Subsystem yaml data into the database
     """
-
-    config_path = Path(__file__).parent.parent / "configuration"
-
     @classmethod
     def populate(cls):
         """
@@ -43,9 +30,8 @@ class SheetSubsysDB:
 
     @classmethod
     def pop_frames(cls):
-        frame_spec = {'frame': None}
-        f = Config(app_name=app, lib_config_dir=cls.config_path, fspec=frame_spec)
-        fstyles = f.loaded_data['frame']
+
+        fstyles = ConfigDB.item_data['frame']
 
         # Populate all Frames and Fitted Frames
         for f, v in fstyles.items():
@@ -192,9 +178,7 @@ class SheetSubsysDB:
         """
         Populate all Title Block Patterns
         """
-        tbp_spec = {'titleblock': None}
-        c = Config(app_name=app, lib_config_dir=cls.config_path, fspec=tbp_spec)
-        tblocks = c.loaded_data['titleblock']
+        tblocks = ConfigDB.item_data['titleblock']
         for tbp in tblocks:
             for name, v in tbp.items():
                 # Populate each Title Block Pattern in a single transaction
@@ -270,9 +254,7 @@ class SheetSubsysDB:
         """
         Populate all Sheet Size Group and Sheet class data
         """
-        sheet_spec = {'sheet': SheetData}
-        c = Config(app_name=app, lib_config_dir=cls.config_path, fspec=sheet_spec)
-        sheets = c.loaded_data['sheet']
+        sheets = ConfigDB.item_data['sheet']
         # get a set of group names
         size_group_names = {s.size_group for s in sheets.values()}
         sgroup_instances = [SheetSizeGroupInstance(Name=n) for n in size_group_names]
@@ -289,8 +271,6 @@ class SheetSubsysDB:
         """
         Populate all Metadata Items
         """
-        metadata_spec = {'metadata': None}
-        c = Config(app_name=app, lib_config_dir=cls.config_path, fspec=metadata_spec)
-        metadata_items = c.loaded_data['metadata']
+        metadata_items = ConfigDB.item_data['metadata']
         mditem_instances = [MetadataItemInstance(Name=n) for n in metadata_items]
         Relvar.insert(db=app, relvar='Metadata_Item', tuples=mditem_instances)

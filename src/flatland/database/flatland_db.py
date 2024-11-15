@@ -9,6 +9,7 @@ from pyral.relvar import Relvar
 
 # Flatland
 from flatland.names import app
+from flatland.configuration.configDB import ConfigDB
 from flatland.database.relvars import FlatlandSchema, SimpleAssoc, AssocRel, GenRel
 from flatland.database.pop_sheet_subsys import SheetSubsysDB
 
@@ -62,7 +63,7 @@ class FlatlandDB:
         cls.rel_names = Database.constraint_names(db=app)
 
     @classmethod
-    def create_db(cls):
+    def create_db(cls, rebuild: bool = True):
         """
          1. Initialize a PyRAL session.
          2. Load the Flatland Schema based on the class models defined in the project wiki (with model diagrams
@@ -80,6 +81,9 @@ class FlatlandDB:
         # Load the database schema
         cls.load_schema()
 
+        # Process all config files
+        ConfigDB()
+
         # Populate each subsystem
         SheetSubsysDB.populate()
 
@@ -87,4 +91,3 @@ class FlatlandDB:
         # organized alphabetically by relvar name
         Relvar.printall('flatland')
 
-        pass
