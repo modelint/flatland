@@ -32,6 +32,19 @@ class SheetSubsysDB:
     config_path = Path(__file__).parent.parent / "configuration"
 
     @classmethod
+    def populate(cls):
+        """
+        Populate the sheet subsystem by breaking it down into multiple focused database transactions
+        (so if something goes wrong, the scope of the affected transaction is as tight as possible)
+        """
+        # Order of these function invocations is important since each successive call populates
+        # references to data populated in the previous call.
+        cls.pop_metadata()
+        cls.pop_sheets()
+        cls.pop_title_blocks()
+        cls.pop_frames()
+
+    @classmethod
     def pop_frames(cls):
         frame_spec = {'frame': None}
         f = Config(app_name=app, lib_config_dir=cls.config_path, fspec=frame_spec)

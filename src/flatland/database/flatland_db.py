@@ -1,4 +1,4 @@
-""" flatland_db.py """
+""" flatland_db.py - Create and initialize the flatland database """
 
 # System
 from collections import namedtuple
@@ -13,7 +13,6 @@ from flatland.database.pop_sheet_subsys import SheetSubsysDB
 
 Header = namedtuple('Header', ['attrs', 'ids'])
 SheetInstance = namedtuple('SheetInstance', 'standard height width size_group')
-
 
 class FlatlandDB:
     """
@@ -76,20 +75,13 @@ class FlatlandDB:
         # There should be no reason to create a new database unless the user has updated any of their configuration
         # files. So, in the future, there will be an option to just load an existing populated database and move on.
 
-        # During early development, however, it is convenient to start with a fresh database build each time.
-        # So that's what we're doing for now
+        # But during early development we'll just start with a fresh database build each time.
 
         # Load the database schema
         cls.load_schema()
 
         # Populate each subsystem
-
-
-        # Load sheet population
-        SheetSubsysDB.pop_metadata()
-        SheetSubsysDB.pop_sheets()
-        SheetSubsysDB.pop_title_blocks()
-        SheetSubsysDB.pop_frames()
+        SheetSubsysDB.populate()
         Relvar.printall('flatland')
 
         pass
