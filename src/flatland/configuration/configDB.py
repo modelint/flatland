@@ -45,3 +45,4 @@ class ConfigDB:
             c = Config(app_name=app, lib_config_dir=cls.config_path, fspec={item.name:item.collector})
             cls.item_data[item.name] = c.loaded_data[item.name]
 
+        pass

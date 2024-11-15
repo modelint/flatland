@@ -30,27 +30,34 @@ class SheetSubsysDB:
 
     @classmethod
     def pop_frames(cls):
+        """
+        Populate all Frame and Fitted Frame instances
+        """
+        # Get the relevant configuration data
+        frame_data = ConfigDB.item_data['frame']
 
-        fstyles = ConfigDB.item_data['frame']
-
-        # Populate all Frames and Fitted Frames
-        for f, v in fstyles.items():
-            frame_tr = f
-            tr_name = frame_tr.replace(' ', '_')  # Use the tbp name for the transaction name for easy debugging
+        # Populate all Frame data
+        for f, v in frame_data.items():
+            tr_name = f"frame_{f.replace(' ', '_')}"  # Name db transaction using the frame name
             Transaction.open(db=app, name=tr_name)
 
             # Frame
+            # Populate the current frame
             Relvar.insert(db=app, relvar='Frame', tuples=[FrameInstance(Name=f)], tr=tr_name)
+
             # Fitted Frames
+            # This Frame is fitted to a number of sheets and orientations
+            # Generate a list of instance records for the current frame and then insert them all at once
             fitted_frames = [
                 FittedFrameInstance(Frame=f, Sheet=s, Orientation=o)
-                for i in v.keys() if i != 'title-block-pattern'
-                for s, o in [i.split('-')]
+                for i in v.keys() if i != 'title-block-pattern'  # Skip the frame's title block pattern key
+                for s, o in [i.split('-')]  # tabloid-landscape, for example, splits into sheet and orientation
             ]
             Relvar.insert(db=app, relvar='Fitted_Frame', tuples=fitted_frames, tr=tr_name)
+            # Close out the frame / fitted frame transaction
             Transaction.execute(db=app, name=tr_name)
 
-            # Populate Title Block Placements
+            # Title Block Placements
             tbp_instances = []
             bp_instances = []
             if tb_spec := v.get('title-block-pattern'):
@@ -135,7 +142,7 @@ class SheetSubsysDB:
 
         # Free Fields
         free_fields = []
-        for f, v in fstyles.items():
+        for f, v in frame_data.items():
             for content_type, fr_spec in v.items():
                 if content_type == 'title-block-pattern':
                     # Populate Framed Title Block
