@@ -6,7 +6,6 @@ xUML_class_diagram.py – Generates an xuml diagram for an xuml model using the 
 import sys
 import logging
 from pathlib import Path
-from collections import namedtuple
 from xcm_parser.class_model_parser import ClassModelParser
 from mls_parser.layout_parser import LayoutParser
 
@@ -44,7 +43,6 @@ class XumlClassDiagram:
         # Parse the model
         try:
             self.model = ClassModelParser.parse_file(file_input=self.xuml_model_path, debug=False)
-            # self.model = ModelParser(model_file_path=self.xuml_model_path, debug=False)
         except ModelParseError as e:
             sys.exit(e)
 
@@ -64,8 +62,10 @@ class XumlClassDiagram:
             self.logger.info("Creating the frame")
             self.frame = Frame(
                 name=self.layout.layout_spec.frame, presentation=self.layout.layout_spec.frame_presentation,
-                canvas=self.flatland_canvas, metadata=self.subsys.metadata
+                canvas=self.flatland_canvas, metadata=self.model.metadata
             )
+
+        pass
 
     def create_canvas(self) -> Canvas:
         """Create a blank canvas"""

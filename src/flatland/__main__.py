@@ -89,16 +89,6 @@ def main():
     #     from flatland.drawing_domain.styledb import StyleDB
     #     StyleDB(print_colors=True)
     #
-    # if args.configuration:
-    #     # Copy user startup configuration files to their .flatland/configuration dir, creating it if it doesn't yet exist
-    #     import shutil
-    #     user_home = Path.home() / '.flatland'
-    #     user_config_home = user_home / 'configuration'
-    #     user_config_home.mkdir(parents=True, exist_ok=True)
-    #     user_startup = Path(__file__).parent / 'configuration' / 'user_startup'
-    #     for f in user_startup.iterdir():
-    #         if not (user_config_home / f.name).exists():
-    #             shutil.copy(f, user_config_home)
 
     # if args.examples:
     #     # Copy the entire example directory into the users local dir if it does not already exist
@@ -142,22 +132,23 @@ def main():
         FlatlandDB.create_db(rebuild=args.rebuild)
 
     # if args.model and args.layout:  # Just making sure we have them both
-    #     model_path = Path(args.model)
-    #     layout_path = Path(args.layout)
-    #     diagram_path = Path(args.diagram)
-    #
-    #     # Generate the xuml class diagram (we don't do anything with the returned variable yet)
-    #     mtype = model_path.suffix
-    #     if mtype == '.xcm':
-    #         class_diagram = XumlClassDiagram(
-    #             xuml_model_path=model_path,
-    #             flatland_layout_path=layout_path,
-    #             diagram_file_path=diagram_path,
-    #             show_grid=args.grid,
-    #             nodes_only=args.nodes_only,
-    #             no_color=args.no_color,
-    #         )
-    #     elif mtype == '.xsm':
+        model_path = Path(args.model)
+        layout_path = Path(args.layout)
+        diagram_path = Path(args.diagram)
+
+        # Generate the xuml class diagram (we don't do anything with the returned variable yet)
+        mtype = model_path.suffix
+        if mtype == '.xcm':
+            class_diagram = XumlClassDiagram(
+                xuml_model_path=model_path,
+                flatland_layout_path=layout_path,
+                diagram_file_path=diagram_path,
+                show_grid=args.grid,
+                nodes_only=args.nodes_only,
+                no_color=args.no_color,
+            )
+        elif mtype == '.xsm':
+            pass
     #         statemodel_diagram = XumlStateMachineDiagram(
     #             xuml_model_path=model_path,
     #             flatland_layout_path=layout_path,

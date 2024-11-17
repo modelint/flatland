@@ -7,17 +7,19 @@ This is the Flatland (and not the cairo) Canvas class
 import sys
 import logging
 from typing import Dict
+from pathlib import Path
 
 # Model Integration
 from tabletqt.tablet import Tablet, Rect_Size
 
 # Flatland
+from flatland.names import app
 from flatland.exceptions import InvalidOrientation, NonSystemInitialLayer
 # from flatland.diagram.diagram_layout_specification import DiagramLayoutSpecification
 # from flatland.connector_subsystem.connector_layout_specification import ConnectorLayoutSpecification
 # from flatland.datatypes.geometry_types import Rect_Size
 # from flatland.diagram.diagram import Diagram
-from flatland.sheet_subsystem.sheet import Sheet, Group
+from flatland.sheet_subsystem.sheet import Sheet
 # from flatland.decoration_subsystem.symbol import Symbol
 
 # All sheet and canvas related constants are kept together here for easy review and editing
@@ -47,7 +49,7 @@ class Canvas:
 
     def __init__(self, diagram_type: str, presentation: str, notation: str, standard_sheet_name: str, orientation: str,
                  diagram_padding: Dict[str, int], show_grid: bool, color: str,
-                 no_color: bool, drawoutput=sys.stdout.buffer):
+                 no_color: bool, drawoutput: Path):
         """
         Constructor
 
@@ -68,7 +70,7 @@ class Canvas:
             raise InvalidOrientation(orientation)
         self.Orientation = orientation
         # We want to convert all units, inch, mm, etc to points since that's all we use from here on
-        factor = points_in_inch if self.Sheet.Group == Group.US else points_in_cm
+        factor = points_in_inch if self.Sheet.Units == 'in' else points_in_cm
 
         # Set point size height and width based on portrait vs. landscape orientation
         h, w = (self.Sheet.Size.height, self.Sheet.Size.width) if self.Orientation == 'landscape' else (
@@ -84,6 +86,7 @@ class Canvas:
         # Layer
         try:
             self.Tablet = Tablet(
+                app=app,
                 size=self.Size, output_file=drawoutput,
                 # Drawing types include notation such as 'xUML class diagram' since notation affects the choice
                 # of shape and text styles.  An xUML class diagram association class stem is dashed, for example.
@@ -96,15 +99,14 @@ class Canvas:
 
         if not no_color:
             # The user has not disabled the colored background on the command line
-            self.Tablet.add_layer(name="sheet", presentation=presentation, drawing_type="background",
-                                  fill=self.Color)
+            self.Tablet.add_layer(name="sheet", presentation=presentation, drawing_type="background")
 
         # self.Diagram = Diagram(
         #     self, diagram_type_name=diagram_type, layer=self.Tablet.layers['diagram'],
         #     notation_name=notation, padding=diagram_padding, show_grid=show_grid
         # )
         # Load symbol data
-        self.logger.info("Loading symbol decoration data from flatland database")
+        # self.logger.info("Loading symbol decoration data from flatland database")
         # Symbol(diagram_type=self.Diagram.Diagram_type.Name, notation=self.Diagram.Notation)
 
     def render(self):
@@ -112,7 +114,7 @@ class Canvas:
         Draw all content of this Canvas onto the Tablet
         """
         # Now add all Diagram content to the Tablet
-        self.Diagram.render()
+        # self.Diagram.render()
 
         # Draw all added content and output a PDF using whatever graphics library is configured in the Tablet
         self.Tablet.render()
