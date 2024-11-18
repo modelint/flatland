@@ -10,7 +10,8 @@ from typing import Dict
 from pathlib import Path
 
 # Model Integration
-from tabletqt.tablet import Tablet, Rect_Size
+from tabletqt.tablet import Tablet, Rect_Size, Position
+from tabletqt.graphics.line_segment import LineSegment
 
 # Flatland
 from flatland.names import app
@@ -60,6 +61,11 @@ class Canvas:
         :param orientation: portrait or landscape
         :param drawoutput: A standard IO binary object obtained from sys
         """
+        # For diagnostics
+        self.grid = None
+        self.presentation = presentation
+        # ---
+
         self.logger = logging.getLogger(__name__)
         # Load layout specifications
         # DiagramLayoutSpecification()
@@ -109,6 +115,28 @@ class Canvas:
         # self.logger.info("Loading symbol decoration data from flatland database")
         # Symbol(diagram_type=self.Diagram.Diagram_type.Name, notation=self.Diagram.Notation)
 
+    def draw_grid(self):
+        """
+        Draw a diagnostic grid to determining spacing of frame elements
+        """
+        vgap = 100
+        hgap = 100
+        self.grid = self.Tablet.add_layer(name="grid", presentation=self.presentation, drawing_type="Grid diagnostic")
+        y = 0
+        while y <= self.Size.height:
+            LineSegment.add(layer=self.grid, asset='row boundary',
+                            from_here=Position(0, y),
+                            to_there=Position(self.Size.width, y))
+            y = y + vgap
+        x = 0
+        while x <= self.Size.width:
+            LineSegment.add(layer=self.grid, asset='column boundary',
+                            from_here=Position(x, 0),
+                            to_there=Position(x, self.Size.height))
+            x = x + hgap
+
+
+
     def render(self):
         """
         Draw all content of this Canvas onto the Tablet
@@ -117,6 +145,7 @@ class Canvas:
         # self.Diagram.render()
 
         # Draw all added content and output a PDF using whatever graphics library is configured in the Tablet
+        self.draw_grid()
         self.Tablet.render()
 
     def __repr__(self):

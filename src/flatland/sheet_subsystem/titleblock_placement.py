@@ -9,6 +9,7 @@ from typing import Dict, TYPE_CHECKING
 # Model Integration
 from pyral.relation import Relation
 from tabletqt.graphics.rectangle_se import RectangleSE
+from tabletqt.graphics.line_segment import LineSegment
 
 # Flatland
 from flatland.names import app
@@ -33,6 +34,30 @@ def draw_titleblock(frame: str, sheet: 'Sheet', orientation: str, layer: 'Layer'
     :param orientation:  Orientation of the frame: 'portrait' or 'landscape'
     :return:
     """
+    # For diagnostics, let's draw in a temporary margin
+    pad = 0
+    swidth = sheet.Size.width * 72
+    sheight = sheet.Size.height * 72
+
+    # Horizontal top
+    LineSegment.add(layer=layer, asset='Block border',
+                    from_here=Position(pad, sheight),
+                    to_there=Position(swidth, sheight))
+
+    # Horizontal bottom
+    LineSegment.add(layer=layer, asset='Block border',
+                    from_here=Position(pad, pad),
+                    to_there=Position(swidth, pad))
+    # vertical left
+    LineSegment.add(layer=layer, asset='Block border',
+                    from_here=Position(pad, sheight),
+                    to_there=Position(pad, pad))
+
+    # vertical right
+    LineSegment.add(layer=layer, asset='Block border',
+                    from_here=Position(swidth, sheight),
+                    to_there=Position(swidth, pad))
+
     R = f"Frame:<{frame}>, Sheet:<{sheet.Name}>, Orientation:<{orientation}>"
     result = Relation.restrict(db=app, relation='Box_Placement', restriction=R)
     if not result.body:

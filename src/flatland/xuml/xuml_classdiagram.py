@@ -66,7 +66,6 @@ class XumlClassDiagram:
             )
 
         self.flatland_canvas.render()
-        pass
 
     def create_canvas(self) -> Canvas:
         """Create a blank canvas"""
