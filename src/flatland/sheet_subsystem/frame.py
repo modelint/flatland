@@ -1,17 +1,23 @@
 """frame.py – Draws the selected frame sized to a given sheet and fills in the fields"""
 
+# System
 import logging
 import sys
-# from sqlalchemy import select, and_
-# from flatland.database.flatlanddb import FlatlandDB as fdb
 from collections import namedtuple
+import math
+from typing import TYPE_CHECKING, Dict
+
+# Model Integration
+from pyral.relation import Relation
+
+# Flatland
+from flatland.names import app
 from flatland.datatypes.geometry_types import Position, Rect_Size, Alignment, HorizAlign, VertAlign
 from flatland.diagram.canvas import points_in_mm
 from flatland.text.text_block import TextBlock
-import math
 from flatland.sheet_subsystem.resource import resource_locator
 from flatland.sheet_subsystem.titleblock_placement import draw_titleblock
-from typing import TYPE_CHECKING, Dict
+
 
 if TYPE_CHECKING:
     from flatland.diagram.canvas import Canvas
@@ -57,7 +63,8 @@ class Frame:
         # Create a Layer where we'll draw all of the Frame contents
 
         self.logger.info('Creating Frame Layer')
-        drawing_type_name = ' '.join([name, self.Canvas.Sheet.Size_group, 'frame'])  # e.g. "OS Engineer large frame"
+        drawing_type_name = f"{self.Name} {self.Canvas.Sheet.Size_group.capitalize()} Frame"
+
         # Whereas a diagram's drawing type is something like 'xUML Class Diagram',
         # the Frame's drawing type name systematically incorporates both purpose and Sheet Size Group
         # That's because a model element like a class or state is typically drawn the same size regardless
@@ -69,14 +76,19 @@ class Frame:
         )  # We're gonna be drawing metadata and title block borders all over this thing.
 
         # If there is a title block cplace specified for this Frame, get the name of the pattern
-        tb_placement_t = fdb.MetaData.tables['Title Block Placement']
-        f = and_(
-            (tb_placement_t.c['Frame'] == self.Name),
-            (tb_placement_t.c['Sheet'] == self.Canvas.Sheet.Name),
-            (tb_placement_t.c['Orientation'] == self.Orientation),
-        )
-        query = select([tb_placement_t.c['Title block pattern']]).select_from(tb_placement_t).where(f)
-        row = fdb.Connection.execute(query).fetchone()
+        R = f"Frame:<{self.Name}>"
+        result = Relation.restrict(app, relation='Framed_Title_Block', restriction=R)
+        if not result.body:
+            pass
+
+        # tb_placement_t = fdb.MetaData.tables['Title Block Placement']
+        # f = and_(
+        #     (tb_placement_t.c['Frame'] == self.Name),
+        #     (tb_placement_t.c['Sheet'] == self.Canvas.Sheet.Name),
+        #     (tb_placement_t.c['Orientation'] == self.Orientation),
+        # )
+        # query = select([tb_placement_t.c['Title block pattern']]).select_from(tb_placement_t).where(f)
+        # row = fdb.Connection.execute(query).fetchone()
         # Nothing says "I'm a serious engineer or architect" more than a fancy bordered title block on your Frame,
         # but it is optional
         self.Title_block_pattern = None if not row else row[0]

@@ -26,7 +26,7 @@ Model Integration Snippet: # Frame name
       Version: { X: 170, Y: 10, Max width: 20, Max height: 5 }
 
 Model Integration Diagram:
-# Frame for medium ot large diagrams with a Title Block in the lower right corner
+# Frame for medium to large diagrams with a Title Block in the lower right corner
 
   # All Fitted Frames below will use this Title Block Pattern
   title-block-pattern:
