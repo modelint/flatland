@@ -65,6 +65,7 @@ class XumlClassDiagram:
                 canvas=self.flatland_canvas, metadata=self.model.metadata
             )
 
+        self.flatland_canvas.render()
         pass
 
     def create_canvas(self) -> Canvas:

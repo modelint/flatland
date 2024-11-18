@@ -14,6 +14,9 @@ class FlatlandException(Exception):
 class FlatlandIOException(FlatlandException):
     pass
 
+class FlatlandConfigException(FlatlandException):
+    pass
+
 class FlatlandDBException(FlatlandException):
     pass
 
