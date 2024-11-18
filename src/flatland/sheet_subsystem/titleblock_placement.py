@@ -39,24 +39,6 @@ def draw_titleblock(frame: str, sheet: 'Sheet', orientation: str, layer: 'Layer'
     swidth = sheet.Size.width * 72
     sheight = sheet.Size.height * 72
 
-    # Horizontal top
-    LineSegment.add(layer=layer, asset='Block border',
-                    from_here=Position(pad, sheight),
-                    to_there=Position(swidth, sheight))
-
-    # Horizontal bottom
-    LineSegment.add(layer=layer, asset='Block border',
-                    from_here=Position(pad, pad),
-                    to_there=Position(swidth, pad))
-    # vertical left
-    LineSegment.add(layer=layer, asset='Block border',
-                    from_here=Position(pad, sheight),
-                    to_there=Position(pad, pad))
-
-    # vertical right
-    LineSegment.add(layer=layer, asset='Block border',
-                    from_here=Position(swidth, sheight),
-                    to_there=Position(swidth, pad))
 
     R = f"Frame:<{frame}>, Sheet:<{sheet.Name}>, Orientation:<{orientation}>"
     result = Relation.restrict(db=app, relation='Box_Placement', restriction=R)
@@ -64,15 +46,6 @@ def draw_titleblock(frame: str, sheet: 'Sheet', orientation: str, layer: 'Layer'
         pass
     box_placements = result.body
 
-
-    # p = [bplace_t.c.X, bplace_t.c.Y, bplace_t.c.Height, bplace_t.c.Width]
-    # f = and_(
-    #     (bplace_t.c.Frame == frame),
-    #     (bplace_t.c.Sheet == sheet.Name),
-    #     (bplace_t.c.Orientation == orientation),
-    # )
-    # q = select(p).select_from(bplace_t).where(f)
-    # rows = fdb.Connection.execute(q).fetchall()
     for bp in box_placements:
         pos = Position(int(bp['X']), int(bp['Y']))
         size = Rect_Size(float(bp['Height']), float(bp['Width']))

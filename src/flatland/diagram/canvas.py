@@ -119,6 +119,7 @@ class Canvas:
         """
         Draw a diagnostic grid to determining spacing of frame elements
         """
+        pad = 0
         vgap = 100
         hgap = 100
         self.grid = self.Tablet.add_layer(name="grid", presentation=self.presentation, drawing_type="Grid diagnostic")
@@ -134,6 +135,25 @@ class Canvas:
                             from_here=Position(x, 0),
                             to_there=Position(x, self.Size.height))
             x = x + hgap
+
+        # Horizontal top
+        LineSegment.add(layer=self.grid, asset='grid boundary',
+                        from_here=Position(pad, self.Size.height),
+                        to_there=Position(self.Size.width, self.Size.height))
+
+        # Horizontal bottom
+        LineSegment.add(layer=self.grid, asset='grid boundary',
+                        from_here=Position(pad, pad),
+                        to_there=Position(self.Size.width, pad))
+        # vertical left
+        LineSegment.add(layer=self.grid, asset='grid boundary',
+                        from_here=Position(pad, self.Size.height),
+                        to_there=Position(pad, pad))
+
+        # vertical right
+        LineSegment.add(layer=self.grid, asset='grid boundary',
+                        from_here=Position(self.Size.width, self.Size.height),
+                        to_there=Position(self.Size.width, pad))
 
 
 
