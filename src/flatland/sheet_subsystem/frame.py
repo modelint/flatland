@@ -10,11 +10,12 @@ from typing import TYPE_CHECKING, Dict
 # Model Integration
 from pyral.relation import Relation
 from tabletqt.graphics.text_element import TextElement
+from tabletqt.geometry_types import Position, Rect_Size, HorizAlign
 
 # Flatland
 from flatland.exceptions import FlatlandConfigException
 from flatland.names import app
-from flatland.datatypes.geometry_types import Position, Rect_Size, Alignment, HorizAlign, VertAlign
+from flatland.datatypes.geometry_types import Alignment, HorizAlign, VertAlign
 from flatland.diagram.canvas import points_in_mm
 from flatland.text.text_block import TextBlock
 from flatland.sheet_subsystem.resource import resource_locator
@@ -79,7 +80,7 @@ class Frame:
 
         # If there is a title block cplace specified for this Frame, get the name of the pattern
         R = f"Frame:<{self.Name}>"
-        result = Relation.restrict(app, relation='Framed_Title_Block', restriction=R)
+        result = Relation.restrict(db=app, relation='Framed_Title_Block', restriction=R)
         if not result.body:
             emsg = f"Framed_Title_Block {self.Name} not in database"
             self.logger.error(emsg)
@@ -108,11 +109,58 @@ class Frame:
                 pass
             tb_field_placements = result.body
 
+            # Get the margins to pad the Data Box content
+            # The same margins are applied to each Data Box in the same Scaled Title Block
+            # So we are looking only for one pair of h,v margin values to use throughout
+            R = f"Title_block_pattern:<{self.Title_block_pattern}>, Sheet_size_group:<{self.Canvas.Sheet.Size_group}>"
+            result = Relation.restrict(db=app, relation='Scaled_Title_Block', restriction=R)
+            h_margin = int(result.body[0]['Margin_h'])
+            v_margin = int(result.body[0]['Margin_v'])
+            pass
+
             # Populate our Databoxes dictionary from the row data we just fetched
             for place in tb_field_placements:
-                TextElement.add_line(layer=self.Layer, asset=place['Name'],
-                                     lower_left=Position(int(place['X']), int(place['Y'])), text=metadata[place['Metadata']][0])
+                box_position = Position(int(place['X']), int(place['Y']))
+                box_size = Rect_Size(height=float(place['Height']), width=float(place['Width']))
+                text = metadata[place['Metadata']][0]
+                block_size = TextElement.text_block_size(layer=self.Layer, asset=place['Name'], text_block=[text])
                 pass
+                # compute lower left corner position
+                # Layer asset is composed from the data box style and its size group
+                # When there is a single line of text in a Data Box that is longer than the Box width,
+                # we will wrap it as necessary. Especially useful for a long title in the title box
+                # For multiple line boxes, this feature is not yet (or ever) supported
+                padded_box_width = round(box_size.width - h_margin * 2, 2)
+                xpos = box_position.x + h_margin
+                ypos = box_position.y + v_margin + round((box_size.height - block_size.height) / 2, 2)
+                halign = HorizAlign.LEFT
+                if place['H_align'] == 'RIGHT':
+                    halign = HorizAlign.RIGHT
+                elif place['H_align'] == 'CENTER':
+                    halign = HorizAlign.CENTER
+                TextElement.add_block(layer=self.Layer, asset=place['Name'],
+                                      lower_left=Position(xpos, ypos), text=[text],
+                                      align=halign)
+                # TextElement.add_block(layer=self.Layer, asset=place['Name'],
+                #                      lower_left=box_position, int(place['Y'])), text=metadata[place['Metadata']][0])
+                # self.Layer.add_text_block(
+                #     asset=v.style, lower_left=Position(xpos, ypos), text=content, align=v.alignment.horizontal
+                # )
+                pass
+                # if len(text) == 1 and block_size.width > padded_box_width:
+                #     lines_to_wrap = math.ceil(block_size.width / padded_box_width)  # Round up to nearest int
+                #     content = TextBlock(v.content[0], wrap=lines_to_wrap).text
+                #     block_size = self.Layer.text_block_size(asset=v.style, text_block=content)
+                #     # For now we will just let any exessive line length in multi field Data Boxes
+                #     # overrun the title block boundary, since it is not so obvious how to recover automatically
+                #     # User correction is more likely to yield a satisfactory outcome
+                #     # They can either use more box fields, use shorter lines of text, change the size of
+                #     # the Title Block Pattern or just create one that is larger and use that
+                #     xpos = v.position.x + h_margin
+                #     ypos = v.position.y + v_margin + round((v.size.height - block_size.height) / 2, 2)
+                #     self.Layer.add_text_block(
+                #         asset=v.style, lower_left=Position(xpos, ypos), text=content, align=v.alignment.horizontal
+                #     )
                 # if place.Box in self.Databoxes:
                 #     # The Data Box was recorded with an initial text line, so this must be an additional line
                 #     try:
@@ -204,27 +252,3 @@ class Frame:
             # assert row, f"No Title Block Placement for frame: {self.Name}"
             # h_margin, v_margin = row
             #
-            # # Render all the box fields
-            # for k, v in self.Databoxes.items():
-            #     # compute lower left corner position
-            #     # Layer asset is composed from the data box style and its size group
-            #     block_size = self.Layer.text_block_size(asset=v.style, text_block=v.content)
-            #     # When there is a single line of text in a Data Box that is longer than the Box width,
-            #     # we will wrap it as necessary. Especially useful for a long title in the title box
-            #     # For multiple line boxes, this feature is not yet (or ever) supported
-            #     padded_box_width = round(v.size.width - h_margin * 2, 2)
-            #     content = v.content
-            #     if len(v.content) == 1 and block_size.width > padded_box_width:
-            #         lines_to_wrap = math.ceil(block_size.width / padded_box_width)  # Round up to nearest int
-            #         content = TextBlock(v.content[0], wrap=lines_to_wrap).text
-            #         block_size = self.Layer.text_block_size(asset=v.style, text_block=content)
-            #     # For now we will just let any exessive line length in multi field Data Boxes
-            #     # overrun the title block boundary, since it is not so obvious how to recover automatically
-            #     # User correction is more likely to yield a satisfactory outcome
-            #     # They can either use more box fields, use shorter lines of text, change the size of
-            #     # the Title Block Pattern or just create one that is larger and use that
-            #     xpos = v.position.x + h_margin
-            #     ypos = v.position.y + v_margin + round((v.size.height - block_size.height) / 2, 2)
-            #     self.Layer.add_text_block(
-            #         asset=v.style, lower_left=Position(xpos, ypos), text=content, align=v.alignment.horizontal
-            #     )
