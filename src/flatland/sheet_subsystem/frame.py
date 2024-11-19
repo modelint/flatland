@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Dict
 
 # Model Integration
 from pyral.relation import Relation
+from tabletqt.graphics.text_element import TextElement
 
 # Flatland
 from flatland.exceptions import FlatlandConfigException
@@ -88,58 +89,52 @@ class Frame:
         self.Title_block_pattern = result.body[0].get('Title_block_pattern')
 
         # If a Title Block Pattern is specified, let's gather all the Data Box content from the flatland database
-        # if self.Title_block_pattern:
-        #     self.logger.info('Assembling title block pattern on frame')
-        #     # Assemble a text block for each Data Box containing the Metadata Text Content
-        #     # We'll register that text block with the Layer for rendering
-        #     # Image (Resource) content is not supported within a Title Block Pattern, so we assume only text content
-        #     # If any non-text Resources were mistakenly specified by the user, we will ignore them
-        #     boxplace_t = fdb.MetaData.tables['Box Placement']  # Box positions and sizes, scaled for our Frame
-        #     databox_t = fdb.MetaData.tables['Data Box']  # Alignment and style of text within box
-        #     boxline_t = fdb.MetaData.tables['Box Text Line']  # Vertical ordering of metadata within a Data Box
-        #     # s = select (row criteria), p = project (columns), j = join, q = query
-        #     s = and_(
-        #         (boxplace_t.c.Frame == self.Name),
-        #         (boxplace_t.c.Sheet == self.Canvas.Sheet.Name),
-        #         (boxplace_t.c.Orientation == self.Orientation),
-        #         (boxplace_t.c['Title block pattern'] == self.Title_block_pattern),
-        #     )
-        #     p = [databox_t.c.ID, boxplace_t.c.X, boxplace_t.c.Y, boxplace_t.c.Width, boxplace_t.c.Height,
-        #          databox_t.c['H align'], databox_t.c['V align'], databox_t.c.Style,
-        #          boxline_t.c.Box, boxline_t.c.Order, boxline_t.c.Metadata]
-        #     j = databox_t.join(
-        #         boxplace_t,
-        #         and_((databox_t.c.Pattern == boxplace_t.c['Title block pattern']), (databox_t.c.ID == boxplace_t.c.Box))
-        #     ).join(
-        #         boxline_t,
-        #         and_((databox_t.c.Pattern == boxline_t.c['Title block pattern']), (databox_t.c.ID == boxline_t.c.Box))
-        #     )
-        #     q = select(p).select_from(j).where(s).order_by(boxplace_t.c.Box, boxline_t.c.Order)
-        #     rows = fdb.Connection.execute(q).fetchall()
-        #     # Populate our Databoxes dictionary from the row data we just fetched
-        #     for r in rows:
-        #         if r.Box in self.Databoxes:
-        #             # The Data Box was recorded with an initial text line, so this must be an additional line
-        #             try:
-        #                 # Extract the user supplied metadata value for this Data Box
-        #                 metadata_value = metadata[r.Metadata][0]
-        #             except KeyError:
-        #                 self.logger.error(f"No metadata value supplied for: {r.Metadata}")
-        #                 sys.exit(1)
-        #             self.Databoxes[r.Box].content.append(metadata_value)
-        #         else:
-        #             # Rows are ordered by Data Box, so if the box id is new, we create an initial dictioary entry
-        #             # With level 1
-        #             self.Databoxes[r.Box] = DataBox(
-        #                 content=[metadata[r.Metadata][0]],  # Text to render:  Leon Starr, mint.flatland.td.1, etc
-        #                 position=Position(r.X, r.Y),  # Lower left corner of the Data Box
-        #                 size=Rect_Size(height=r.Height, width=r.Width),
-        #                 style=r.Style,  # Style of text inside this box such as: Block body, Block title, etc
-        #                 metadata=r.Metadata,  # Name of data item: Author, Document ID, etc
-        #                 # Finally, how text is aligned inside this box
-        #                 alignment=Alignment(vertical=VertAlign[r['V align']], horizontal=HorizAlign[r['H align']])
-        #             )
-        #     # All done with the title block Metacontent. We'll unwind all this when we render to our Layer
+        if self.Title_block_pattern:
+            self.logger.info('Assembling title block pattern on frame')
+            # Assemble a text block for each Data Box containing the Metadata Text Content
+            # We'll register that text block with the Layer for rendering
+            # Image (Resource) content is not supported within a Title Block Pattern, so we assume only text content
+            # If any non-text Resources were mistakenly specified by the user, we will ignore them
+
+            Relation.join(db=app, rname1='Title_Block_Field', rname2='Box_Placement',
+                                   attrs={'Frame': 'Frame', 'Data_box': 'Box',
+                                          'Title_block_pattern': 'Title_block_pattern'}, svar_name='tbf_bp_join')
+            R = f"Sheet:<{self.Canvas.Sheet.Name}>, Orientation:<{self.Canvas.Orientation}>"
+            Relation.restrict(db=app, restriction=R, svar_name='tbf_pb_join')
+            result = Relation.join(db=app, rname2='Data_Box',
+                                   attrs={'Title_block_pattern': 'Pattern',  'Data_box': 'ID'},
+                                   svar_name='tbf_bp_join')
+            if not result.body:
+                pass
+            tb_field_placements = result.body
+
+            # Populate our Databoxes dictionary from the row data we just fetched
+            for place in tb_field_placements:
+                TextElement.add_line(layer=self.Layer, asset=place['Name'],
+                                     lower_left=Position(int(place['X']), int(place['Y'])), text=metadata[place['Metadata']][0])
+                pass
+                # if place.Box in self.Databoxes:
+                #     # The Data Box was recorded with an initial text line, so this must be an additional line
+                #     try:
+                #         # Extract the user supplied metadata value for this Data Box
+                #         metadata_value = metadata[r.Metadata][0]
+                #     except KeyError:
+                #         self.logger.error(f"No metadata value supplied for: {r.Metadata}")
+                #         sys.exit(1)
+                #     self.Databoxes[r.Box].content.append(metadata_value)
+            #     else:
+            #         # Rows are ordered by Data Box, so if the box id is new, we create an initial dictioary entry
+            #         # With level 1
+            #         self.Databoxes[r.Box] = DataBox(
+            #             content=[metadata[r.Metadata][0]],  # Text to render:  Leon Starr, mint.flatland.td.1, etc
+            #             position=Position(r.X, r.Y),  # Lower left corner of the Data Box
+            #             size=Rect_Size(height=r.Height, width=r.Width),
+            #             style=r.Style,  # Style of text inside this box such as: Block body, Block title, etc
+            #             metadata=r.Metadata,  # Name of data item: Author, Document ID, etc
+            #             # Finally, how text is aligned inside this box
+            #             alignment=Alignment(vertical=VertAlign[r['V align']], horizontal=HorizAlign[r['H align']])
+            #         )
+            # All done with the title block Metacontent. We'll unwind all this when we render to our Layer
         #
         # # Gather the Open Field content (other text and graphics scattered around the Frame)
         # self.logger.info('Assembling open fields on frame')
