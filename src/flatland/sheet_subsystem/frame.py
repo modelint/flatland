@@ -120,11 +120,19 @@ class Frame:
 
             # Populate our Databoxes dictionary from the row data we just fetched
             for place in tb_field_placements:
+                R = f"Title_block_pattern:<{self.Title_block_pattern}>, Data_box:<{place['Data_box']}>"
+                result = Relation.restrict(db=app, relation='Region', restriction=R)
+                num_regions = len(result.body) # TODO: Use summarize in db to do this instead of looping
                 box_position = Position(int(place['X']), int(place['Y']))
                 box_size = Rect_Size(height=float(place['Height']), width=float(place['Width']))
                 text = metadata[place['Metadata']][0]
                 block_size = TextElement.text_block_size(layer=self.Layer, asset=place['Name'], text_block=[text])
+
                 pass
+                line_spacing = 6  # TODO: This should be specified somewhere
+                v_adjust = 3  # TODO: This should be computed or specified somewhere
+                stack_order = int(place['Stack_order'])
+                stack_height = (stack_order - 1) * (line_spacing + block_size.height)
                 # compute lower left corner position
                 # Layer asset is composed from the data box style and its size group
                 # When there is a single line of text in a Data Box that is longer than the Box width,
@@ -132,7 +140,10 @@ class Frame:
                 # For multiple line boxes, this feature is not yet (or ever) supported
                 padded_box_width = round(box_size.width - h_margin * 2, 2)
                 xpos = box_position.x + h_margin
-                ypos = box_position.y + v_margin + round((box_size.height - block_size.height) / 2, 2)
+                if num_regions == 1:
+                    ypos = box_position.y + v_margin + round((box_size.height - block_size.height) / 2, 2) - v_adjust
+                else:
+                    ypos = box_position.y + v_margin + v_adjust + stack_height
                 halign = HorizAlign.LEFT
                 if place['H_align'] == 'RIGHT':
                     halign = HorizAlign.RIGHT
