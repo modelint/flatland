@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Dict
 from pyral.relation import Relation
 from tabletqt.graphics.text_element import TextElement
 from tabletqt.geometry_types import Position, Rect_Size, HorizAlign
+from pyral.rtypes import Attribute as pyral_Attribute
 
 # Flatland
 from flatland.exceptions import FlatlandConfigException
@@ -116,13 +117,17 @@ class Frame:
             result = Relation.restrict(db=app, relation='Scaled_Title_Block', restriction=R)
             h_margin = int(result.body[0]['Margin_h'])
             v_margin = int(result.body[0]['Margin_v'])
+
+            # Get number of regions per data boxx
+            result = Relation.summarizeby(db=app, relation='Region', attrs=['Data_box', 'Title_block_pattern'],
+                                          sum_attr=pyral_Attribute(name='Qty', type='int'),
+                                          svar_name="Number_of_regions")
+            num_regions = {int(r['Data_box']): int(r['Qty']) for r in result.body}
             pass
 
             # Populate our Databoxes dictionary from the row data we just fetched
             for place in tb_field_placements:
-                R = f"Title_block_pattern:<{self.Title_block_pattern}>, Data_box:<{place['Data_box']}>"
-                result = Relation.restrict(db=app, relation='Region', restriction=R)
-                num_regions = len(result.body) # TODO: Use summarize in db to do this instead of looping
+
                 box_position = Position(int(place['X']), int(place['Y']))
                 box_size = Rect_Size(height=float(place['Height']), width=float(place['Width']))
                 text = metadata[place['Metadata']][0]
@@ -140,7 +145,8 @@ class Frame:
                 # For multiple line boxes, this feature is not yet (or ever) supported
                 padded_box_width = round(box_size.width - h_margin * 2, 2)
                 xpos = box_position.x + h_margin
-                if num_regions == 1:
+                pass
+                if num_regions[int(place['Data_box'])] == 1:
                     ypos = box_position.y + v_margin + round((box_size.height - block_size.height) / 2, 2) - v_adjust
                 else:
                     ypos = box_position.y + v_margin + v_adjust + stack_height
