@@ -55,6 +55,8 @@ def parse(cl_input):
                         help='Print the current version of flatland')
     parser.add_argument('-G', '--grid', action='store_true',
                         help='Print the grid so you can diagnose output with row and column boundaries visible')
+    parser.add_argument('-RUL', '--rulers', action='store_true',
+                        help='Print the ruler grid so you check canvas positions')
     parser.add_argument('-R', '--rebuild', action='store_true',
                         help='Rebuild the flatland database. Necessary only if corrupted.')
     parser.add_argument('-COLORS', '--colors', action='store_true',
@@ -146,6 +148,7 @@ def main():
                 show_grid=args.grid,
                 nodes_only=args.nodes_only,
                 no_color=args.no_color,
+                show_rulers=args.rulers
             )
         elif mtype == '.xsm':
             pass

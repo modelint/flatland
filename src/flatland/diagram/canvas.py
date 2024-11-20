@@ -49,7 +49,7 @@ class Canvas:
     """
 
     def __init__(self, diagram_type: str, presentation: str, notation: str, standard_sheet_name: str, orientation: str,
-                 diagram_padding: Dict[str, int], show_grid: bool, color: str,
+                 diagram_padding: Dict[str, int], show_grid: bool, show_rulers: bool, color: str,
                  no_color: bool, drawoutput: Path):
         """
         Constructor
@@ -59,10 +59,10 @@ class Canvas:
         :param notation: A supported notation such as xUML, Starr, Shlaer-Mellor
         :param standard_sheet_name: A US or international printer sheet size such as A1, tabloid, letter
         :param orientation: portrait or landscape
-        :param drawoutput: A standard IO binary object obtained from sys
+        :param drawoutput: Path of the PDF to be generated
         """
         # For diagnostics
-        self.grid = None
+        self.show_rulers = show_rulers
         self.presentation = presentation
         # ---
 
@@ -90,22 +90,22 @@ class Canvas:
 
         # Create the one and only Tablet instance and initialize it with the Presentation on the diagram
         # Layer
+        background_color = 'white' if no_color else color
+        dtype = f"{notation} {diagram_type} diagram"
         try:
             self.Tablet = Tablet(
                 app=app,
                 size=self.Size, output_file=drawoutput,
                 # Drawing types include notation such as 'xUML class diagram' since notation affects the choice
                 # of shape and text styles.  An xUML class diagram association class stem is dashed, for example.
-                drawing_type=' '.join([notation, diagram_type, 'diagram']), presentation=presentation,
-                layer='diagram'
+                drawing_type=dtype,
+                presentation=presentation,
+                layer='diagram',
+                background_color=background_color
             )
         except NonSystemInitialLayer:
             self.logger.exception("Initial layer [diagram] not found in Tablet layer order")
             sys.exit(1)
-
-        if not no_color:
-            # The user has not disabled the colored background on the command line
-            self.Tablet.add_layer(name="sheet", presentation=presentation, drawing_type="background")
 
         # self.Diagram = Diagram(
         #     self, diagram_type_name=diagram_type, layer=self.Tablet.layers['diagram'],
@@ -165,7 +165,8 @@ class Canvas:
         # self.Diagram.render()
 
         # Draw all added content and output a PDF using whatever graphics library is configured in the Tablet
-        self.draw_grid()
+        if self.show_rulers:
+            self.draw_grid()
         self.Tablet.render()
 
     def __repr__(self):

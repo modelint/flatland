@@ -28,26 +28,40 @@ from flatland.sheet_subsystem.frame import Frame
 # BranchLeaves = namedtuple('BranchLeaves', 'leaf_stems local_graft next_graft floating_leaf_stem')
 
 class XumlClassDiagram:
+    """
+    Draws an Executable UML Class Diagram
+    """
 
     def __init__(self, xuml_model_path: Path, flatland_layout_path: Path, diagram_file_path: Path,
-                 show_grid: bool, nodes_only: bool, no_color: bool):
-        """Constructor"""
+                 show_grid: bool, show_rulers: bool, nodes_only: bool, no_color: bool):
+        """
+        :param xuml_model_path: Path to the model (.xcm) file
+        :param flatland_layout_path: Path to the layotu (.mls) file
+        :param diagram_file_path: Path of the generated PDF
+        :param show_grid: If true, a grid is drawn showing node rows and columns
+        :param nodes_only: If true, only nodes are drawn, no connectors
+        :param no_color: If true, the canvas background will be white, overriding any specified background color
+
+        """
         self.logger = logging.getLogger(__name__)
         self.xuml_model_path = xuml_model_path
         self.flatland_layout_path = flatland_layout_path
         self.diagram_file_path = diagram_file_path
         self.show_grid = show_grid
+        self.show_rulers = show_rulers
         self.no_color = no_color
 
+        # First we parse the model and layout files
+
+        # Model parse
         self.logger.info("Parsing the model")
-        # Parse the model
         try:
             self.model = ClassModelParser.parse_file(file_input=self.xuml_model_path, debug=False)
         except ModelParseError as e:
             sys.exit(e)
 
+        # Layout parse
         self.logger.info("Parsing the layout")
-        # Parse the layout
         try:
             self.layout = LayoutParser.parse_file(file_input=self.flatland_layout_path, debug=False)
         except LayoutParseError as e:
@@ -65,6 +79,7 @@ class XumlClassDiagram:
                 canvas=self.flatland_canvas, metadata=self.model.metadata
             )
 
+        # Render the Canvas so it can be displayed and output a PDF
         self.flatland_canvas.render()
 
     def create_canvas(self) -> Canvas:
@@ -80,6 +95,7 @@ class XumlClassDiagram:
             drawoutput=self.diagram_file_path,
             show_grid=self.show_grid,
             no_color=self.no_color,
+            show_rulers=self.show_rulers,
             color=lspec.color,
         )
 
