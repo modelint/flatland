@@ -100,7 +100,10 @@ class FlatlandSchema:
                 # TODO: Make use of TclRAL tuple data type to combine the above attributes
                 # TODO: to match the model attributes
             ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'X', 'Y']}),
-            'Metadata_Item': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
+            'Metadata_Item': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Media', type='string'),
+            ], ids={1: ['Name']}),
             'Partitioned_Box': Header(attrs=[
                 Attribute(name='ID', type='int'),
                 Attribute(name='Pattern', type='string'),

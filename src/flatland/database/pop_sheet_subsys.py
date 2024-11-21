@@ -78,8 +78,8 @@ class SheetSubsysDB:
                         tbp = TitleBlockPlacementInstance(Frame=frame_name, Sheet=s, Orientation=o,
                                                           Title_block_pattern=pattern_name,
                                                           Sheet_size_group=sg_name,
-                                                          X=layout['title block placement']['X'],
-                                                          Y=layout['title block placement']['Y'])
+                                                          X=layout['title block placement']['x'],
+                                                          Y=layout['title block placement']['y'])
                         Relvar.insert(db=app, relvar='Title_Block_Placement', tuples=[tbp], tr=tr_bp)
 
                         # Determine the Envelope's Box Placement
@@ -93,8 +93,8 @@ class SheetSubsysDB:
                         # since the Envelope spans the entire title block
                         env_bp = BoxPlacementInstance(Frame=frame_name, Sheet=s, Orientation=o, Box=1,
                                                       Title_block_pattern=pattern_name,
-                                                      X=layout['title block placement']['X'],
-                                                      Y=layout['title block placement']['Y'],
+                                                      X=layout['title block placement']['x'],
+                                                      Y=layout['title block placement']['y'],
                                                       Height=env_height, Width=env_width)
                         # The remaining Box Placements are subdivisions of the Envelope and require
                         # some computation. We'll need to maintain a dictionary as we descend through
@@ -187,8 +187,8 @@ class SheetSubsysDB:
                     for mdata, fld in fr_spec['fields'].items():
                         free_fields.append(
                             FreeFieldInstance(Metadata=mdata, Frame=frame_name, Sheet=sheet, Orientation=orient,
-                                              X=fld['X'], Y=fld['Y'],
-                                              Max_width=fld['Max width'], Max_height=fld['Max height'])
+                                              X=fld['x'], Y=fld['y'],
+                                              Max_width=fld['max width'], Max_height=fld['max height'])
                         )
 
         # Populate all Free Fields
@@ -232,18 +232,18 @@ class SheetSubsysDB:
                 # Populate the Dividers
                 dividers = []
                 for i, c in v['compartment boxes'].items():
-                    (above, below) = (c.get('Up'), c.get('Down')) if c['Orientation'] == 'H' else (
-                        c.get('Right'), c.get('Left'))
+                    (above, below) = (c.get('up'), c.get('down')) if c['orientation'] == 'H' else (
+                        c.get('right'), c.get('left'))
                     dividers.append(
                         DividerInstance(Box_above=above, Box_below=below, Pattern=name, Compartment_box=i,
-                                        Partition_distance=c['Distance'], Partition_orientation=c['Orientation'])
+                                        Partition_distance=c['distance'], Partition_orientation=c['orientation'])
                     )
                 Relvar.insert(db=app, relvar='Divider', tuples=dividers, tr=tr_name)
 
                 # Populate the Data Boxes
                 dboxes = [
-                    DataBoxInstance(ID=i, Name=d['Name'], Pattern=name,
-                                    V_align=d['V align'], H_align=d['H align']) for i, d in v['data boxes'].items()
+                    DataBoxInstance(ID=i, Name=d['name'], Pattern=name,
+                                    V_align=d['v align'], H_align=d['h align']) for i, d in v['data boxes'].items()
                 ]
                 Relvar.insert(db=app, relvar='Data_Box', tuples=dboxes, tr=tr_name)
 
@@ -254,7 +254,7 @@ class SheetSubsysDB:
                 regions = [
                     RegionInstance(Data_box=i, Title_block_pattern=name, Stack_order=r)
                     for i, d in v['data boxes'].items()
-                    for r in range(1, d['Regions'] + 1)
+                    for r in range(1, d['regions'] + 1)
                 ]
                 Relvar.insert(db=app, relvar='Region', tuples=regions, tr=tr_name)
 
@@ -297,6 +297,11 @@ class SheetSubsysDB:
         """
         Populate all Metadata Items
         """
+        # Split image/text groups of names into a set of instance tuples
         metadata_items = ConfigDB.item_data['metadata']
-        mditem_instances = [MetadataItemInstance(Name=n) for n in metadata_items]
+        mditem_instances = [
+            MetadataItemInstance(Name=n, Media=m)
+            for m, i in metadata_items.items()   # 'text': {'Author', 'Version', ... }, 'image': {'logo', ...}
+            for n in i  # item names are:  {'Author', 'Version', ...}
+        ]
         Relvar.insert(db=app, relvar='Metadata_Item', tuples=mditem_instances)

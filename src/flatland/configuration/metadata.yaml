@@ -4,14 +4,17 @@
 # These are positioned within Frames in the frame.yaml file
 # Their values are specified in Flatland .mls (model layout sheet) files
 
-- Organization
-- Creation date
-- Modification date
-- Author
-- Reviewer
-- Version
-- Copyright notice
-- Copyright
-- Organization logo
-- Title
-- Document ID
+text: # Text item
+  - Organization
+  - Creation date
+  - Modification date
+  - Author
+  - Reviewer
+  - Version
+  - Copyright
+  - Title
+  - Document ID
+
+image: # Graphic item such as a *.png file
+  - Organization logo
+  - Copyright notice

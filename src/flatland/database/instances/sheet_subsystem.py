@@ -57,6 +57,7 @@ class FreeFieldInstance(NamedTuple):
 
 class MetadataItemInstance(NamedTuple):
     Name: str
+    Media: str
 
 class RegionInstance(NamedTuple):
     Data_box: int

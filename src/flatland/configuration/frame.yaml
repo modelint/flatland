@@ -7,26 +7,26 @@ Model Integration Snippet: # Frame name
   letter-landscape: # name-orientation   (name defined in sheets.yaml, orientation either portrait or landscape)
     fields:  # positioned freely on sheet outside of any title block (Free Field)
       # Each key is a Metadata Item defined in metadata.yaml
-      Title: { X: 8, Y: 202, Max width: 254, Max height: 13 }
-      Copyright notice: { X: 8, Y: 31, Max width: 254, Max height: 57 }
-      Organization logo: { X: 5, Y: 4, Max width: 180, Max height: 24 }
-      Author: { X: 280, Y: 22, Max width: 20, Max height: 5 }
-      Modification date: { X: 230, Y: 18, Max width: 20, Max height: 5 }
-      Document ID: { X: 230, Y: 14, Max width: 20, Max height: 5 }
-      Version: { X: 230, Y: 10, Max width: 20, Max height: 5 }
+      Title: { x: 8, y: 202, max width: 254, max height: 13 }
+      Copyright notice: { x: 8, y: 31, max width: 254, max height: 57 }
+      Organization logo: { x: 5, y: 4, max width: 180, max height: 24 }
+      Author: { x: 280, y: 22, max width: 20, max height: 5 }
+      Modification date: { x: 230, y: 18, max width: 20, max height: 5 }
+      Document ID: { x: 230, y: 14, max width: 20, max height: 5 }
+      Version: { x: 230, y: 10, max width: 20, max height: 5 }
 
   letter-portrait:
     fields:
-      Title: { X: 8, Y: 265, Max width: 254, Max height: 13 }
-      Copyright notice: { X: 10, Y: 31, Max width: 254, Max height: 57 }
-      Organization logo: { X: 8, Y: 5, Max width: 180, Max height: 24 }
-      Author: { X: 170, Y: 22, Max width: 20, Max height: 5 }
-      Modification date: { X: 170, Y: 18, Max width: 20, Max height: 5 }
-      Document ID: { X: 170, Y: 14, Max width: 20, Max height: 5 }
-      Version: { X: 170, Y: 10, Max width: 20, Max height: 5 }
+      Title: { x: 8, y: 265, max width: 254, max height: 13 }
+      Copyright notice: { x: 10, y: 31, max width: 254, max height: 57 }
+      Organization logo: { x: 8, y: 5, max width: 180, max height: 24 }
+      Author: { x: 170, y: 22, max width: 20, max height: 5 }
+      Modification date: { x: 170, y: 18, max width: 20, max height: 5 }
+      Document ID: { x: 170, y: 14, max width: 20, max height: 5 }
+      Version: { x: 170, y: 10, max width: 20, max height: 5 }
 
 Model Integration Diagram:
-# Frame for medium to large diagrams with a Title Block in the lower right corner
+# Frame for medium ot large diagrams with a Title Block in the lower right corner
 
   # All Fitted Frames below will use this Title Block Pattern
   title-block-pattern:
@@ -34,69 +34,70 @@ Model Integration Diagram:
 
     # Each key below is the Name of a data box defined in titleblock.yaml
     # Each value is one or more Metadata Items defined in metadata.yaml
-    - Bottom:
+    - bottom:
         - Organization  # Put the org name in Data Box 3
-      Main:
+      main:
         - Title
-      Rtop:
+      rtop:
         - Author
         - Modification date  # Stack these two in Data Box 6 with Author on top and Modification date underneath
-      Rbottom:
+      rbottom:
         - Document ID
         - Version
 
   tabloid-landscape:
-    title block placement: { X: 275, Y: 9 }
+    title block placement: { x: 275, y: 9 }
     fields:  # Note that the Title is displayed both in a Data Box and in a Free Field for easy visibility
-      Title: { X: 8, Y: 264, Max width: 254, Max height: 13 }
-      Copyright notice: { X: 8, Y: 28, Max width: 254, Max height: 57 }
-      Organization logo: { X: 8, Y: 9, Max width: 180, Max height: 24 }
+      Title: { x: 8, y: 264, max width: 254, max height: 13 }
+      Copyright notice: { x: 8, y: 28, max width: 254, max height: 57 }
+      Organization logo: { x: 8, y: 9, max width: 180, max height: 24 }
 
   tabloid-portrait:
-    title block placement: { X: 150, Y: 9 }
+    title block placement: { x: 150, y: 9 }
     fields:
-      Title: { X: 10, Y: 415, Max width: 254, Max height: 13 }
-      Copyright notice: { X: 8, Y: 25, Max width: 254, Max height: 57 }
-      Organization logo: { X: 5, Y: 10, Max width: 180, Max height: 24 }
+      Title: { x: 10, y: 415, max width: 254, max height: 13 }
+      Copyright notice: { x: 8, y: 25, max width: 254, max height: 57 }
+      Organization logo: { x: 5, y: 10, max width: 180, max height: 24 }
 
   C-landscape:
-    title block placement: { X: 460, Y: 15 }
+    title block placement: { x: 1150, y: 50 }
     fields:
-      Title: { X: 15, Y: 440, Max width: 254, Max height: 25 }
-      Copyright notice: { X: 157, Y: 30, Max width: 254, Max height: 57 }
-      Organization logo: { X: 15, Y: 30, Max width: 191, Max height: 25 }
+      Title: { x: 15, y: 440, max width: 254, max height: 25 }
+      Copyright notice: { x: 157, y: 30, max width: 254, max height: 57 }
+      Organization logo: { x: 15, y: 30, max width: 191, max height: 25 }
 
   C-portrait:
-    title block placement: { X: 300, Y: 15 }
+    title block placement: { x: 700, y: 25 }
     fields:
-      Title: { X: 18, Y: 584, Max width: 254, Max height: 25 }
-      Copyright notice: { X: 400, Y: 38, Max width: 254, Max height: 57 }
-      Organization logo: { X: 19, Y: 18, Max width: 191, Max height: 25 }
+      Title: { x: 18, y: 584, max width: 254, max height: 25 }
+      Copyright notice: { x: 400, y: 38, max width: 254, max height: 57 }
+      Organization logo: { x: 19, y: 18, max width: 191, max height: 25 }
 
   D-landscape:
-    title block placement: { X: 753, Y: 38 }
+    title block placement: { x: 1700, y: 0 }
+    # title block placement: { x: 753, y: 38 }
     fields:
-      Title: { X: 19, Y: 584, Max width: 254, Max height: 25 }
-      Copyright notice: { X: 400, Y: 38, Max width: 254, Max height: 57 }
-      Organization logo: { X: 19, Y: 38, Max width: 191, Max height: 25 }
+      Title: { x: 19, y: 584, max width: 254, max height: 25 }
+      Copyright notice: { x: 400, y: 38, max width: 254, max height: 57 }
+      Organization logo: { x: 19, y: 38, max width: 191, max height: 25 }
 
   D-portrait:
-    title block placement: { X: 553, Y: 38 }
+    title block placement: { x: 553, y: 38 }
     fields:
-      Title: { X: 18, Y: 584, Max width: 254, Max height: 25 }
-      Copyright notice: { X: 400, Y: 38, Max width: 254, Max height: 57 }
-      Organization logo: { X: 19, Y: 18, Max width: 191, Max height: 25 }
+      Title: { x: 18, y: 584, max width: 254, max height: 25 }
+      Copyright notice: { x: 400, y: 38, max width: 254, max height: 57 }
+      Organization logo: { x: 19, y: 18, max width: 191, max height: 25 }
 
   E-landscape:
-    title block placement: { X: 1025, Y: 38 }
+    title block placement: { x: 1025, y: 38 }
     fields:
-      Title: { X: 30, Y: 884, Max width: 254, Max height: 25 }
-      Copyright notice: { X: 500, Y: 38, Max width: 254, Max height: 57 }
-      Organization logo: { X: 30, Y: 38, Max width: 191, Max height: 25 }
+      Title: { x: 30, y: 884, max width: 254, max height: 25 }
+      Copyright notice: { x: 500, y: 38, max width: 254, max height: 57 }
+      Organization logo: { x: 30, y: 38, max width: 191, max height: 25 }
 
   E-portrait:
-    title block placement: { X: 740, Y: 25 }
+    title block placement: { x: 740, y: 25 }
     fields:
-      Title: { X: 30, Y: 1180, Max width: 254, Max height: 25 }
-      Copyright notice: { X: 220, Y: 30, Max width: 254, Max height: 57 }
-      Organization logo: { X: 30, Y: 30, Max width: 191, Max height: 25 }
+      Title: { x: 30, y: 1180, max width: 254, max height: 25 }
+      Copyright notice: { x: 220, y: 30, max width: 254, max height: 57 }
+      Organization logo: { x: 30, y: 30, max width: 191, max height: 25 }

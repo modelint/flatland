@@ -22,7 +22,6 @@ from flatland.text.text_block import TextBlock
 from flatland.sheet_subsystem.resource import resource_locator
 from flatland.sheet_subsystem.titleblock_placement import draw_titleblock
 
-
 if TYPE_CHECKING:
     from flatland.diagram.canvas import Canvas
 
@@ -61,7 +60,7 @@ class Frame:
         self.Canvas = canvas
         self.Orientation = canvas.Orientation
         self.metadata = metadata
-        self.Open_fields = []
+        self.Free_fields = []
         self.Databoxes = {}
 
         # Create a Layer where we'll draw all of the Frame contents
@@ -98,17 +97,19 @@ class Frame:
             # Image (Resource) content is not supported within a Title Block Pattern, so we assume only text content
             # If any non-text Resources were mistakenly specified by the user, we will ignore them
 
+            # Join Title Block Field and Data Box classes to get the Data Box dimensions and position for each
+            # Metadata Item to be displayed in the title block
             Relation.join(db=app, rname1='Title_Block_Field', rname2='Box_Placement',
-                                   attrs={'Frame': 'Frame', 'Data_box': 'Box',
-                                          'Title_block_pattern': 'Title_block_pattern'}, svar_name='tbf_bp_join')
+                          attrs={'Frame': 'Frame', 'Data_box': 'Box',
+                                 'Title_block_pattern': 'Title_block_pattern'}, svar_name='tbf_bp_join')
             R = f"Sheet:<{self.Canvas.Sheet.Name}>, Orientation:<{self.Canvas.Orientation}>"
             Relation.restrict(db=app, restriction=R, svar_name='tbf_pb_join')
             result = Relation.join(db=app, rname2='Data_Box',
-                                   attrs={'Title_block_pattern': 'Pattern',  'Data_box': 'ID'},
+                                   attrs={'Title_block_pattern': 'Pattern', 'Data_box': 'ID'},
                                    svar_name='tbf_bp_join')
             if not result.body:
                 pass
-            tb_field_placements = result.body
+            tb_field_placements = result.body # Each metadata item and its Data Box position and size
 
             # Get the margins to pad the Data Box content
             # The same margins are applied to each Data Box in the same Scaled Title Block
@@ -118,22 +119,21 @@ class Frame:
             h_margin = int(result.body[0]['Margin_h'])
             v_margin = int(result.body[0]['Margin_v'])
 
-            # Get number of regions per data boxx
+            # Get number of Regions per Data Box
             result = Relation.summarizeby(db=app, relation='Region', attrs=['Data_box', 'Title_block_pattern'],
                                           sum_attr=pyral_Attribute(name='Qty', type='int'),
                                           svar_name="Number_of_regions")
             num_regions = {int(r['Data_box']): int(r['Qty']) for r in result.body}
-            pass
 
-            # Populate our Databoxes dictionary from the row data we just fetched
+            # Add a text block to the canvas for each Metadata Item in the title block
             for place in tb_field_placements:
 
                 box_position = Position(int(place['X']), int(place['Y']))
                 box_size = Rect_Size(height=float(place['Height']), width=float(place['Width']))
-                text = metadata[place['Metadata']][0]
+                text = metadata[place['Metadata']][0]  # Metadata Item to display
+                # Determine rectangular area required by the text
                 block_size = TextElement.text_block_size(layer=self.Layer, asset=place['Name'], text_block=[text])
 
-                pass
                 line_spacing = 6  # TODO: This should be specified somewhere
                 v_adjust = 3  # TODO: This should be computed or specified somewhere
                 stack_order = int(place['Stack_order'])
@@ -158,66 +158,25 @@ class Frame:
                 TextElement.add_block(layer=self.Layer, asset=place['Name'],
                                       lower_left=Position(xpos, ypos), text=[text],
                                       align=halign)
-                # TextElement.add_block(layer=self.Layer, asset=place['Name'],
-                #                      lower_left=box_position, int(place['Y'])), text=metadata[place['Metadata']][0])
-                # self.Layer.add_text_block(
-                #     asset=v.style, lower_left=Position(xpos, ypos), text=content, align=v.alignment.horizontal
-                # )
-                pass
-                # if len(text) == 1 and block_size.width > padded_box_width:
-                #     lines_to_wrap = math.ceil(block_size.width / padded_box_width)  # Round up to nearest int
-                #     content = TextBlock(v.content[0], wrap=lines_to_wrap).text
-                #     block_size = self.Layer.text_block_size(asset=v.style, text_block=content)
-                #     # For now we will just let any exessive line length in multi field Data Boxes
-                #     # overrun the title block boundary, since it is not so obvious how to recover automatically
-                #     # User correction is more likely to yield a satisfactory outcome
-                #     # They can either use more box fields, use shorter lines of text, change the size of
-                #     # the Title Block Pattern or just create one that is larger and use that
-                #     xpos = v.position.x + h_margin
-                #     ypos = v.position.y + v_margin + round((v.size.height - block_size.height) / 2, 2)
-                #     self.Layer.add_text_block(
-                #         asset=v.style, lower_left=Position(xpos, ypos), text=content, align=v.alignment.horizontal
-                #     )
-                # if place.Box in self.Databoxes:
-                #     # The Data Box was recorded with an initial text line, so this must be an additional line
-                #     try:
-                #         # Extract the user supplied metadata value for this Data Box
-                #         metadata_value = metadata[r.Metadata][0]
-                #     except KeyError:
-                #         self.logger.error(f"No metadata value supplied for: {r.Metadata}")
-                #         sys.exit(1)
-                #     self.Databoxes[r.Box].content.append(metadata_value)
-            #     else:
-            #         # Rows are ordered by Data Box, so if the box id is new, we create an initial dictioary entry
-            #         # With level 1
-            #         self.Databoxes[r.Box] = DataBox(
-            #             content=[metadata[r.Metadata][0]],  # Text to render:  Leon Starr, mint.flatland.td.1, etc
-            #             position=Position(r.X, r.Y),  # Lower left corner of the Data Box
-            #             size=Rect_Size(height=r.Height, width=r.Width),
-            #             style=r.Style,  # Style of text inside this box such as: Block body, Block title, etc
-            #             metadata=r.Metadata,  # Name of data item: Author, Document ID, etc
-            #             # Finally, how text is aligned inside this box
-            #             alignment=Alignment(vertical=VertAlign[r['V align']], horizontal=HorizAlign[r['H align']])
-            #         )
-            # All done with the title block Metacontent. We'll unwind all this when we render to our Layer
+
+        # Add a text block to the canvas for any Free Field outside of the title block
         #
-        # # Gather the Open Field content (other text and graphics scattered around the Frame)
-        # self.logger.info('Assembling open fields on frame')
-        # open_field_t = fdb.MetaData.tables['Open Field']
-        # s = and_(
-        #     (open_field_t.c['Frame'] == self.Name),
-        #     (open_field_t.c['Sheet'] == self.Canvas.Sheet.Name),
-        #     (open_field_t.c['Orientation'] == self.Orientation),
-        # )
-        # q = select([open_field_t]).where(s)
-        # rows = fdb.Connection.execute(q).fetchall()
-        # for r in rows:
-        #     p = Position(round(r['x position'] * points_in_mm, 2), round(r['y position'] * points_in_mm, 2))
-        #     ma = Rect_Size(round(r['max height'] * points_in_mm, 2), round(r['max width'] * points_in_mm, 2))
-        #     self.Open_fields.append(
-        #         FieldPlacement(metadata=r.Metadata, position=p, max_area=ma)
-        #     )
-        # All done with the Open Fields. Much easier to compute than Boxed Fields!
+        # Gather the Free Field content (other text and graphics scattered around the Frame)
+        self.logger.info('Assembling open fields on frame')
+        R = f"Frame:<{self.Name}>, Sheet:<{self.Canvas.Sheet.Name}>, Orientation:<{self.Orientation}>"
+        result = Relation.restrict(db=app, relation='Free_Field', restriction=R)
+        free_fields = result.body
+
+        for f in free_fields:
+            p = Position(int(f['X']), int(f['Y']))
+            ma = Rect_Size(int(f['Max_height']), int(f['Max_width']))
+
+            # NOT SURE why these two lines are scaling by mm???
+            # p = Position(round(int(f['X']) * points_in_mm, 2), round(int(f['Y']) * points_in_mm, 2))
+            # ma = Rect_Size(round(f['max height'] * points_in_mm, 2), round(f['max width'] * points_in_mm, 2))
+            self.Free_fields.append(
+                FieldPlacement(metadata=f['Metadata'], position=p, max_area=ma)
+            )
 
         # Now let's register all text and graphics for everything in our Frame on its Layer
         self.render()
@@ -226,30 +185,29 @@ class Frame:
         """Draw the Frame on its Layer"""
         self.logger.info('Rendering frame')
 
-        # Fill each open field
-        # for f in self.Open_fields:
-        #     asset = 'Open ' + f.metadata.lower()
-        #     content, isresource = self.metadata.get(f.metadata, (None, None))
-        #     # If there is no data supplied to fill in the field, just leave it blank and move on
-        #     if content and isresource:
-        #         # Key into resource locator using this size and orientation delimited by an underscore
-        #         rsize = '_'.join([content, self.Canvas.Sheet.Size_group, self.Canvas.Orientation])
-        #         # Get the full path to the resource (image) using the rsize
-        #         rloc = resource_locator.get(rsize)
-        #         if rloc:
-        #             self.Layer.add_image(resource_path=rloc, lower_left=f.position, size=f.max_area)
-        #         else:
-        #             self.logger.warning(
-        #                 f"Couldn't find file for: [{content}] in your flatland resource directory. "
-        #                 f"Default resource location is in ~/.flatland"
-        #             )
-        #     elif content:  # Text content
-        #         # Content is a line of text to print directly
-        #         self.Layer.add_text_line(
-        #             asset=asset,
-        #             lower_left=f.position,
-        #             text=content,
-        #         )
+        for f in self.Free_fields:
+            asset = 'Free ' + f.metadata.lower()
+            content, isresource = self.metadata.get(f.metadata, (None, None))
+            # If there is no data supplied to fill in the field, just leave it blank and move on
+            if content and isresource:
+                # Key into resource locator using this size and orientation delimited by an underscore
+                rsize = '_'.join([content, self.Canvas.Sheet.Size_group, self.Canvas.Orientation])
+                # Get the full path to the resource (image) using the rsize
+                rloc = resource_locator.get(rsize)
+                if rloc:
+                    self.Layer.add_image(resource_path=rloc, lower_left=f.position, size=f.max_area)
+                else:
+                    self.logger.warning(
+                        f"Couldn't find file for: [{content}] in your flatland resource directory. "
+                        f"Default resource location is in ~/.flatland"
+                    )
+            elif content:  # Text content
+                # Content is a line of text to print directly
+                self.Layer.add_text_line(
+                    asset=asset,
+                    lower_left=f.position,
+                    text=content,
+                )
 
         if self.Title_block_pattern:
             # Draw the title block box borders

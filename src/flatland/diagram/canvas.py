@@ -91,7 +91,7 @@ class Canvas:
         # Create the one and only Tablet instance and initialize it with the Presentation on the diagram
         # Layer
         background_color = 'white' if no_color else color
-        dtype = f"{notation} {diagram_type} diagram"
+        dtype = f"{notation.title()} {diagram_type.title()} Diagram"
         try:
             self.Tablet = Tablet(
                 app=app,
