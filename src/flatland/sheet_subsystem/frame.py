@@ -70,23 +70,22 @@ class Frame:
         # Whereas a diagram's drawing type is something like 'xUML Class Diagram',
         # the Frame's drawing type name systematically incorporates both purpose and Sheet Size Group
         # That's because a model element like a class or state is typically drawn the same size regardless
-        # of sheet size. Frame's, on the other hand are more likely to change proportions with large sheet size
-        # differences.  That said, there is nothing preventing us from doing the same for diagram layers on a case by
+        # of sheet size. Frames, on the other hand are more likely to change proportions with large sheet size
+        # differences. That said, there is nothing preventing us from doing the same for diagram layers on a case by
         # case basis. So an 'xUML Class Diagram tiny' could certainly be defined by us or a user in the future
         self.Layer = self.Canvas.Tablet.add_layer(
             name='frame', presentation=presentation, drawing_type=drawing_type_name
-        )  # We're gonna be drawing metadata and title block borders all over this thing.
+        )  # On this layer we'll draw metadata and title block borders. No diagram content!
 
-        # If there is a title block cplace specified for this Frame, get the name of the pattern
+        # Check to see if there is a Title Block Pattern used in this Frame
         R = f"Frame:<{self.Name}>"
         result = Relation.restrict(db=app, relation='Framed_Title_Block', restriction=R)
-        if not result.body:
-            emsg = f"Framed_Title_Block {self.Name} not in database"
-            self.logger.error(emsg)
-            raise FlatlandConfigException(emsg)
-
-        # This Fitted Frame may or may not specify a Title Block Pattern
-        self.Title_block_pattern = result.body[0].get('Title_block_pattern')
+        if result.body:
+            # This Fitted Frame may or may not specify a Title Block Pattern
+            self.Title_block_pattern = result.body[0].get('Title_block_pattern')
+        else:
+            self.Title_block_pattern = None
+            self.logger.info(f"No title block defined for frame: self.Name")
 
         # If a Title Block Pattern is specified, let's gather all the Data Box content from the flatland database
         if self.Title_block_pattern:
