@@ -2,8 +2,8 @@ metadata
     Title : Flatland Sheet Subsystem Class Diagram
     Author : Leon Starr
     Document ID : mint.flatland.td.6a
-    Version : 0.9.5
-    Modification date : November 14, 2024
+    Version : 0.9.6
+    Modification date : November 22, 2024
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
     Organization logo > mint
@@ -77,6 +77,7 @@ attributes
 class Metadata Item
 attributes
     Name : Metadata Name {I}
+    Media : Text_Image
 --
 class Partitioned Box
 attributes
