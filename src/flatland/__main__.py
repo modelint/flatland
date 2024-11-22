@@ -131,7 +131,7 @@ def main():
         # Generate the xuml class diagram (we don't do anything with the returned variable yet)
         mtype = model_path.suffix
         if mtype == '.xcm':
-            class_diagram = XumlClassDiagram(
+            XumlClassDiagram(
                 xuml_model_path=model_path,
                 flatland_layout_path=layout_path,
                 diagram_file_path=diagram_path,

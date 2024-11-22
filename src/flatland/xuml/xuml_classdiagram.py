@@ -32,7 +32,8 @@ class XumlClassDiagram:
     Draws an Executable UML Class Diagram
     """
 
-    def __init__(self, xuml_model_path: Path, flatland_layout_path: Path, diagram_file_path: Path,
+    @classmethod
+    def __init__(cls, xuml_model_path: Path, flatland_layout_path: Path, diagram_file_path: Path,
                  show_grid: bool, show_rulers: bool, nodes_only: bool, no_color: bool):
         """
         :param xuml_model_path: Path to the model (.xcm) file
@@ -43,48 +44,49 @@ class XumlClassDiagram:
         :param no_color: If true, the canvas background will be white, overriding any specified background color
 
         """
-        self.logger = logging.getLogger(__name__)
-        self.xuml_model_path = xuml_model_path
-        self.flatland_layout_path = flatland_layout_path
-        self.diagram_file_path = diagram_file_path
-        self.show_grid = show_grid
-        self.show_rulers = show_rulers
-        self.no_color = no_color
+        cls.logger = logging.getLogger(__name__)
+        cls.xuml_model_path = xuml_model_path
+        cls.flatland_layout_path = flatland_layout_path
+        cls.diagram_file_path = diagram_file_path
+        cls.show_grid = show_grid
+        cls.show_rulers = show_rulers
+        cls.no_color = no_color
 
-        # First we parse the model and layout files
+        # First we parse both the model and layout files
 
-        # Model parse
-        self.logger.info("Parsing the model")
+        # Model
+        cls.logger.info("Parsing the model")
         try:
-            self.model = ClassModelParser.parse_file(file_input=self.xuml_model_path, debug=False)
+            cls.model = ClassModelParser.parse_file(file_input=cls.xuml_model_path, debug=False)
         except ModelParseError as e:
             sys.exit(e)
 
-        # Layout parse
-        self.logger.info("Parsing the layout")
+        # Layout
+        cls.logger.info("Parsing the layout")
         try:
-            self.layout = LayoutParser.parse_file(file_input=self.flatland_layout_path, debug=False)
+            cls.layout = LayoutParser.parse_file(file_input=cls.flatland_layout_path, debug=False)
         except LayoutParseError as e:
-            sys.exit(e)
+            sys.exit(str(e))
 
         # Draw the blank canvas of the appropriate size, diagram type and presentation style
-        self.logger.info("Creating the canvas")
-        self.flatland_canvas = self.create_canvas()
+        cls.logger.info("Creating the canvas")
+        cls.flatland_canvas = cls.create_canvas()
 
         # Draw the frame and title block if one was supplied
-        if self.layout.layout_spec.frame:
-            self.logger.info("Creating the frame")
-            self.frame = Frame(
-                name=self.layout.layout_spec.frame, presentation=self.layout.layout_spec.frame_presentation,
-                canvas=self.flatland_canvas, metadata=self.model.metadata
+        if cls.layout.layout_spec.frame:
+            cls.logger.info("Creating the frame")
+            cls.frame = Frame(
+                name=cls.layout.layout_spec.frame, presentation=cls.layout.layout_spec.frame_presentation,
+                canvas=cls.flatland_canvas, metadata=cls.model.metadata
             )
 
         # Render the Canvas so it can be displayed and output a PDF
-        self.flatland_canvas.render()
+        cls.flatland_canvas.render()
 
-    def create_canvas(self) -> Canvas:
+    @classmethod
+    def create_canvas(cls) -> Canvas:
         """Create a blank canvas"""
-        lspec = self.layout.layout_spec
+        lspec = cls.layout.layout_spec
         return Canvas(
             diagram_type=lspec.dtype,
             presentation=lspec.pres,
@@ -92,10 +94,10 @@ class XumlClassDiagram:
             standard_sheet_name=lspec.sheet,
             orientation=lspec.orientation,
             diagram_padding=lspec.padding,
-            drawoutput=self.diagram_file_path,
-            show_grid=self.show_grid,
-            no_color=self.no_color,
-            show_rulers=self.show_rulers,
+            drawoutput=cls.diagram_file_path,
+            show_grid=cls.show_grid,
+            no_color=cls.no_color,
+            show_rulers=cls.show_rulers,
             color=lspec.color,
         )
 
