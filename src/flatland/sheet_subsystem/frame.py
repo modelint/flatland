@@ -2,9 +2,7 @@
 
 # System
 import logging
-import sys
 from collections import namedtuple
-import math
 from typing import TYPE_CHECKING, Dict
 
 # Model Integration
@@ -171,10 +169,6 @@ class Frame:
         for f in free_fields:
             p = Position(int(f['X']), int(f['Y']))
             ma = Rect_Size(int(f['Max_height']), int(f['Max_width']))
-
-            # NOT SURE why these two lines are scaling by mm???
-            # p = Position(round(int(f['X']) * points_in_mm, 2), round(int(f['Y']) * points_in_mm, 2))
-            # ma = Rect_Size(round(f['max height'] * points_in_mm, 2), round(f['max width'] * points_in_mm, 2))
             self.Free_fields.append(
                 FieldPlacement(metadata=f['Metadata'], position=p, max_area=ma)
             )

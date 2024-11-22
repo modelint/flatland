@@ -1,8 +1,5 @@
-"""
-canvas.py
+""" canvas.py - Graphics library independent surface where all Flatland content is drawn """
 
-This is the Flatland (and not the cairo) Canvas class
-"""
 # System
 import sys
 import logging
@@ -21,6 +18,7 @@ from flatland.exceptions import InvalidOrientation, NonSystemInitialLayer
 # from flatland.datatypes.geometry_types import Rect_Size
 # from flatland.diagram.diagram import Diagram
 from flatland.sheet_subsystem.sheet import Sheet
+
 # from flatland.decoration_subsystem.symbol import Symbol
 
 # All sheet and canvas related constants are kept together here for easy review and editing
@@ -52,13 +50,21 @@ class Canvas:
                  diagram_padding: Dict[str, int], show_grid: bool, show_rulers: bool, color: str,
                  no_color: bool, drawoutput: Path):
         """
-        Constructor
+        Crate a new Canvas with the specified properties
 
         :param diagram_type: A supported type of model diagram such as class, state machine, collaboration
         :param presentation: A predefined set of style specifications such as default, diagnostic, fullcolor
         :param notation: A supported notation such as xUML, Starr, Shlaer-Mellor
         :param standard_sheet_name: A US or international printer sheet size such as A1, tabloid, letter
         :param orientation: portrait or landscape
+        :param diagram_padding: Margin from the edges of the canvas as specified in the layout file as a dictionary
+        with the names top, bottom, left and right as optional keys and the distance in points as values
+        :param show_grid: If true, a grid of node rows and columns is displayed. This is helpful for determining where
+        a node has or might be placed.
+        :param show_rulers: If true, a ruler grid is drawn at equally spaced point distances. This is helpful for
+        figuring out where to place open fields or a title block when editing the relevant yaml files.
+        :param color: Color of the entire canvas background
+        :param no_color: If set, the user specified background color is ignored and white is used instead
         :param drawoutput: Path of the PDF to be generated
         """
         # For diagnostics
@@ -155,8 +161,6 @@ class Canvas:
                         from_here=Position(self.Size.width, self.Size.height),
                         to_there=Position(self.Size.width, pad))
 
-
-
     def render(self):
         """
         Draw all content of this Canvas onto the Tablet
@@ -175,5 +179,5 @@ class Canvas:
                f'drawoutput={self.Tablet.Output_file} )'
 
     def __str__(self):
-        return f'Sheet: {self.Sheet}, Orientation: {self.Orientation}, '\
+        return f'Sheet: {self.Sheet}, Orientation: {self.Orientation}, ' \
                f'Canvas size: h{self.Size.height} pt x w{self.Size.width} pt Margin: {self.Margin}'
