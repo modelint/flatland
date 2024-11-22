@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Dict
 # Model Integration
 from pyral.relation import Relation
 from tabletqt.graphics.text_element import TextElement
+from tabletqt.graphics.image import ImageE
 from tabletqt.geometry_types import Position, Rect_Size, HorizAlign
 from pyral.rtypes import Attribute as pyral_Attribute
 
@@ -186,44 +187,17 @@ class Frame:
         self.logger.info('Rendering frame')
 
         for f in self.Free_fields:
-            asset = 'Free ' + f.metadata.lower()
+            asset = f.metadata.lower()
             content, isresource = self.metadata.get(f.metadata, (None, None))
             # If there is no data supplied to fill in the field, just leave it blank and move on
             if content and isresource:
                 # Key into resource locator using this size and orientation delimited by an underscore
-                rsize = '_'.join([content, self.Canvas.Sheet.Size_group, self.Canvas.Orientation])
-                # Get the full path to the resource (image) using the rsize
-                rloc = resource_locator.get(rsize)
-                if rloc:
-                    self.Layer.add_image(resource_path=rloc, lower_left=f.position, size=f.max_area)
-                else:
-                    self.logger.warning(
-                        f"Couldn't find file for: [{content}] in your flatland resource directory. "
-                        f"Default resource location is in ~/.flatland"
-                    )
+                ImageE.add(layer=self.Layer, name=f"{content}-{self.Canvas.Sheet.Size_group}",
+                           lower_left=f.position, size=f.max_area)
             elif content:  # Text content
                 # Content is a line of text to print directly
-                self.Layer.add_text_line(
-                    asset=asset,
-                    lower_left=f.position,
-                    text=content,
-                )
+                TextElement.add_block(layer=self.Layer, asset=asset, lower_left=f.position, text=[content])
 
         if self.Title_block_pattern:
             # Draw the title block box borders
             draw_titleblock(frame=self.Name, sheet=self.Canvas.Sheet, orientation=self.Orientation, layer=self.Layer)
-
-            # Get the margins to pad the Data Box content
-            # The same margins are applied to each Data Box in the same Scaled Title Block
-            # So we are looking only for one pair of h,v margin values to use throughout
-            # scaledtb_t = fdb.MetaData.tables['Scaled Title Block']
-            # s = and_(
-            #     (scaledtb_t.c['Title block pattern'] == self.Title_block_pattern),
-            #     (scaledtb_t.c['Sheet size group'] == self.Canvas.Sheet.Size_group),
-            # )
-            # p = [scaledtb_t.c['Margin H'], scaledtb_t.c['Margin V']]
-            # q = select(p).where(s)
-            # row = fdb.Connection.execute(q).fetchone()
-            # assert row, f"No Title Block Placement for frame: {self.Name}"
-            # h_margin, v_margin = row
-            #

@@ -122,7 +122,7 @@ class Canvas:
         pad = 0
         vgap = 100
         hgap = 100
-        self.grid = self.Tablet.add_layer(name="grid", presentation=self.presentation, drawing_type="Grid diagnostic")
+        self.grid = self.Tablet.add_layer(name="grid", presentation=self.presentation, drawing_type="Grid Diagnostic")
         y = 0
         while y <= self.Size.height:
             LineSegment.add(layer=self.grid, asset='row boundary',
