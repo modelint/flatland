@@ -59,8 +59,6 @@ def parse(cl_input):
                         help='Print the ruler grid so you check canvas positions')
     parser.add_argument('-R', '--rebuild', action='store_true',
                         help='Rebuild the flatland database. Necessary only if corrupted.')
-    parser.add_argument('-COLORS', '--colors', action='store_true',
-                        help='Show the list of background color names')
     return parser.parse_args(cl_input)
 
 
@@ -83,14 +81,6 @@ def main():
         # Just print the version and quit
         print(f'Flatland version: {version}')
         sys.exit(0)
-
-    # if args.colors:
-    #     # Just print the database colors and quit
-    #     Config(rebuild_db=args.rebuild)  # Do any configuration tasks necessary before starting up the app
-    #     already_configured = True  # Don't run it again
-    #     from flatland.drawing_domain.styledb import StyleDB
-    #     StyleDB(print_colors=True)
-    #
 
     # if args.examples:
     #     # Copy the entire example directory into the users local dir if it does not already exist
