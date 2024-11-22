@@ -4,6 +4,7 @@
 import logging
 from collections import namedtuple
 from typing import TYPE_CHECKING, Dict
+import sys
 
 # Model Integration
 from pyral.relation import Relation
@@ -13,7 +14,7 @@ from tabletqt.geometry_types import Position, Rect_Size, HorizAlign
 from pyral.rtypes import Attribute as pyral_Attribute
 
 # Flatland
-from flatland.exceptions import FlatlandConfigException
+from flatland.exceptions import FlatlandConfigException, FlatlandDBException
 from flatland.names import app
 from flatland.datatypes.geometry_types import Alignment, HorizAlign, VertAlign
 from flatland.diagram.canvas import points_in_mm
@@ -27,6 +28,7 @@ if TYPE_CHECKING:
 DataBox = namedtuple('_Databox', 'metadata content position size alignment style')
 FieldPlacement = namedtuple('_FieldPlacement', 'metadata position max_area')
 
+region_line_spacing = 6  # TODO: This should be specified somewhere
 
 class Frame:
     """
@@ -89,7 +91,7 @@ class Frame:
 
         # If a Title Block Pattern is specified, let's gather all the Data Box content from the flatland database
         if self.Title_block_pattern:
-            self.logger.info('Assembling title block pattern on frame')
+            self.logger.info(f'Assembling title block pattern: {self.Title_block_pattern} on frame: {self.Name}')
             # Assemble a text block for each Data Box containing the Metadata Text Content
             # We'll register that text block with the Layer for rendering
             # Image (Resource) content is not supported within a Title Block Pattern, so we assume only text content
@@ -106,7 +108,9 @@ class Frame:
                                    attrs={'Title_block_pattern': 'Pattern', 'Data_box': 'ID'},
                                    svar_name='tbf_bp_join')
             if not result.body:
-                pass
+                self.logger.exception(f"No Box Placements in database for Title Block Pattern: {self.Title_block_pattern}")
+                raise FlatlandDBException
+
             tb_field_placements = result.body # Each metadata item and its Data Box position and size
 
             # Get the margins to pad the Data Box content
@@ -114,6 +118,10 @@ class Frame:
             # So we are looking only for one pair of h,v margin values to use throughout
             R = f"Title_block_pattern:<{self.Title_block_pattern}>, Sheet_size_group:<{self.Canvas.Sheet.Size_group}>"
             result = Relation.restrict(db=app, relation='Scaled_Title_Block', restriction=R)
+            if not result.body:
+                self.logger.error(f"No Scaled Title Block in database for Title Block Pattern: {self.Title_block_pattern} and"
+                                  f"Sheet Size Group: {self.Canvas.Sheet.Size_group}")
+                raise FlatlandDBException
             h_margin = int(result.body[0]['Margin_h'])
             v_margin = int(result.body[0]['Margin_v'])
 
@@ -121,6 +129,9 @@ class Frame:
             result = Relation.summarizeby(db=app, relation='Region', attrs=['Data_box', 'Title_block_pattern'],
                                           sum_attr=pyral_Attribute(name='Qty', type='int'),
                                           svar_name="Number_of_regions")
+            if not result.body:
+                self.logger.error(f"No Regions in database for Title Block Pattern: {self.Title_block_pattern}")
+                raise FlatlandDBException
             num_regions = {int(r['Data_box']): int(r['Qty']) for r in result.body}
 
             # Add a text block to the canvas for each Metadata Item in the title block
@@ -132,22 +143,15 @@ class Frame:
                 # Determine rectangular area required by the text
                 block_size = TextElement.text_block_size(layer=self.Layer, asset=place['Name'], text_block=[text])
 
-                line_spacing = 6  # TODO: This should be specified somewhere
-                v_adjust = 3  # TODO: This should be computed or specified somewhere
                 stack_order = int(place['Stack_order'])
-                stack_height = (stack_order - 1) * (line_spacing + block_size.height)
+                stack_height = (stack_order - 1) * (region_line_spacing + block_size.height)
+
                 # compute lower left corner position
-                # Layer asset is composed from the data box style and its size group
-                # When there is a single line of text in a Data Box that is longer than the Box width,
-                # we will wrap it as necessary. Especially useful for a long title in the title box
-                # For multiple line boxes, this feature is not yet (or ever) supported
-                padded_box_width = round(box_size.width - h_margin * 2, 2)
                 xpos = box_position.x + h_margin
-                pass
                 if num_regions[int(place['Data_box'])] == 1:
-                    ypos = box_position.y + v_margin + round((box_size.height - block_size.height) / 2, 2) - v_adjust
+                    ypos = box_position.y + round((box_size.height - block_size.height) / 2, 2)
                 else:
-                    ypos = box_position.y + v_margin + v_adjust + stack_height
+                    ypos = box_position.y + v_margin*2 + stack_height  # Not sure why v_margin is doubled, but it works
                 halign = HorizAlign.LEFT
                 if place['H_align'] == 'RIGHT':
                     halign = HorizAlign.RIGHT
@@ -163,7 +167,7 @@ class Frame:
         self.logger.info('Assembling open fields on frame')
         R = f"Frame:<{self.Name}>, Sheet:<{self.Canvas.Sheet.Name}>, Orientation:<{self.Orientation}>"
         result = Relation.restrict(db=app, relation='Free_Field', restriction=R)
-        free_fields = result.body
+        free_fields = result.body  # Might not be any and that's okay
 
         for f in free_fields:
             p = Position(int(f['X']), int(f['Y']))
@@ -172,7 +176,7 @@ class Frame:
                 FieldPlacement(metadata=f['Metadata'], position=p, max_area=ma)
             )
 
-        # Now let's register all text and graphics for everything in our Frame on its Layer
+        # Now let's render all text and graphics for everything in our Frame
         self.render()
 
     def render(self):
