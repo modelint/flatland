@@ -35,17 +35,17 @@ class FlatlandSchema:
 
     relvars = {
         'Node': {
-            'Compartment_type': Header(attrs=[
-                Attribute(name='Name', type='str'),
-                Attribute(name='Alignment_h', type='str'),
-                Attribute(name='Alignment_v', type='str'),
+            'Compartment_Type': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Alignment_h', type='string'),
+                Attribute(name='Alignment_v', type='string'),
                 Attribute(name='Padding_top', type='int'),
                 Attribute(name='Padding_bottom', type='int'),
                 Attribute(name='Padding_left', type='int'),
                 Attribute(name='Padding_right', type='int'),
                 Attribute(name='Stack_order', type='int'),
-                Attribute(name='Node_type', type='str'),
-                Attribute(name='Diagram_type', type='str'),
+                Attribute(name='Node_type', type='string'),
+                Attribute(name='Diagram_type', type='string'),
             ], ids={1: ['Name', 'Node_type', 'Diagram_type'], 2:['Stack_order', 'Node_type', 'Diagram_type']}),
             # Node subsystem relvars
             # 'Canvas': Header(attrs=[
@@ -86,13 +86,13 @@ class FlatlandSchema:
             #     Attribute(name='Origin_y', type='int'),
             # ], ids={1: ['Diagram_type', 'Notation']}),
             'Diagram_Notation': Header(attrs=[
-                Attribute(name='Diagram_type', type='str'),
-                Attribute(name='Notation', type='str'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='Notation', type='string'),
             ], ids={1: ['Diagram_type', 'Notation']}),
             'Diagram_Type': Header(attrs=[
-                Attribute(name='Name', type='str'),
-                Attribute(name='Abbreviation', type='str'),
-                Attribute(name='About', type='str'),
+                Attribute(name='Name', type='string'),
+                Attribute(name='Abbreviation', type='string'),
+                Attribute(name='About', type='string'),
             ], ids={1: ['Name'], 2: ['Abbreviation']}),
             # 'Grid': Header(attrs=[
             #     Attribute(name='ID', type='int'),
@@ -104,29 +104,29 @@ class FlatlandSchema:
             #     Attribute(name='Cell_alignment_h', type='str'),
             # ], ids={1: ['Name']}),
             'Layout_Specification': Header(attrs=[
-                Attribute(name='Name', type='str'),
+                Attribute(name='Name', type='string'),
                 Attribute(name='Default_margin_top', type='int'),
                 Attribute(name='Default_margin_bottom', type='int'),
                 Attribute(name='Default_margin_left', type='int'),
                 Attribute(name='Default_margin_right', type='int'),
                 Attribute(name='Default_diagram_origin_x', type='int'),
                 Attribute(name='Default_diagram_origin_y', type='int'),
-                Attribute(name='Default_cell_alignment_v', type='str'),
-                Attribute(name='Default_cell_alignment_h', type='str'),
+                Attribute(name='Default_cell_alignment_v', type='string'),
+                Attribute(name='Default_cell_alignment_h', type='string'),
                 ], ids = {1: ['Name']}),
             'Node_Type': Header(attrs=[
-                Attribute(name='Name', type='str'),
-                Attribute(name='Diagram_type', type='str'),
-                Attribute(name='About', type='str'),
-                Attribute(name='Why_use_it', type='str'),
+                Attribute(name='Name', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='About', type='string'),
+                Attribute(name='Why_use_it', type='string'),
                 Attribute(name='Default_size_h', type='int'),
                 Attribute(name='Default_size_w', type='int'),
                 Attribute(name='Max_size_h', type='int'),
                 Attribute(name='Max_size_w', type='int'),
             ], ids = {1: ['Name', 'Diagram_type']}),
             'Notation': Header(attrs=[
-                Attribute(name='Name', type='str'),
-                Attribute(name='About', type='str'),
+                Attribute(name='Name', type='string'),
+                Attribute(name='About', type='string'),
             ], ids={1: ['Name']}),
         },
         'Sheet': {
@@ -256,7 +256,7 @@ class FlatlandSchema:
             SimpleAssoc(name='R4',
                         from_class='Compartment_Type', from_mult=mult_tclral['M'],
                         from_attrs=['Node_type', 'Diagram_type'],
-                        to_class='Diagram_Type', to_mult=mult_tclral['1'],
+                        to_class='Node_Type', to_mult=mult_tclral['1'],
                         to_attrs=['Name', 'Diagram_type'],
                         ),
             SimpleAssoc(name='R15',
