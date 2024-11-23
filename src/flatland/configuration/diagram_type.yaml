@@ -1,0 +1,35 @@
+# diagram_type.yaml – Diagram Types
+
+- class:
+    abbreviation: CD
+    about: >
+      Show data, logic and constraints in a domain
+    notations:
+      - Starr
+      - xUML
+      - Shlaer-Mellor
+
+- state machine:
+    abbreviation: SMD
+    about: >
+      Lifecycle of a class or assigner relationship
+    notations:
+      - xUML
+
+- class collaboration:
+    abbreviation: CCD
+    about: >
+      Shows interactions among classes and external entities in a domain
+    notations:
+      - Starr
+      - xUML
+
+- domain:
+    abbreviation: DD
+    about: >
+      Illustrates the diverse subject matters in your project
+      as a network of platform independent domains with requirements dependencies
+    notations:
+      - Starr
+      - xUML
+

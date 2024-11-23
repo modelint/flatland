@@ -2,8 +2,8 @@ metadata
     Title : Flatland Node Subsystem Class Diagram
     Author : Leon Starr
     Document ID : mint.flatland3.td.1a
-    Version : 0.8.0
-    Modification date : November 22, 2024
+    Version : 0.8.1
+    Modification date : November 23, 2024
     Organization : Model Integration, LLC / www.modelint.com
     Copyright notice > MIT
     Organization logo > mint
@@ -79,6 +79,7 @@ attributes
     Type : Diagram Type Name {R11, R30}
     Notation : Notation Name {R30}
     Canvas : Canvas ID {R14}
+    Padding : Padding
     Size : Rect Size
     Origin : Position
 --

@@ -1,0 +1,21 @@
+# layout_specification.yaml – Overall diagram layout parameters
+
+- standard:
+    default margin:
+      top: 10
+      bottom: 10
+      left: 10
+      right: 10
+    default diagram origin:
+      x: 0
+      y: 0
+    default cell padding:
+      top: 5
+      bottom: 5
+      left: 5
+      right: 5
+    default cell alignment:
+      vertical: center
+      horizontal: center
+
+# Add your own named variations below

@@ -1,0 +1,29 @@
+# notation.yaml – Supported notation
+
+- Shlaer-Mellor:
+    about: >
+      Original methodology emphasizing execution semantics and platform independence with an emphasis
+      on class/logic modeling foundations. Pre-dates UML.
+    why use it: >
+      Notation was optimized for fast easy hand drawing. Perfect for whiteboards and notes where UML
+      is clunky. The UML was designed with the assumption that you would rarely if ever draw by hand.
+
+- Starr:
+    about: >
+      Leon Starr adapted the Shlaer-Mellor and UML notations to minimize positioning operations
+      when using a draw tool, such as OmniGraffle, that doesn't directly support these notations.
+      For example, the '1..*' multiplicity phrases are replaced by arrow symbols so that you
+      don't need to drag the text around each time you change the position of an arrow.
+    why use it: >
+      Easy to draw with a wide variety of non-UML diagramming tools. Less visual clutter.
+
+- xUML:
+    about: >
+      AKA, Executable UML. Usage of UML to represent executable semantics
+    why use it: >
+      Standards conformance. You are presenting a diagram to an organziation where
+      everyone knows, uses, or must use UML. Publishing to a wide audience.
+      On the downside, a lot of extra graphics and text clutter is required to display
+      a model with Shlaer-Mellor semantics. This is especially the case with a class diagram,
+      but not so much with a state machine diagram.
+

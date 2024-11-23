@@ -113,10 +113,10 @@ class Canvas:
             self.logger.exception("Initial layer [diagram] not found in Tablet layer order")
             sys.exit(1)
 
-        # self.Diagram = Diagram(
-        #     self, diagram_type_name=diagram_type, layer=self.Tablet.layers['diagram'],
-        #     notation_name=notation, padding=diagram_padding, show_grid=show_grid
-        # )
+        self.Diagram = Diagram(
+            self, diagram_type_name=diagram_type, layer=self.Tablet.layers['diagram'],
+            notation_name=notation, padding=diagram_padding, show_grid=show_grid
+        )
         # Load symbol data
         # self.logger.info("Loading symbol decoration data from flatland database")
         # Symbol(diagram_type=self.Diagram.Diagram_type.Name, notation=self.Diagram.Notation)
