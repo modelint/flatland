@@ -252,6 +252,26 @@ class FlatlandSchema:
     }
 
     rels = {
+        'Node': [
+            SimpleAssoc(name='R4',
+                        from_class='Compartment_Type', from_mult=mult_tclral['M'],
+                        from_attrs=['Node_type', 'Diagram_type'],
+                        to_class='Diagram_Type', to_mult=mult_tclral['1'],
+                        to_attrs=['Name', 'Diagram_type'],
+                        ),
+            SimpleAssoc(name='R15',
+                        from_class='Node_Type', from_mult=mult_tclral['M'], from_attrs=['Diagram_type'],
+                        to_class='Diagram_Type', to_mult=mult_tclral['1'], to_attrs=['Name'],
+                        ),
+            AssocRel(name='R32', assoc_class='Diagram_Notation',
+                     a_ref=Ref(to_class='Notation', mult=mult_tclral['M'],
+                               from_attrs=['Notation'],
+                               to_attrs=['Name']),
+                     b_ref=Ref(to_class='Diagram_Type', mult=mult_tclral['Mc'],
+                               from_attrs=['Diagram_type'],
+                               to_attrs=['Name'])
+                     ),
+        ],
         'Sheet': [
             AssocRel(name='R300', assoc_class='Fitted_Frame',
                      a_ref=Ref(to_class='Frame', mult=mult_tclral['Mc'],
