@@ -21,7 +21,7 @@ attributes
 --
 class Canvas
 attributes
-    Name : Name {I}
+    ID : Canvas ID {I}
     Sheet : Sheet Name {R13}
     Orientation : Portrait Landscape
     Margin : Padding
@@ -77,8 +77,8 @@ attributes
     ID : Diagram ID {I}
     Grid : Grid ID {R10}
     Type : Diagram Type Name {R11, R30}
-    Notation {R30}
-    Canvas {R14}
+    Notation : Notation Name {R30}
+    Canvas : Canvas ID {R14}
     Size : Rect Size
     Origin : Position
 --
@@ -123,11 +123,8 @@ class Node Type
 attributes
     Name : Node Type Name {I}
     Diagram type : Diagram Type Name {I, R15}
-    About : Description
-    Why use it : Description
     Corner rounding : Rounding
     Compartments : Count
-    Border : Border Style
     Default size: Rect Size
     Max size : Rect Size
     Corner margin : Distance
@@ -227,7 +224,7 @@ relationships
         Data Compartment
     <subclass>.(Node, Compartment type, Node type, Diagram type) -> Compartment.(Node, Compartment type, Node type, Diagram type)
 --
-    R9
+    OR9
     stacked below / stacked above, Compartment Type
     Stack order : I2
 --
@@ -256,7 +253,7 @@ relationships
     R14
     is laid out on, 1 Canvas
     frames placement of, 1 Diagram
-    Diagram.Canvas -> Canvas.Name
+    Diagram.Canvas -> Canvas.ID
 --
     R15
     can be used in, M Node Type
@@ -266,6 +263,7 @@ relationships
     R16
     annotation is organized by, 1c Annotation Layout
     organizes annotation on, 1 Canvas
+    Annotation Layout.Canvas -> Canvas.ID
 --
     R17
     xx, M Block
