@@ -35,7 +35,10 @@ attributes
 --
 class Cell Occupation
 attributes
-
+Row : Row Number {I, R12}
+Column : Column Number {I, R12}
+Grid : Grid ID {I, R12}
+Node : Node ID {R12}
 --
 class Column
 attributes
@@ -258,6 +261,7 @@ relationships
     R15
     can be used in, M Node Type
     can use, 1 Diagram Type
+    Node Type.Diagram type -> Diagram Type.Name
 --
     R16
     annotation is organized by, 1c Annotation Layout
@@ -266,38 +270,50 @@ relationships
     R17
     xx, M Block
     yy, 1 Annotation Layout
+    Block.Annotation layout -> Annotation Layout.Name
 --
     R18
     xx, M Field Spec
     yy, Mc Block
+    1 Block Field Spec
+    Block Field Spec.Field spec -> Field Spec.Name
+    Block Field Spec.Block -> Block.Name
 --
     R20
     Node +
         Non Spanning Node
         Spanning Node
+    <subclass>.ID -> Node.ID
 --
     R22
     spans from top, 1 Row
     defines uppermost span of, Mc Spanning Node
+    Spanning Node.High row -> Row.Number
 --
     R23
     spans to bottom, 1 Row
     defines lowermost span of, Mc Spanning Node
+    Spanning Node.Low row -> Row.Number
 --
     R24
     spans from left, 1 Column
     defines leftmost span of, Mc Spanning Node
+    Spanning Node.Left col -> Column.Number
 --
     R25
     spans from right, 1 Column
     defines rightmost span of, Mc Spanning Node
+    Spanning Node.Right col -> Column.Number
 --
     R30
     renders, 1c Diagram
     is rendered using, 1 Diagram Notation
+    Diagram.(Type, Notation) -> Diagram Notation.(Diagram type, Notation)
 --
     R32
     is supported by, M Notation
     supports, Mc Diagram Type
     1 Diagram Notation
+    Diagram Notation.Diagram type -> Diagram Type.Name
+    Diagram Notation.Notation -> Notation.Name
 --
