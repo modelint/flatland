@@ -8,7 +8,7 @@ from pyral.transaction import Transaction
 # Flatland
 from flatland.names import app
 from flatland.configuration.configDB import ConfigDB
-from flatland.database.instances.sheet_subsystem import *
+from flatland.database.instances.node_subsystem import *
 
 
 class NodeSubsysDB:
@@ -31,5 +31,13 @@ class NodeSubsysDB:
         """
 
         """
+        notation_data = ConfigDB.item_data['notation']
 
+        notation_instances = [
+            NotationInstance(Name=k, About=v['about'], Why_use_it=v['why use it'])
+            for i in notation_data
+            for k,v in i.items()
+        ]
+        Relvar.insert(db=app, relvar='Notation', tuples=notation_instances)
+        pass
 

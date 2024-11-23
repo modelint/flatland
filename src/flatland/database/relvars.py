@@ -127,6 +127,7 @@ class FlatlandSchema:
             'Notation': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 Attribute(name='About', type='string'),
+                Attribute(name='Why_use_it', type='string'),
             ], ids={1: ['Name']}),
         },
         'Sheet': {
