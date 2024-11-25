@@ -1,13 +1,87 @@
 # diagram_type.yaml – Diagram Types
 
-class:
+class:  # Diagram type name (class diagram)
   abbreviation: CD
   about: >
     Show data, logic and constraints in a domain
-  notations:
+  notations:  # Supported notations
     - Starr
     - xUML
     - Shlaer-Mellor
+  nodetypes:  # The kinds of nodes that can be drawn on this diagram type
+    class:  # Node type name (a class node)
+      about: >
+        Abstraction of a set of things with the same properties, behavior, 
+        and subject to the same rules and constraints
+      default size:
+        height: 80  # Default size if text fits and user has not specified otherwise
+        width: 110
+      max size:
+        height: 180  # Will not be drawn larger than this size
+        width: 144
+      compartment types:  # The types of compartments that may be stacked inside this node
+        name: # Name of the compartment, in this case the name/title of a class
+          alignment:  # How the text is aligned within this compartment
+            horizontal: center
+            vertical: center
+          padding:  # Margin between internal text and external boundary
+            top: 5
+            bottom: 10
+            left: 5
+            right: 5
+          stack order: 1  # Appearance of compartment with 1 at the top, descending vertically
+        attribute:
+          alignment:
+            horizontal: left
+            vertical: top
+          padding:
+            top: 5
+            bottom: 10
+            left: 5
+            right: 5
+          stack order: 2
+        method:
+          alignment:
+            horizontal: left
+            vertical: top
+          padding:
+            top: 5
+            bottom: 4
+            left: 5
+            right: 5
+          stack order: 3
+
+    imported class:
+      about: >
+        Used when you have a relationship to a class in some other 
+        subsystem of your domain.
+      default size:
+        height: 80
+        width: 110
+      max size:
+        height: 180
+        width: 144
+      compartment types:
+        name:
+          alignment:
+            horizontal: center
+            vertical: center
+          padding:
+            top: 5
+            bottom: 10
+            left: 5
+            right: 5
+          stack order: 1
+        attribute:
+          alignment:
+            horizontal: left
+            vertical: top
+          padding:
+            top: 5
+            bottom: 10
+            left: 5
+            right: 5
+          stack order: 2
 
 state machine:
   abbreviation: SMD
@@ -15,6 +89,47 @@ state machine:
     Lifecycle of a class or assigner relationship
   notations:
     - xUML
+  node types:
+    state:
+      about: >
+        A context of some duration during an instance's existence
+      default size:
+        height: 50
+        width: 110
+      max size:
+        height: 100
+        width: 300
+      compartment types:
+        name:
+          alignment:
+            horizontal: center
+            vertical: center
+          padding:
+            top: 5
+            bottom: 10
+            left: 10
+            right: 10
+          stack order: 1
+        activity:
+          alignment:
+            horizontal: left
+            vertical: top
+          padding:
+            top: 4
+            bottom: 10
+            left: 5
+            right: 5
+          stack order: 2
+        name only:
+          alignment:
+            horizontal: center
+            vertical: center
+          padding:
+            top: 20
+            bottom: 20
+            left: 10
+            right: 10
+          stack order: 1
 
 class collaboration:
   abbreviation: CCD
@@ -23,6 +138,45 @@ class collaboration:
   notations:
     - Starr
     - xUML
+  node types:
+    overview class:
+      about: >
+        Used to represent class in a collaboration or other non-class diagram
+      default size:
+        height: 25
+        width: 100
+      max size:
+        height: 60
+        width: 300
+      compartment types:
+          name:
+            alignment:
+              horizontal: center
+              vertical: center
+            padding:
+              top: 5
+              bottom: 5
+              left: 5
+              right: 5
+            stack order: 1
+    external entity:
+      about: >
+        Proxy for an external domain or some aspect of an external domain
+      default height: 25
+      default width: 100
+      max height: 60
+      max width: 300
+      compartment types:
+        name:
+          alignment:
+            horizontal: center
+            vertical: center
+          padding:
+            top: 5
+            bottom: 5
+            left: 5
+            right: 5
+          stack order: 1
 
 domain:
   abbreviation: DD
@@ -32,4 +186,26 @@ domain:
   notations:
     - Starr
     - xUML
+  node types:
+    domain:
+      about: >
+        A distinct subject matter with its own vocabulary and rules 
+        like "Linear Algebra" or "Configuration Management"
+      default size:
+        height: 60
+        width: 100
+      max size:
+        height: 110
+        width: 300
+      compartment types:
+        name:
+          alignment:
+            horizontal: center
+            vertical: center
+          padding:
+            top: 5
+            bottom: 5
+            left: 5
+            right: 5
+          stack order: 1
 
