@@ -87,9 +87,10 @@ class FlatlandDB:
 
         # Populate each subsystem
         SheetSubsysDB.populate()
-        NodeSubsysDB.populate()
 
         # Print out a depiction of the populated database as a set of filled out tables
         # organized alphabetically by relvar name
         Relvar.printall('flatland')
+
+        NodeSubsysDB.populate()
 
