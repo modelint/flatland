@@ -20,13 +20,17 @@ class DiagramTypeInstance(NamedTuple):
     Abbreviation: str
     About: str
 
+class DiagramNotationInstance(NamedTuple):
+    Diagram_type: str
+    Notation: str
+
 class NodeTypeInstance(NamedTuple):
     Name: str
     About: str
-    Default_height: int
-    Default_width: int
-    Max_height: int
-    Max_width: int
+    Default_size_h: int
+    Default_size_w: int
+    Max_size_h: int
+    Max_size_w: int
     Diagram_type: str
 
 class NotationInstance(NamedTuple):

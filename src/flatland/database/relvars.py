@@ -118,7 +118,6 @@ class FlatlandSchema:
                 Attribute(name='Name', type='string'),
                 Attribute(name='Diagram_type', type='string'),
                 Attribute(name='About', type='string'),
-                Attribute(name='Why_use_it', type='string'),
                 Attribute(name='Default_size_h', type='int'),
                 Attribute(name='Default_size_w', type='int'),
                 Attribute(name='Max_size_h', type='int'),

@@ -35,10 +35,8 @@ class ConfigDB:
         ConfigItem(name="titleblock", collector=None),
         ConfigItem(name="frame", collector=None),
         ConfigItem(name="notation", collector=None),
-        ConfigItem(name="node_type", collector=None),
         ConfigItem(name="layout_specification", collector=None),
         ConfigItem(name="diagram_type", collector=None),
-        ConfigItem(name="compartment_type", collector=None),
     ]
 
     @classmethod
@@ -49,5 +47,3 @@ class ConfigDB:
         for item in cls.config_items:
             c = Config(app_name=app, lib_config_dir=cls.config_path, fspec={item.name:item.collector})
             cls.item_data[item.name] = c.loaded_data[item.name]
-
-        pass
