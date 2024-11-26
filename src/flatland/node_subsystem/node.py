@@ -8,7 +8,11 @@ from typing import TYPE_CHECKING, List, Optional
 if TYPE_CHECKING:
     from flatland.node_subsystem.grid import Grid
 
+# Model Integration
+from pyral.relation import Relation
+
 # Flatland
+from flatland.names import app
 from flatland.exceptions import UnsupportedNodeType
 from flatland.datatypes.geometry_types import Rect_Size, Position, Alignment
 from flatland.node_subsystem.compartment import Compartment
@@ -45,11 +49,15 @@ class Node:
         self.Expansion = expansion
         self.Tag = tag
         self.Grid = grid
-        try:
-            self.Node_type = self.Grid.Diagram.Diagram_type.NodeTypes[node_type_name]
-        except IndexError:
+        dtype = self.Grid.Diagram.Diagram_type
+
+        # Validate the Node Type for this Diagram Type
+        R = f"Name:<{node_type_name}>, Diagram_type:<{dtype}>"
+        result = Relation.restrict(db=app, relation='Node_Type', restriction=R)
+        if not result.body:
+            self.logger.exception(f"Node type: {node_type_name} not supported on a {dtype}")
             raise UnsupportedNodeType(node_type_name=node_type_name,
-                                      diagram_type_name=self.Grid.Diagram.Diagram_type.Name)
+                                      diagram_type_name=dtype)
 
         # Create a list of compartments ordered top to bottom based on Node Type's Compartment Types
         z = zip(self.Node_type.Compartment_types, content)
