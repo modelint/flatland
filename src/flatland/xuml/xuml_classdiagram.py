@@ -8,6 +8,7 @@ import logging
 from pathlib import Path
 from xcm_parser.class_model_parser import ClassModelParser
 from mls_parser.layout_parser import LayoutParser
+from typing import Optional, Dict
 
 # Flatland
 from flatland.exceptions import ModelParseError, LayoutParseError
@@ -101,3 +102,102 @@ class XumlClassDiagram:
             color=lspec.color,
         )
 
+    def draw_classes(self) -> Dict[str, SingleCellNode]:
+        """Draw all of the classes on the class diagram"""
+
+        nodes = {}
+        np = self.layout.node_placement # Layout data for all classes
+
+        for c in self.subsys.classes:
+
+            # Get the class name from the model
+            cname = c['name']
+            self.logger.info(f'Processing class: {cname}')
+
+            # Get the layout data for this class
+            nlayout = np.get(cname)
+            if not nlayout:
+                self.logger.warning(f"Skipping class [{cname}] -- No cplace specified in layout sheet")
+                continue
+
+            # Layout data for all placements
+            # By default the class name is all on one line, but it may be wrapped across multiple
+            nlayout['wrap'] = nlayout.get('wrap', 1)
+            # There is an optional keyletter (class name abbreviation) displayed as {keyletter}
+            # after the class name
+            keyletter = c.get('keyletter')
+            keyletter_display = f' {{{keyletter}}}' if keyletter else ''
+            # Class name and optional keyletter are in the same wrapped text block
+            name_block = TextBlock(cname+keyletter_display, nlayout['wrap'])
+            # Class might be imported. If so add a reference to subsystem or TBD in attr compartment
+            import_subsys_name = c.get('import')
+            if not import_subsys_name:
+                internal_ref = []
+            elif import_subsys_name.endswith('TBD'):
+                internal_ref = [' ', f'{import_subsys_name.removesuffix(" TBD")} subsystem', '(not yet modeled)']
+            else:
+                internal_ref = [' ', f'(See {import_subsys_name} subsystem)']
+            # Now assemble all the text content for each class compartment
+            # One list item per compartment in descending vertical order of display
+            # (class name, attributes and optional methods)
+            h_expand = nlayout.get('node_height_expansion', {})
+            text_content = [
+                New_Compartment(content=name_block.text, expansion=h_expand.get(1, 0)),
+                New_Compartment(content=c['attributes'] + internal_ref, expansion=h_expand.get(2, 0)),
+            ]
+            if c.get('methods'):
+                text_content.append(
+                    New_Compartment(content=c['methods'], expansion=h_expand.get(1, 0)),
+                )
+
+            # The same class may be placed more than once so that the connectors
+            # have less bends and crossovers. This is usually, but not limited to,
+            # the cplace of imported classes. Since we generate the diagram
+            # from a single model, there is no harm in duplicating the same class on a
+            # diagram.
+
+            for i, p in enumerate(nlayout['placements']):
+                h = HorizAlign[p.get('halign', 'CENTER')]
+                v = VertAlign[p.get('valign', 'CENTER')]
+                w_expand = nlayout.get('node_width_expansion', 0)
+                # If this is an imported class, append the import reference to the attribute list
+                row_span, col_span = p['node_loc']
+                # If methods were supplied, include them in content
+                # text content includes text for all compartments other than the title compartment
+                # When drawing connectors, we want to attach to a specific node cplace
+                # In most cases, this will just be the one and only indicated by the node name
+                # But if a node is duplicated, i will not be 0 and we add a suffix to the node
+                # name for the additional cplace
+                node_name = cname if i == 0 else f'{cname}_{i+1}'
+                same_subsys_import = True if not import_subsys_name and i > 0 else False
+                # first placement (i==0) may or may not be an imported class
+                # But all additional placements must be imported
+                # If import_subsys_name is blank and i>0, the import is from the same (not external) subsystem
+                node_type_name = 'imported class' if import_subsys_name or same_subsys_import else 'class'
+                if len(row_span) == 1 and len(col_span) == 1:
+                    nodes[node_name] = SingleCellNode(
+                        node_type_name=node_type_name,
+                        content=text_content,
+                        grid=self.flatland_canvas.Diagram.Grid,
+                        row=row_span[0], column=col_span[0],
+                        tag=nlayout.get('color_tag', None),
+                        local_alignment=Alignment(vertical=v, horizontal=h),
+                        expansion=w_expand,
+                    )
+                else:
+                    # Span might be only 1 column or row
+                    low_row = row_span[0]
+                    high_row = low_row if len(row_span) == 1 else row_span[1]
+                    left_col = col_span[0]
+                    right_col = left_col if len(col_span) == 1 else col_span[1]
+                    nodes[node_name] = SpanningNode(
+                        node_type_name=node_type_name,
+                        content=text_content,
+                        grid=self.flatland_canvas.Diagram.Grid,
+                        low_row=low_row, high_row=high_row,
+                        left_column=left_col, right_column=right_col,
+                        tag=nlayout.get('color_tag', None),
+                        local_alignment=Alignment(vertical=v, horizontal=h),
+                        expansion=w_expand,
+                    )
+        return nodes
