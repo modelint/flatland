@@ -5,19 +5,17 @@ diagram.py
 import logging
 
 # Model Integration
-from pyral.relvar import Relvar
 from pyral.relation import Relation
-from pyral.transaction import Transaction
 
 # Flatland
 from flatland.names import app
-from flatland.exceptions import NotationUnsupportedForDiagramType, UnsupportedDiagramType
+from flatland.exceptions import NotationUnsupportedForDiagramType
 from flatland.datatypes.geometry_types import Position, Rect_Size
-from flatland.diagram.grid import Grid
+from flatland.node_subsystem.grid import Grid
 from typing import TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
-    from flatland.diagram.canvas import Canvas
+    from flatland.node_subsystem.canvas import Canvas
 
 
 class Diagram:

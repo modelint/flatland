@@ -3,25 +3,22 @@ grid.py
 """
 # System
 import logging
-import sys
-from itertools import product
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from flatland.diagram.diagram import Diagram
+    from flatland.node_subsystem.diagram import Diagram
 
 # Model Integration
 from pyral.relation import Relation
 
 # Flatland
 from flatland.names import app
-from flatland.exceptions import CellOccupiedFE, FlatlandDBException
+from flatland.exceptions import FlatlandDBException
 # from flatland.connector_subsystem.connector_layout_specification import ConnectorLayoutSpecification as connector_layout
 # from flatland.geometry_domain.linear_geometry import expand_boundaries, span, step_edge_distance
-from flatland.datatypes.geometry_types import Position, Padding, Alignment, VertAlign, HorizAlign
+from flatland.datatypes.geometry_types import Padding, Alignment, VertAlign, HorizAlign
 # from flatland.node_subsystem.spanning_node import SpanningNode
 # from flatland.node_subsystem.single_cell_node import SingleCellNode
-from flatland.datatypes.connection_types import Orientation
 
 # A grid is useful to help the user determine where to place drawing elements and
 # do diagnose any unexpected drawing results

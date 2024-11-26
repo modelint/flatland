@@ -19,7 +19,7 @@ from flatland.datatypes.geometry_types import HorizAlign
 from flatland.sheet_subsystem.titleblock_placement import draw_titleblock
 
 if TYPE_CHECKING:
-    from flatland.diagram.canvas import Canvas
+    from flatland.node_subsystem.canvas import Canvas
 
 DataBox = namedtuple('_Databox', 'metadata content position size alignment style')
 FieldPlacement = namedtuple('_FieldPlacement', 'metadata position max_area')

@@ -23,7 +23,7 @@ class Compartment:
         - Text style -- Font, size, etc of text
     """
 
-    def __init__(self, node: 'Node', ctype: CompartmentType, spec: New_Compartment):
+    def __init__(self, node: 'Node', ctype: str, spec: New_Compartment):
         """
         Constructor
 

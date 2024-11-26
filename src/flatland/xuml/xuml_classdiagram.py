@@ -8,23 +8,23 @@ import logging
 from pathlib import Path
 from xcm_parser.class_model_parser import ClassModelParser
 from mls_parser.layout_parser import LayoutParser
-from typing import Optional, Dict
+from typing import Dict
 
 # Flatland
 from flatland.exceptions import ModelParseError, LayoutParseError
 # from flatland.exceptions import MultipleFloatsInSameBranch
-from flatland.diagram.canvas import Canvas
+from flatland.node_subsystem.canvas import Canvas
 from flatland.sheet_subsystem.frame import Frame
-# from flatland.node_subsystem.single_cell_node import SingleCellNode
+from flatland.node_subsystem.single_cell_node import SingleCellNode
 # from flatland.node_subsystem.spanning_node import SpanningNode
 # from flatland.connector_subsystem.tree_connector import TreeConnector
-# from flatland.datatypes.geometry_types import Alignment, VertAlign, HorizAlign
-# from flatland.datatypes.command_interface import New_Stem, New_Path,\
-#      New_Trunk_Branch, New_Offshoot_Branch, New_Branch_Set, New_Compartment
+from flatland.datatypes.geometry_types import Alignment, VertAlign, HorizAlign
+from flatland.datatypes.command_interface import New_Stem, New_Path,\
+     New_Trunk_Branch, New_Offshoot_Branch, New_Branch_Set, New_Compartment
 # from flatland.connector_subsystem.straight_binary_connector import StraightBinaryConnector
 # from flatland.connector_subsystem.bending_binary_connector import BendingBinaryConnector
 # from flatland.datatypes.connection_types import ConnectorName, OppositeFace, StemName
-# from flatland.text.text_block import TextBlock
+from flatland.text.text_block import TextBlock
 
 # BranchLeaves = namedtuple('BranchLeaves', 'leaf_stems local_graft next_graft floating_leaf_stem')
 
@@ -81,6 +81,10 @@ class XumlClassDiagram:
                 canvas=cls.flatland_canvas, metadata=cls.model.metadata
             )
 
+        # Draw all of the classes
+        cls.logger.info("Drawing the classes")
+        cls.nodes = cls.draw_classes()
+
         # Render the Canvas so it can be displayed and output a PDF
         cls.flatland_canvas.render()
 
@@ -102,22 +106,23 @@ class XumlClassDiagram:
             color=lspec.color,
         )
 
-    def draw_classes(self) -> Dict[str, SingleCellNode]:
-        """Draw all of the classes on the class diagram"""
+    @classmethod
+    def draw_classes(cls) -> Dict[str, SingleCellNode]:
+        """Draw all the classes on the class diagram"""
 
         nodes = {}
-        np = self.layout.node_placement # Layout data for all classes
+        np = cls.layout.node_placement # Layout data for all classes
 
-        for c in self.subsys.classes:
+        for c in cls.model.classes:
 
             # Get the class name from the model
             cname = c['name']
-            self.logger.info(f'Processing class: {cname}')
+            cls.logger.info(f'Processing class: {cname}')
 
             # Get the layout data for this class
             nlayout = np.get(cname)
             if not nlayout:
-                self.logger.warning(f"Skipping class [{cname}] -- No cplace specified in layout sheet")
+                cls.logger.warning(f"Skipping class [{cname}] -- No cplace specified in layout sheet")
                 continue
 
             # Layout data for all placements
@@ -178,26 +183,27 @@ class XumlClassDiagram:
                     nodes[node_name] = SingleCellNode(
                         node_type_name=node_type_name,
                         content=text_content,
-                        grid=self.flatland_canvas.Diagram.Grid,
+                        grid=cls.flatland_canvas.Diagram.Grid,
                         row=row_span[0], column=col_span[0],
                         tag=nlayout.get('color_tag', None),
                         local_alignment=Alignment(vertical=v, horizontal=h),
                         expansion=w_expand,
                     )
                 else:
+                    pass
                     # Span might be only 1 column or row
-                    low_row = row_span[0]
-                    high_row = low_row if len(row_span) == 1 else row_span[1]
-                    left_col = col_span[0]
-                    right_col = left_col if len(col_span) == 1 else col_span[1]
-                    nodes[node_name] = SpanningNode(
-                        node_type_name=node_type_name,
-                        content=text_content,
-                        grid=self.flatland_canvas.Diagram.Grid,
-                        low_row=low_row, high_row=high_row,
-                        left_column=left_col, right_column=right_col,
-                        tag=nlayout.get('color_tag', None),
-                        local_alignment=Alignment(vertical=v, horizontal=h),
-                        expansion=w_expand,
-                    )
+                    # low_row = row_span[0]
+                    # high_row = low_row if len(row_span) == 1 else row_span[1]
+                    # left_col = col_span[0]
+                    # right_col = left_col if len(col_span) == 1 else col_span[1]
+                    # nodes[node_name] = SpanningNode(
+                    #     node_type_name=node_type_name,
+                    #     content=text_content,
+                    #     grid=cls.flatland_canvas.Diagram.Grid,
+                    #     low_row=low_row, high_row=high_row,
+                    #     left_column=left_col, right_column=right_col,
+                    #     tag=nlayout.get('color_tag', None),
+                    #     local_alignment=Alignment(vertical=v, horizontal=h),
+                    #     expansion=w_expand,
+                    # )
         return nodes

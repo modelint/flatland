@@ -9,14 +9,15 @@ from pathlib import Path
 # Model Integration
 from tabletqt.tablet import Tablet, Rect_Size, Position
 from tabletqt.graphics.line_segment import LineSegment
+from pyral.relation import Relation
 
 # Flatland
 from flatland.names import app
 from flatland.exceptions import InvalidOrientation, NonSystemInitialLayer
 # from flatland.diagram.diagram_layout_specification import DiagramLayoutSpecification
 # from flatland.connector_subsystem.connector_layout_specification import ConnectorLayoutSpecification
-# from flatland.datatypes.geometry_types import Rect_Size
-from flatland.diagram.diagram import Diagram
+from flatland.datatypes.geometry_types import Rect_Size, Padding
+from flatland.node_subsystem.diagram import Diagram
 from flatland.sheet_subsystem.sheet import Sheet
 
 # from flatland.decoration_subsystem.symbol import Symbol
@@ -74,8 +75,6 @@ class Canvas:
 
         self.logger = logging.getLogger(__name__)
 
-        # ConnectorLayoutSpecification()
-
         self.Sheet = Sheet(standard_sheet_name)  # Ensure that the user has specified a known sheet size
         if orientation not in ('portrait', 'landscape'):
             raise InvalidOrientation(orientation)
@@ -90,7 +89,16 @@ class Canvas:
             height=int(round(h * factor)),
             width=int(round(w * factor))
         )
-        # self.Margin = DiagramLayoutSpecification.Default_margin
+        R = f"Name:<{'standard'}>"
+        result = Relation.restrict(db=app, relation='Layout_Specification', restriction=R)
+        lspec = result.body[0]
+
+        self.Margin = Padding(
+            top=int(lspec['Default_margin_top']),
+            bottom=int(lspec['Default_margin_bottom']),
+            left=int(lspec['Default_margin_left']),
+            right=int(lspec['Default_margin_right']),
+        )
         self.Color = color
 
         # Create the one and only Tablet instance and initialize it with the Presentation on the diagram

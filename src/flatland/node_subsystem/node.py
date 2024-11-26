@@ -6,7 +6,7 @@ import logging
 from typing import TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
-    from flatland.diagram.grid import Grid
+    from flatland.node_subsystem.grid import Grid
 
 # Flatland
 from flatland.exceptions import UnsupportedNodeType
