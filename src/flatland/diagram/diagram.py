@@ -1,17 +1,23 @@
 """
 diagram.py
 """
-from flatland.node_subsystem.diagram_type import DiagramType
-from flatland.flatland_exceptions import NotationUnsupportedForDiagramType, UnsupportedDiagramType
+# System
+import logging
+
+# Model Integration
+from pyral.relvar import Relvar
+from pyral.relation import Relation
+from pyral.transaction import Transaction
+
+# Flatland
+from flatland.names import app
+from flatland.exceptions import NotationUnsupportedForDiagramType, UnsupportedDiagramType
 from flatland.datatypes.geometry_types import Position, Rect_Size
 from flatland.node_subsystem.grid import Grid
 from typing import TYPE_CHECKING, Dict
-from flatland.database.flatlanddb import FlatlandDB as fdb
-from sqlalchemy import select, and_
 
 if TYPE_CHECKING:
     from flatland.diagram.canvas import Canvas
-    from flatland.drawing_domain.layer import Layer
 
 
 class Diagram:
@@ -32,38 +38,26 @@ class Diagram:
 
     """
 
-    def __init__(self, canvas: 'Canvas', diagram_type_name: str, layer: 'Layer', notation_name: str,
+    def __init__(self, canvas: 'Canvas', diagram_type_name: str, notation_name: str,
                  padding: Dict[str, int], show_grid: bool):
         """
         Constructor
 
         :param canvas: Reference to the Canvas
-        :param diagram_type_name: A supported type of model diagram such as class, state machine, collaboration
-        :param notation_name: A supported notation such as xUML, Starr, Shlaer-Mellor
+        :param diagram_type_name: User specified name of diagram type to draw
+        :param notation_name: User specified notation to use on this diagram
         """
+        self.logger = logging.getLogger(__name__)
         self.Canvas = canvas
-        self.Layer = layer
 
         # Validate notation for this diagram type
-        dnots = fdb.MetaData.tables['Diagram Notation']
-        q = select([dnots]).where(
-            and_(dnots.c['Notation'] == notation_name,
-                 dnots.c['Diagram type'] == diagram_type_name)
-        )
-        i = fdb.Connection.execute(q).fetchone()
-        if not i:
+        R = f"Diagram_type:<{diagram_type_name}>, Notation:<{notation_name}>"
+        result = Relation.restrict(db=app, relation='Diagram_Notation', restriction=R)
+        if not result.body:
+            self.logger.exception(f"Notation {notation_name} not defined for Diagram Type {diagram_type_name}")
             raise NotationUnsupportedForDiagramType
         self.Notation = notation_name
-
-        # Validate diagram type name
-        dtypes = fdb.MetaData.tables['Diagram Type']
-        q = dtypes.select(dtypes.c['Name'] == diagram_type_name)
-        i = fdb.Connection.execute(q).fetchone()
-        if not i:
-            raise UnsupportedDiagramType
-        # self.Diagram_type = diagram_type_name
-        # Testing this now to replace above line
-        self.Diagram_type = DiagramType(name=diagram_type_name, notation=self.Notation)
+        self.Diagram_type = diagram_type_name
 
        # Set up grid
         if show_grid:

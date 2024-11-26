@@ -4,7 +4,6 @@
 import logging
 from collections import namedtuple
 from typing import TYPE_CHECKING, Dict
-import sys
 
 # Model Integration
 from pyral.relation import Relation
@@ -14,12 +13,9 @@ from tabletqt.geometry_types import Position, Rect_Size, HorizAlign
 from pyral.rtypes import Attribute as pyral_Attribute
 
 # Flatland
-from flatland.exceptions import FlatlandConfigException, FlatlandDBException
+from flatland.exceptions import FlatlandDBException
 from flatland.names import app
-from flatland.datatypes.geometry_types import Alignment, HorizAlign, VertAlign
-from flatland.diagram.canvas import points_in_mm
-from flatland.text.text_block import TextBlock
-from flatland.sheet_subsystem.resource import resource_locator
+from flatland.datatypes.geometry_types import HorizAlign
 from flatland.sheet_subsystem.titleblock_placement import draw_titleblock
 
 if TYPE_CHECKING:

@@ -2,7 +2,6 @@
 
 # Model Integration
 from pyral.relvar import Relvar
-from pyral.relation import Relation
 from pyral.transaction import Transaction
 
 # Flatland
