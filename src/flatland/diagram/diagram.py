@@ -13,7 +13,7 @@ from pyral.transaction import Transaction
 from flatland.names import app
 from flatland.exceptions import NotationUnsupportedForDiagramType, UnsupportedDiagramType
 from flatland.datatypes.geometry_types import Position, Rect_Size
-from flatland.node_subsystem.grid import Grid
+from flatland.diagram.grid import Grid
 from typing import TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:

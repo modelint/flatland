@@ -24,6 +24,17 @@ class DiagramNotationInstance(NamedTuple):
     Diagram_type: str
     Notation: str
 
+class LayoutSpecificationInstance(NamedTuple):
+    Name: str
+    Default_margin_top: int
+    Default_margin_bottom: int
+    Default_margin_left: int
+    Default_margin_right: int
+    Default_diagram_origin_x: int
+    Default_diagram_origin_y: int
+    Default_cell_alignment_v: str
+    Default_cell_alignment_h: str
+
 class NodeTypeInstance(NamedTuple):
     Name: str
     About: str

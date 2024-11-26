@@ -73,8 +73,7 @@ class Canvas:
         # ---
 
         self.logger = logging.getLogger(__name__)
-        # Load layout specifications
-        # DiagramLayoutSpecification()
+
         # ConnectorLayoutSpecification()
 
         self.Sheet = Sheet(standard_sheet_name)  # Ensure that the user has specified a known sheet size

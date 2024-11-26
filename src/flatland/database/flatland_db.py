@@ -13,6 +13,7 @@ from flatland.configuration.configDB import ConfigDB
 from flatland.database.relvars import FlatlandSchema, SimpleAssoc, AssocRel, GenRel
 from flatland.database.pop_sheet_subsys import SheetSubsysDB
 from flatland.database.pop_node_subsys import NodeSubsysDB
+from flatland.database.pop_layout_spec import LayoutSpecDB
 
 Header = namedtuple('Header', ['attrs', 'ids'])
 SheetInstance = namedtuple('SheetInstance', 'standard height width size_group')
@@ -88,6 +89,7 @@ class FlatlandDB:
         # Populate each subsystem
         SheetSubsysDB.populate()
         NodeSubsysDB.populate()
+        LayoutSpecDB.populate()
 
         # Print out a depiction of the populated database as a set of filled out tables
         # organized alphabetically by relvar name
