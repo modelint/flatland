@@ -2,6 +2,7 @@
 grid.py
 """
 # System
+import sys
 import logging
 from typing import TYPE_CHECKING
 
@@ -13,12 +14,12 @@ from pyral.relation import Relation
 
 # Flatland
 from flatland.names import app
-from flatland.exceptions import FlatlandDBException
+from flatland.exceptions import FlatlandDBException, CellOccupiedFE
 # from flatland.connector_subsystem.connector_layout_specification import ConnectorLayoutSpecification as connector_layout
-# from flatland.geometry_domain.linear_geometry import expand_boundaries, span, step_edge_distance
+from flatland.geometry_domain.linear_geometry import expand_boundaries, span, step_edge_distance
 from flatland.datatypes.geometry_types import Padding, Alignment, VertAlign, HorizAlign
 # from flatland.node_subsystem.spanning_node import SpanningNode
-# from flatland.node_subsystem.single_cell_node import SingleCellNode
+from flatland.node_subsystem.single_cell_node import SingleCellNode
 
 # A grid is useful to help the user determine where to place drawing elements and
 # do diagnose any unexpected drawing results
@@ -90,10 +91,10 @@ class Grid:
         layout_spec = result.body[0]
 
         self.Cell_padding = Padding(
-            top=layout_spec['Default_margin_top'],
-            bottom=layout_spec['Default_margin_bottom'],
-            left=layout_spec['Default_margin_left'],
-            right=layout_spec['Default_margin_right'],
+            top=int(layout_spec['Default_margin_top']),
+            bottom=int(layout_spec['Default_margin_bottom']),
+            left=int(layout_spec['Default_margin_left']),
+            right=int(layout_spec['Default_margin_right']),
         )
         v_align = VertAlign[layout_spec['Default_cell_alignment_v'].upper()]
         h_align = HorizAlign[layout_spec['Default_cell_alignment_h'].upper()]
@@ -205,18 +206,18 @@ class Grid:
     #     # For each row, add a rightmost empty node space
     #     [row.append(None) for row in self.Cells]
     #
-    # @property
-    # def outermost_row(self) -> int:
-    #     """My current outermost row"""
-    #     # An empty grid has one row boundary at the zero diagram x position which we disregard
-    #     return len(self.Row_boundaries[1:])
-    #
-    # @property
-    # def outermost_column(self) -> int:
-    #     """My current outermost column"""
-    #     # An empty grid has one column boundary at the zero diagram y position which we disregard
-    #     return len(self.Col_boundaries[1:])
-    #
+    @property
+    def outermost_row(self) -> int:
+        """My current outermost row"""
+        # An empty grid has one row boundary at the zero diagram x position which we disregard
+        return len(self.Row_boundaries[1:])
+
+    @property
+    def outermost_column(self) -> int:
+        """My current outermost column"""
+        # An empty grid has one column boundary at the zero diagram y position which we disregard
+        return len(self.Col_boundaries[1:])
+
     # def place_spanning_node(self, node: SpanningNode):
     #     """Places a spanning node adding any required rows or columns"""
     #
@@ -340,62 +341,65 @@ class Grid:
     #         for c in range(columns_to_add):
     #             self.add_column(connector_layout.Default_new_path_col_width)
     #
-    # def place_single_cell_node(self, node: SingleCellNode):
-    #     """Places the node adding any required rows or columns"""
-    #
-    #     # Determine whether or not we'll need to extend upward, rightward or both
-    #     # We get zero if we already have all the rows and columns we need
-    #     rows_to_add = max(0, node.Row - self.outermost_row)
-    #     columns_to_add = max(0, node.Column - self.outermost_column)
-    #
-    #     # If there is already a node at that location, raise an exception
-    #     if not rows_to_add and not columns_to_add and self.Cells[node.Row - 1][node.Column - 1]:
-    #         self.logger.error(f'Single cell node overlap at [{node.Row}, {node.Column}]')
-    #         raise CellOccupiedFE
-    #
-    #     # Add necessary rows and columns, if any
-    #     horizontal_padding = self.Cell_padding.left + self.Cell_padding.right
-    #     vertical_padding = self.Cell_padding.top + self.Cell_padding.bottom
-    #     new_cell_height = node.Size.height + vertical_padding
-    #     new_cell_width = node.Size.width + horizontal_padding
-    #     default_cell_height = node.Node_type.Default_size.height
-    #     default_cell_width = node.Node_type.Default_size.width
-    #
-    #     # Check for horizontal overlap
-    #     if not columns_to_add:
-    #         overlap = max(0, node.Size.width + horizontal_padding - span(self.Col_boundaries, node.Column, node.Column))
-    #         if overlap:
-    #             # add the overlap to each col width from the right boundary rightward
-    #             self.Col_boundaries = expand_boundaries(
-    #                 boundaries=self.Col_boundaries, start_boundary=node.Column, expansion=overlap)
-    #             # Check to see if the rightmost column position is now outside the diagram area
-    #             if self.Col_boundaries[-1] > self.Diagram.Size.width:
-    #                 excess = round(self.Col_boundaries[-1] - self.Diagram.Size.width)
-    #                 self.logger.error(f"Max diagram width exceeded by {excess}pt at col {len(self.Col_boundaries)}")
-    #                 sys.exit(1)
-    #
-    #     # Check for vertical overlap
-    #     if not rows_to_add:
-    #         overlap = max(0, node.Size.height + vertical_padding - span(self.Row_boundaries, node.Row, node.Row))
-    #         if overlap:
-    #             # add the overlap to each row ceiling from the top of this cell upward
-    #             self.Row_boundaries = expand_boundaries(
-    #                 boundaries=self.Row_boundaries, start_boundary=node.Row, expansion=overlap)
-    #             # Check to see if the rightmost column position is now outside the diagram area
-    #             if self.Row_boundaries[-1] > self.Diagram.Size.height:
-    #                 excess = round(self.Row_boundaries[-1] - self.Diagram.Size.height)
-    #                 self.logger.error(f"Max diagram width exceeded by {excess}pt at row {len(self.Row_boundaries)}")
-    #                 sys.exit(1)
-    #
-    #     # Add extra rows and columns (must add the rows first)
-    #     for r in range(rows_to_add):
-    #         # Each new row, except the last will be of default height with the last matching the required height
-    #         add_height = new_cell_height if r == rows_to_add - 1 else default_cell_height
-    #         self.add_row(add_height)
-    #     for c in range(columns_to_add):
-    #         add_width = new_cell_width if c == columns_to_add - 1 else default_cell_width
-    #         self.add_column(add_width)
-    #
-    #     # Place the node in the new location
-    #     self.Cells[node.Row - 1][node.Column - 1] = node
-    #     self.Nodes.append(node)
+    def place_single_cell_node(self, node: SingleCellNode):
+        """Places the node adding any required rows or columns"""
+
+        # Determine whether or not we'll need to extend upward, rightward or both
+        # We get zero if we already have all the rows and columns we need
+        rows_to_add = max(0, node.Row - self.outermost_row)
+        columns_to_add = max(0, node.Column - self.outermost_column)
+
+        # If there is already a node at that location, raise an exception
+        if not rows_to_add and not columns_to_add and self.Cells[node.Row - 1][node.Column - 1]:
+            self.logger.error(f'Single cell node overlap at [{node.Row}, {node.Column}]')
+            raise CellOccupiedFE
+
+        # Add necessary rows and columns, if any
+        horizontal_padding = self.Cell_padding.left + self.Cell_padding.right
+        vertical_padding = self.Cell_padding.top + self.Cell_padding.bottom
+        new_cell_height = node.Size.height + vertical_padding
+        new_cell_width = node.Size.width + horizontal_padding
+        R = f"Name:<{node.Node_type_name}>, Diagram_type:<{self.Diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Node_Type', restriction=R)
+        node_type = result.body[0]
+        default_cell_height = int(node_type['Default_size_h'])
+        default_cell_width = int(node_type['Default_size_w'])
+
+        # Check for horizontal overlap
+        if not columns_to_add:
+            overlap = max(0, node.Size.width + horizontal_padding - span(self.Col_boundaries, node.Column, node.Column))
+            if overlap:
+                # add the overlap to each col width from the right boundary rightward
+                self.Col_boundaries = expand_boundaries(
+                    boundaries=self.Col_boundaries, start_boundary=node.Column, expansion=overlap)
+                # Check to see if the rightmost column position is now outside the diagram area
+                if self.Col_boundaries[-1] > self.Diagram.Size.width:
+                    excess = round(self.Col_boundaries[-1] - self.Diagram.Size.width)
+                    self.logger.error(f"Max diagram width exceeded by {excess}pt at col {len(self.Col_boundaries)}")
+                    sys.exit(1)
+
+        # Check for vertical overlap
+        if not rows_to_add:
+            overlap = max(0, node.Size.height + vertical_padding - span(self.Row_boundaries, node.Row, node.Row))
+            if overlap:
+                # add the overlap to each row ceiling from the top of this cell upward
+                self.Row_boundaries = expand_boundaries(
+                    boundaries=self.Row_boundaries, start_boundary=node.Row, expansion=overlap)
+                # Check to see if the rightmost column position is now outside the diagram area
+                if self.Row_boundaries[-1] > self.Diagram.Size.height:
+                    excess = round(self.Row_boundaries[-1] - self.Diagram.Size.height)
+                    self.logger.error(f"Max diagram width exceeded by {excess}pt at row {len(self.Row_boundaries)}")
+                    sys.exit(1)
+
+        # Add extra rows and columns (must add the rows first)
+        for r in range(rows_to_add):
+            # Each new row, except the last will be of default height with the last matching the required height
+            add_height = new_cell_height if r == rows_to_add - 1 else default_cell_height
+            self.add_row(add_height)
+        for c in range(columns_to_add):
+            add_width = new_cell_width if c == columns_to_add - 1 else default_cell_width
+            self.add_column(add_width)
+
+        # Place the node in the new location
+        self.Cells[node.Row - 1][node.Column - 1] = node
+        self.Nodes.append(node)

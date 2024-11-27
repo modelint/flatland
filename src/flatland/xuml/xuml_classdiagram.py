@@ -8,7 +8,7 @@ import logging
 from pathlib import Path
 from xcm_parser.class_model_parser import ClassModelParser
 from mls_parser.layout_parser import LayoutParser
-from typing import Dict
+from typing import List, Dict, Any
 
 # Flatland
 from flatland.exceptions import ModelParseError, LayoutParseError
@@ -107,6 +107,32 @@ class XumlClassDiagram:
         )
 
     @classmethod
+    def flatten_attrs(cls, attrs: List[Dict[str, Any]]) -> List[str]:
+        attr_content = []
+        for a in attrs:
+            name = a['name']
+            itags = a.get('I')
+            rtags = a.get('R')
+            type_name = a.get('type')
+            type_name = f" : {type_name}" if type_name else ""
+            tag_text = "{" if itags or rtags else ""
+            if itags:
+                sorted_itags = sorted(itags, key=lambda x: x.number, reverse=True)
+                for i in sorted_itags:
+                    i_num = f"I{str(i.number) if i.number > 1 else ''}, "
+                    tag_text = tag_text + i_num
+            if rtags:
+                for r in rtags:
+                    c = "c" if r[1] else ""
+                    rtext = f"R{r[0]}{c}"
+                    tag_text = tag_text + rtext
+            tag_text = tag_text.removesuffix(", ")
+            tag_text = tag_text + "}" if tag_text else ""
+            a_text = f"{name} {type_name}{tag_text}".rstrip()
+            attr_content.append(a_text)
+        return attr_content
+
+    @classmethod
     def draw_classes(cls) -> Dict[str, SingleCellNode]:
         """Draw all the classes on the class diagram"""
 
@@ -146,9 +172,12 @@ class XumlClassDiagram:
             # One list item per compartment in descending vertical order of display
             # (class name, attributes and optional methods)
             h_expand = nlayout.get('node_height_expansion', {})
+            attr_text = cls.flatten_attrs(c['attributes'])
+            if internal_ref:
+                attr_text = attr_text + internal_ref
             text_content = [
                 New_Compartment(content=name_block.text, expansion=h_expand.get(1, 0)),
-                New_Compartment(content=c['attributes'] + internal_ref, expansion=h_expand.get(2, 0)),
+                New_Compartment(content=attr_text, expansion=h_expand.get(2, 0)),
             ]
             if c.get('methods'):
                 text_content.append(

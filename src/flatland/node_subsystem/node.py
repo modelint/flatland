@@ -46,11 +46,12 @@ class Node:
         :param local_alignment: Overrides default alignment within Cell or Cell range
         """
         self.logger = logging.getLogger(__name__)
+        self.Node_type_name = node_type_name
         self.Expansion = expansion
         self.Tag = tag
         self.Grid = grid
-        dtype = self.Grid.Diagram.Diagram_type
 
+        dtype = self.Grid.Diagram.Diagram_type
         # Validate the Node Type for this Diagram Type
         R = f"Name:<{node_type_name}>, Diagram_type:<{dtype}>"
         result = Relation.restrict(db=app, relation='Node_Type', restriction=R)
@@ -59,8 +60,18 @@ class Node:
             raise UnsupportedNodeType(node_type_name=node_type_name,
                                       diagram_type_name=dtype)
 
+        # Create list of required compartments in stack order, top downward
+        R = f"Node_type:<{node_type_name}>, Diagram_type:<{dtype}>"
+        result = Relation.restrict(db=app, relation='Compartment_Type', restriction=R)
+        if not result.body:
+            pass
+
+        # Sort the compartment types by stack order, ascending
+        self.Compartment_types = sorted(result.body, key=lambda x: x['Stack_order'])
+
+
         # Create a list of compartments ordered top to bottom based on Node Type's Compartment Types
-        z = zip(self.Node_type.Compartment_types, content)
+        z = zip(self.Compartment_types, content)
         if len(content) > 1:
             # The normal case, more than one compartment showing
             self.Compartments = [Compartment(node=self, ctype=t, spec=s) for t, s in z]
@@ -78,7 +89,7 @@ class Node:
 
         # The Node will be aligned in the Cell according to either the specified local alignment or, if none,
         # the default cell alignment that we got from the Diagram Layout Specification
-        self.Local_alignment = local_alignment if local_alignment else diagram_layout.Default_cell_alignment
+        self.Local_alignment = local_alignment if local_alignment else self.Grid.Cell_alignment
 
     @property
     def Canvas_position(self):

@@ -35,7 +35,8 @@ class SingleCellNode(Node):
         :param column:
         :param local_alignment:
         """
-        super().__init__(node_type_name, content, grid, expansion, tag, local_alignment)
+        super().__init__(node_type_name=node_type_name, content=content, grid=grid,
+                         expansion=expansion, tag=tag, local_alignment=local_alignment)
         if row <= 0:
             raise BadRowNumber
         if column <= 0:

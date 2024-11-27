@@ -47,6 +47,7 @@ class Diagram:
         """
         self.logger = logging.getLogger(__name__)
         self.Canvas = canvas
+        self.Layer = self.Canvas.Tablet.layers['diagram']
 
         # Validate notation for this diagram type
         R = f"Diagram_type:<{diagram_type_name}>, Notation:<{notation_name}>"

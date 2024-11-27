@@ -1,14 +1,23 @@
 """ compartment.py """
 
 # System
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Dict, NamedTuple
 
 if TYPE_CHECKING:
     from flatland.node_subsystem.node import Node
 
+# Model Integration
+from tabletqt.graphics.text_element import TextElement
+
 # Flatland
-from flatland.datatypes.geometry_types import Rect_Size, Position, HorizAlign, VertAlign
+from flatland.datatypes.geometry_types import Rect_Size, Position, HorizAlign, VertAlign, Alignment, Padding
 from flatland.datatypes.command_interface import New_Compartment
+
+class CompartmentType(NamedTuple):
+    name : str
+    alignment : Alignment
+    padding : Padding
+    stack_order : int
 
 
 class Compartment:
@@ -23,7 +32,7 @@ class Compartment:
         - Text style -- Font, size, etc of text
     """
 
-    def __init__(self, node: 'Node', ctype: str, spec: New_Compartment):
+    def __init__(self, node: 'Node', ctype: Dict[str, str], spec: New_Compartment):
         """
         Constructor
 
@@ -32,7 +41,18 @@ class Compartment:
         :param content: Text block a list of text lines to be rendered inside this Compartment
         :param expansion: After fitting text, expand the height of this node by this factor
         """
-        self.Type = ctype
+        self.Type = CompartmentType(
+            name=ctype['Name'],
+            alignment=Alignment(vertical=VertAlign[ctype['Alignment_v'].upper()],
+                                horizontal=HorizAlign[ctype['Alignment_h'].upper()]),
+            padding=Padding(
+                top=int(ctype['Padding_top']),
+                bottom=int(ctype['Padding_bottom']),
+                left=int(ctype['Padding_left']),
+                right=int(ctype['Padding_right']),
+            ),
+            stack_order=int(ctype['Stack_order'])
+        )
         self.Node = node
         self.Content = spec.content  # list of text lines
         self.Expansion = spec.expansion
@@ -40,9 +60,9 @@ class Compartment:
     @property
     def Text_block_size(self) -> Rect_Size:
         """Compute the size of the text block with required internal compartment padding"""
-        layer = self.Node.Grid.Diagram.Layer
-        asset = ' '.join([self.Node.Node_type.Name, self.Type.name])
-        unpadded_text_size = layer.text_block_size(asset=asset, text_block=self.Content)
+        dlayer = self.Node.Grid.Diagram.Layer
+        asset = ' '.join([self.Node.Node_type_name, self.Type.name])
+        unpadded_text_size = TextElement.text_block_size(layer=dlayer, asset=asset, text_block=self.Content)
 
         # Now add the padding specified for this compartment type
         padded_text_width = unpadded_text_size.width + self.Type.padding.left + self.Type.padding.right
