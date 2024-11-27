@@ -114,10 +114,10 @@ class XumlClassDiagram:
             itags = a.get('I')
             rtags = a.get('R')
             type_name = a.get('type')
-            type_name = f" : {type_name}" if type_name else ""
+            type_name = f": {type_name} " if type_name else ""
             tag_text = "{" if itags or rtags else ""
             if itags:
-                sorted_itags = sorted(itags, key=lambda x: x.number, reverse=True)
+                sorted_itags = sorted(itags, key=lambda x: x.number, reverse=False)
                 for i in sorted_itags:
                     i_num = f"I{str(i.number) if i.number > 1 else ''}, "
                     tag_text = tag_text + i_num
