@@ -11,13 +11,16 @@ if TYPE_CHECKING:
 
 # Model Integration
 from pyral.relation import Relation
+from tabletqt.graphics.line_segment import LineSegment
+from tabletqt.graphics.text_element import TextElement
+from tabletqt.graphics.rectangle_se import RectangleSE
 
 # Flatland
 from flatland.names import app
 from flatland.exceptions import FlatlandDBException, CellOccupiedFE
 # from flatland.connector_subsystem.connector_layout_specification import ConnectorLayoutSpecification as connector_layout
 from flatland.geometry_domain.linear_geometry import expand_boundaries, span, step_edge_distance
-from flatland.datatypes.geometry_types import Padding, Alignment, VertAlign, HorizAlign
+from flatland.datatypes.geometry_types import Padding, Alignment, VertAlign, HorizAlign, Position
 # from flatland.node_subsystem.spanning_node import SpanningNode
 from flatland.node_subsystem.single_cell_node import SingleCellNode
 
@@ -32,6 +35,8 @@ show_grid = True  # If true, draw the grid on its own dedicated layer
 boundary_label_gap = 30  # Max distance between row or col boundary and label
 grid_label_gap = 20  # Max distance between grid boundary and label
 min_grid_lable_gap = 2  # Min distance between grid boundary and label
+
+
 # We use the min when the grid edge is too close to the canvas edge to leave enough space for the labels
 # Rather than try to draw the labels at negative coordinates (causing an error), we just use the minimum
 # If the diagram is offset by at least the grid_label_gap in the layout file using diagram paddding
@@ -134,44 +139,46 @@ class Grid:
         """
         Draw Grid on Tablet for diagnostic purposes
         """
-    #
-    #     if self.Show:
-    #         grid_layer = self.Diagram.Canvas.Tablet.layers['grid']
-    #         self.logger.info("Drawing grid")
-    #         # Draw rows
-    #         left_extent = self.Diagram.Origin.x
-    #         right_extent = self.Diagram.Origin.x + self.Diagram.Size.width
-    #         for r, h in enumerate(self.Row_boundaries):
-    #             grid_layer.add_line_segment(asset='row boundary',
-    #                                         from_here=Position(left_extent, h + self.Diagram.Origin.y),
-    #                                         to_there=Position(right_extent, h + self.Diagram.Origin.y)
-    #                                         )
-    #             grid_layer.add_text_line(asset='grid label',
-    #                                      lower_left=Position(max(left_extent - grid_label_gap, min_grid_lable_gap),
-    #                                                          self.Diagram.Origin.y + h + boundary_label_gap),
-    #                                      text=str(r + 1))
-    #             # We discard the grid_label_gap
-    #
-    #         # Draw columns
-    #         bottom_extent = self.Diagram.Origin.y
-    #         top_extent = bottom_extent + self.Diagram.Size.height
-    #         for c, w in enumerate(self.Col_boundaries):
-    #             grid_layer.add_line_segment(asset='column boundary',
-    #                                         from_here=Position(w + self.Diagram.Origin.x, bottom_extent),
-    #                                         to_there=Position(w + self.Diagram.Origin.x, top_extent)
-    #                                         )
-    #             grid_layer.add_text_line(asset='grid label',
-    #                                      lower_left=Position(w + self.Diagram.Origin.x + boundary_label_gap,
-    #                                                          max(bottom_extent - grid_label_gap, min_grid_lable_gap)),
-    #                                      text=str(c + 1))
-    #
-    #         # Draw diagram boundary
-    #         grid_layer.add_rectangle(asset='grid boundary',
-    #                                  lower_left=Position(x=self.Diagram.Origin.x, y=self.Diagram.Origin.y),
-    #                                  size=self.Diagram.Size)
-    #
+
+        if self.Show:
+            grid_layer = self.Diagram.Canvas.Tablet.layers['grid']
+            self.logger.info("Drawing grid")
+            # Draw rows
+            left_extent = self.Diagram.Origin.x
+            right_extent = self.Diagram.Origin.x + self.Diagram.Size.width
+            for r, h in enumerate(self.Row_boundaries[:-1]):
+                LineSegment.add(layer=grid_layer, asset='row boundary',
+                                from_here=Position(left_extent, h + self.Diagram.Origin.y),
+                                to_there=Position(right_extent, h + self.Diagram.Origin.y)
+                                )
+                ll_y = self.Diagram.Origin.y + h + boundary_label_gap
+                if ll_y < (self.Diagram.Canvas.Size.height - 10):
+                    TextElement.add_line(layer=grid_layer, asset='grid label',
+                                         lower_left=Position(max(left_extent - grid_label_gap, min_grid_lable_gap),
+                                                             ll_y),
+                                         text=str(r + 1))
+
+            # Draw columns
+            bottom_extent = self.Diagram.Origin.y
+            top_extent = bottom_extent + self.Diagram.Size.height
+            for c, w in enumerate(self.Col_boundaries):
+                LineSegment.add(layer=grid_layer, asset='column boundary',
+                                from_here=Position(w + self.Diagram.Origin.x, bottom_extent),
+                                to_there=Position(w + self.Diagram.Origin.x, top_extent)
+                                )
+                TextElement.add_line(layer=grid_layer, asset='grid label',
+                                     lower_left=Position(w + self.Diagram.Origin.x + boundary_label_gap,
+                                                         max(bottom_extent - grid_label_gap, min_grid_lable_gap)),
+                                     text=str(c + 1))
+
+            # Draw diagram boundary
+            RectangleSE.add(layer=grid_layer, asset='grid boundary',
+                            lower_left=Position(x=self.Diagram.Origin.x, y=self.Diagram.Origin.y),
+                            size=self.Diagram.Size)
+
         # Draw nodes
         [n.render() for n in self.Nodes]
+
     #
     #     # Draw connectors
     #     [c.render() for c in self.Connectors]
