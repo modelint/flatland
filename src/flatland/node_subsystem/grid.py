@@ -130,10 +130,10 @@ class Grid:
     #     return origin_offset + low_boundary + step_edge_distance(
     #         num_of_steps=connector_layout.Default_rut_positions, extent=lane_width, step=rut)
     #
-    # def render(self):
-    #     """
-    #     Draw Grid on Tablet for diagnostic purposes
-    #     """
+    def render(self):
+        """
+        Draw Grid on Tablet for diagnostic purposes
+        """
     #
     #     if self.Show:
     #         grid_layer = self.Diagram.Canvas.Tablet.layers['grid']
@@ -170,42 +170,42 @@ class Grid:
     #                                  lower_left=Position(x=self.Diagram.Origin.x, y=self.Diagram.Origin.y),
     #                                  size=self.Diagram.Size)
     #
-    #     # Draw nodes
-    #     [n.render() for n in self.Nodes]
+        # Draw nodes
+        [n.render() for n in self.Nodes]
     #
     #     # Draw connectors
     #     [c.render() for c in self.Connectors]
     #
-    # def add_row(self, cell_height):
-    #     """Adds an empty row upward with the given height"""
-    #     # Compute the new y position relative to the Diagram y origin
-    #     new_row_height = self.Row_boundaries[-1] + cell_height
-    #     # Make sure that it's not above the Diagram area
-    #     if new_row_height > self.Diagram.Size.height:
-    #         excess = round(new_row_height - self.Diagram.Size.height)
-    #         self.logger.error(f"Max diagram height exceeded by {excess}pt at row {len(self.Row_boundaries)}")
-    #         sys.exit(1)
-    #     # Add it to the list of row boundaries
-    #     self.Row_boundaries.append(new_row_height)
-    #     # Create new empty row with an empty node for each column boundary after the leftmost edge (0)
-    #     empty_row = [None for _ in self.Col_boundaries[1:]]
-    #     # Add it to our list of rows
-    #     self.Cells.append(empty_row)
-    #
-    # def add_column(self, cell_width):
-    #     """Adds an empty column rightward with the given width"""
-    #     # Compute the new rightmost column boundary x value
-    #     new_col_width = self.Col_boundaries[-1] + cell_width
-    #     # Make sure that it's not right of the Diagram area
-    #     if new_col_width > self.Diagram.Size.width:
-    #         excess = round(new_col_width - self.Diagram.Size.width)
-    #         self.logger.error(f"Max diagram width exceeded by {excess}pt at col {len(self.Col_boundaries)}")
-    #         sys.exit(1)
-    #     # Add it to the list of column boundaries
-    #     self.Col_boundaries.append(new_col_width)
-    #     # For each row, add a rightmost empty node space
-    #     [row.append(None) for row in self.Cells]
-    #
+    def add_row(self, cell_height):
+        """Adds an empty row upward with the given height"""
+        # Compute the new y position relative to the Diagram y origin
+        new_row_height = self.Row_boundaries[-1] + cell_height
+        # Make sure that it's not above the Diagram area
+        if new_row_height > self.Diagram.Size.height:
+            excess = round(new_row_height - self.Diagram.Size.height)
+            self.logger.error(f"Max diagram height exceeded by {excess}pt at row {len(self.Row_boundaries)}")
+            sys.exit(1)
+        # Add it to the list of row boundaries
+        self.Row_boundaries.append(new_row_height)
+        # Create new empty row with an empty node for each column boundary after the leftmost edge (0)
+        empty_row = [None for _ in self.Col_boundaries[1:]]
+        # Add it to our list of rows
+        self.Cells.append(empty_row)
+
+    def add_column(self, cell_width):
+        """Adds an empty column rightward with the given width"""
+        # Compute the new rightmost column boundary x value
+        new_col_width = self.Col_boundaries[-1] + cell_width
+        # Make sure that it's not right of the Diagram area
+        if new_col_width > self.Diagram.Size.width:
+            excess = round(new_col_width - self.Diagram.Size.width)
+            self.logger.error(f"Max diagram width exceeded by {excess}pt at col {len(self.Col_boundaries)}")
+            sys.exit(1)
+        # Add it to the list of column boundaries
+        self.Col_boundaries.append(new_col_width)
+        # For each row, add a rightmost empty node space
+        [row.append(None) for row in self.Cells]
+
     @property
     def outermost_row(self) -> int:
         """My current outermost row"""

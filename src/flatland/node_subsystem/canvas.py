@@ -171,7 +171,7 @@ class Canvas:
         Draw all content of this Canvas onto the Tablet
         """
         # Now add all Diagram content to the Tablet
-        # self.Diagram.render()
+        self.Diagram.render()
 
         # Draw all added content and output a PDF using whatever graphics library is configured in the Tablet
         if self.show_rulers:

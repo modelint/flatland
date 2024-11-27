@@ -8,16 +8,18 @@ if TYPE_CHECKING:
 
 # Model Integration
 from tabletqt.graphics.text_element import TextElement
+from tabletqt.graphics.rectangle_se import RectangleSE
 
 # Flatland
 from flatland.datatypes.geometry_types import Rect_Size, Position, HorizAlign, VertAlign, Alignment, Padding
 from flatland.datatypes.command_interface import New_Compartment
 
+
 class CompartmentType(NamedTuple):
-    name : str
-    alignment : Alignment
-    padding : Padding
-    stack_order : int
+    name: str
+    alignment: Alignment
+    padding: Padding
+    stack_order: int
 
 
 class Compartment:
@@ -78,36 +80,37 @@ class Compartment:
 
     def render(self, lower_left_corner: Position):
         """Create rectangle on the tablet and add each line of text"""
-        layer = self.Node.Grid.Diagram.Layer
+        dlayer = self.Node.Grid.Diagram.Layer
         # Asset name could be 'state activity compartment' or 'class attributes compartment' for example
 
-        asset = ' '.join([self.Node.Node_type.Name, self.Type.name, 'compartment'])
-        layer.add_rectangle(asset=asset, lower_left=lower_left_corner, size=self.Size, color_usage=self.Node.Tag)
+        asset = f"{self.Node.Node_type_name} {self.Type.name} compartment"
+        RectangleSE.add(layer=dlayer, asset=asset, lower_left=lower_left_corner, size=self.Size,
+                        color_usage=self.Node.Tag)
 
         # Horizontal alignment of text block relative to its compartment by calculating lower left x position
-        if self.Type.halign == HorizAlign.LEFT:
+        if self.Type.alignment.horizontal == HorizAlign.LEFT:
             xpos = lower_left_corner.x + self.Type.padding.left
-        elif self.Type.halign == HorizAlign.CENTER:
+        elif self.Type.alignment.horizontal == HorizAlign.CENTER:
             xpos = lower_left_corner.x + self.Type.padding.left + \
                    (self.Size.width / 2) - (self.Text_block_size.width / 2)
-        elif self.Type.halign == HorizAlign.RIGHT:
+        elif self.Type.alignment.horizontal == HorizAlign.RIGHT:
             xpos = lower_left_corner.x + self.Type.padding.left + \
                    (self.Size.width - self.Type.padding.right - self.Text_block_size.width)
         else:
             assert False, "Illegal value for horizontal compartment alignment"
 
         # Vertical alignment of text block relative to its compartment
-        if self.Type.valign == VertAlign.TOP:
+        if self.Type.alignment.vertical == VertAlign.TOP:
             ypos = lower_left_corner.y + self.Size.height - self.Text_block_size.height + self.Type.padding.bottom
-        elif self.Type.valign == VertAlign.CENTER:
+        elif self.Type.alignment.vertical == VertAlign.CENTER:
             ypos = lower_left_corner.y + (self.Size.height / 2) - \
-                   (self.Text_block_size.height-self.Type.padding.top-self.Type.padding.bottom)/2
-        elif self.Type.valign == VertAlign.BOTTOM:
+                   (self.Text_block_size.height - self.Type.padding.top - self.Type.padding.bottom) / 2
+        elif self.Type.alignment.vertical == VertAlign.BOTTOM:
             ypos = lower_left_corner.y + self.Type.padding.bottom
         else:
             assert False, "Illegal value for vertical compartment alignment"
 
         text_position = Position(xpos, ypos)
-        asset = ' '.join([self.Node.Node_type.Name, self.Type.name])
-        layer.add_text_block(asset=asset, lower_left=text_position, text=self.Content,
-                             align=self.Type.halign)
+        asset = f"{self.Node.Node_type_name} {self.Type.name}"
+        TextElement.add_block(layer=dlayer, asset=asset, lower_left=text_position, text=self.Content,
+                              align=self.Type.alignment.horizontal)
