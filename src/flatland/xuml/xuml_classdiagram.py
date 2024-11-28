@@ -19,11 +19,12 @@ from flatland.node_subsystem.single_cell_node import SingleCellNode
 from flatland.node_subsystem.spanning_node import SpanningNode
 # from flatland.connector_subsystem.tree_connector import TreeConnector
 from flatland.datatypes.geometry_types import Alignment, VertAlign, HorizAlign
-from flatland.datatypes.command_interface import New_Stem, New_Path,\
-     New_Trunk_Branch, New_Offshoot_Branch, New_Branch_Set, New_Compartment
-# from flatland.connector_subsystem.straight_binary_connector import StraightBinaryConnector
-# from flatland.connector_subsystem.bending_binary_connector import BendingBinaryConnector
-# from flatland.datatypes.connection_types import ConnectorName, OppositeFace, StemName
+from flatland.datatypes.command_interface import New_Compartment
+# from flatland.datatypes.command_interface import (New_Stem, New_Path, New_Trunk_Branch, New_Offshoot_Branch,
+#                                                   New_Branch_Set)
+from flatland.connector_subsystem.straight_binary_connector import StraightBinaryConnector
+from flatland.connector_subsystem.bending_binary_connector import BendingBinaryConnector
+from flatland.datatypes.connection_types import ConnectorName, OppositeFace, StemName
 from flatland.text.text_block import TextBlock
 
 # BranchLeaves = namedtuple('BranchLeaves', 'leaf_stems local_graft next_graft floating_leaf_stem')
@@ -84,6 +85,29 @@ class XumlClassDiagram:
         # Draw all of the classes
         cls.logger.info("Drawing the classes")
         cls.nodes = cls.draw_classes()
+
+        # If there are any relationships, draw them
+        if cls.model.rels and not nodes_only:
+            cp = {p['cname']: p for p in cls.layout.connector_placement}
+            for r in cls.model.rels:  # r is the model data without any layout info
+                rnum = r['rnum']
+                rlayout = cp.get(rnum)  # How this r is to be laid out on the diagram
+                if not rlayout:
+                    cls.logger.warning(f"Relationship {rnum} skipped, no cplace in layout sheet.")
+                    continue
+
+                if 'superclass' in r.keys():
+                    pass
+                    # cls.draw_generalization(rnum=rnum, generalization=r, tree_layout=rlayout)
+                else:
+                    cls.draw_association(rnum=rnum, association=r, binary_layout=rlayout)
+
+            # Check to see if any connector placements were specified for non-existent relationships
+            rnum_placements = {r for r in cp.keys()}
+            rnum_defs = {r['rnum'] for r in cls.model.rels}
+            orphaned_placements = rnum_placements - rnum_defs
+            if orphaned_placements:
+                cls.logger.warning(f"Connector placements {orphaned_placements} in layout sheet refer to undeclared relationships")
 
         # Render the Canvas so it can be displayed and output a PDF
         cls.flatland_canvas.render()
@@ -235,3 +259,97 @@ class XumlClassDiagram:
                         expansion=w_expand,
                     )
         return nodes
+
+    @classmethod
+    def draw_association(cls, rnum, association, binary_layout):
+        """Draw the binary association"""
+        # Straight or bent connector?
+        tstem = binary_layout['tstem']
+        pstem = binary_layout['pstem']
+        _reversed = False  # Assume that layout sheet and model order matches
+        astem = binary_layout.get('tertiary_node', None)
+
+        t_side = association['t_side']
+        if tstem['node_ref'] != t_side['cname']:
+            # The user put the tstems in the wrong order in the layout file
+            # Swap them
+            # The node_ref is a list and the first element refers to the model class name
+            # (the 2nd element indicates duplicate cplace, if any, and is not relevant for the comparison above)
+            tstem, pstem = pstem, tstem
+            _reversed = True
+            cls.logger.info(f"Stems order in layout file does not match model, swapping stem order for connector {rnum}")
+
+        t_phrase = StemName(
+            text=TextBlock(t_side['phrase'], wrap=tstem['wrap']),
+            side=tstem['stem_dir'], axis_offset=None, end_offset=None
+        )
+        node_ref = tstem['node_ref']
+        t_stem = New_Stem(stem_type='class mult', semantic=t_side['mult'] + ' mult',
+                          node=cls.nodes[node_ref], face=tstem['face'],
+                          anchor=tstem.get('anchor', None), stem_name=t_phrase)
+
+        # Same as for the t_side, but with p instead
+        p_side = association['p_side']
+        p_phrase = StemName(
+            text=TextBlock(line=p_side['phrase'], wrap=pstem['wrap']),
+            side=pstem['stem_dir'], axis_offset=None, end_offset=None
+        )
+        node_ref = pstem['node_ref']
+        try:
+            pnode = cls.nodes[node_ref]
+        except KeyError:
+            missing_side = "p-stem" if not _reversed else "t-stem"
+            cls.logger.error(f"In layout sheet {missing_side} of {rnum} class [{node_ref}] is not defined in model")
+            sys.exit(1)
+        p_stem = New_Stem(stem_type='class mult', semantic=p_side['mult'] + ' mult',
+                          node=pnode, face=pstem['face'],
+                          anchor=pstem.get('anchor', None), stem_name=p_phrase)
+        # There is an optional stem for an association class
+        if astem:
+            node_ref = astem['node_ref']
+            try:
+                semantic = association['assoc_mult'] + ' mult'
+            except KeyError:
+                self.logger.error(
+                    f"Layout sheet calls for ternary stem, but class model does not specify any"
+                    f" association class on association: {rnum}")
+                sys.exit(1)
+            try:
+                node= self.nodes[node_ref]
+            except KeyError:
+                self.logger.error(
+                    f"Association class [{node_ref}] is missing in relationship {rnum}"
+                )
+                sys.exit(1)
+            a_stem = New_Stem(stem_type='associative mult', semantic=semantic,
+                              node=self.nodes[node_ref], face=astem['face'], anchor=astem.get('anchor', None),
+                              stem_name=None)
+        else:
+            a_stem = None
+        rnum_data = ConnectorName(
+            text=rnum, side=binary_layout['dir'], bend=binary_layout['bend'], notch=binary_layout['notch'],
+            wrap=1
+        )
+
+        paths = None if not binary_layout.get('paths', None) else \
+            [New_Path(lane=p['lane'], rut=p['rut']) for p in binary_layout['paths']]
+
+        if not paths and OppositeFace[tstem['face']] == pstem['face']:
+            StraightBinaryConnector(
+                diagram=self.flatland_canvas.Diagram,
+                connector_type='binary association',
+                t_stem=t_stem,
+                p_stem=p_stem,
+                tertiary_stem=a_stem,
+                name=rnum_data
+            )
+        else:
+            BendingBinaryConnector(
+                diagram=self.flatland_canvas.Diagram,
+                connector_type='binary association',
+                anchored_stem_p=p_stem,
+                anchored_stem_t=t_stem,
+                tertiary_stem=a_stem,
+                paths=paths,
+                name=rnum_data)
+
