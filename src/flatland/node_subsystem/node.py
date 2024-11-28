@@ -69,7 +69,6 @@ class Node:
         # Sort the compartment types by stack order, ascending
         self.Compartment_types = sorted(result.body, key=lambda x: x['Stack_order'])
 
-
         # Create a list of compartments ordered top to bottom based on Node Type's Compartment Types
         z = zip(self.Compartment_types, content)
         if len(content) > 1:
@@ -106,7 +105,7 @@ class Node:
         crects = [c.Text_block_size for c in self.Compartments]
         # Collect user specified height expansion factor per compartment
         height_expansions = [c.Expansion for c in self.Compartments]
-        z = list(zip(crects,height_expansions))
+        z = list(zip(crects, height_expansions))
         # Compute the crect height expanded for each crect
         # We cannot just invoke the Compartment.size property as it will trigger infinite recursion
         # due to the order in which we assemble the node components.  So we need to compute the expansion ourself

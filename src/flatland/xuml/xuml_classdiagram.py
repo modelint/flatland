@@ -16,7 +16,7 @@ from flatland.exceptions import ModelParseError, LayoutParseError
 from flatland.node_subsystem.canvas import Canvas
 from flatland.sheet_subsystem.frame import Frame
 from flatland.node_subsystem.single_cell_node import SingleCellNode
-# from flatland.node_subsystem.spanning_node import SpanningNode
+from flatland.node_subsystem.spanning_node import SpanningNode
 # from flatland.connector_subsystem.tree_connector import TreeConnector
 from flatland.datatypes.geometry_types import Alignment, VertAlign, HorizAlign
 from flatland.datatypes.command_interface import New_Stem, New_Path,\
@@ -219,20 +219,19 @@ class XumlClassDiagram:
                         expansion=w_expand,
                     )
                 else:
-                    pass
                     # Span might be only 1 column or row
-                    # low_row = row_span[0]
-                    # high_row = low_row if len(row_span) == 1 else row_span[1]
-                    # left_col = col_span[0]
-                    # right_col = left_col if len(col_span) == 1 else col_span[1]
-                    # nodes[node_name] = SpanningNode(
-                    #     node_type_name=node_type_name,
-                    #     content=text_content,
-                    #     grid=cls.flatland_canvas.Diagram.Grid,
-                    #     low_row=low_row, high_row=high_row,
-                    #     left_column=left_col, right_column=right_col,
-                    #     tag=nlayout.get('color_tag', None),
-                    #     local_alignment=Alignment(vertical=v, horizontal=h),
-                    #     expansion=w_expand,
-                    # )
+                    low_row = row_span[0]
+                    high_row = low_row if len(row_span) == 1 else row_span[1]
+                    left_col = col_span[0]
+                    right_col = left_col if len(col_span) == 1 else col_span[1]
+                    nodes[node_name] = SpanningNode(
+                        node_type_name=node_type_name,
+                        content=text_content,
+                        grid=cls.flatland_canvas.Diagram.Grid,
+                        low_row=low_row, high_row=high_row,
+                        left_column=left_col, right_column=right_col,
+                        tag=nlayout.get('color_tag', None),
+                        local_alignment=Alignment(vertical=v, horizontal=h),
+                        expansion=w_expand,
+                    )
         return nodes
