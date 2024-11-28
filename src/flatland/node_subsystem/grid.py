@@ -145,14 +145,15 @@ class Grid:
             self.logger.info("Drawing grid")
             # Draw rows
             left_extent = self.Diagram.Origin.x
-            right_extent = self.Diagram.Origin.x + self.Diagram.Size.width
-            for r, h in enumerate(self.Row_boundaries[:-1]):
+            # right_extent = self.Diagram.Origin.x + self.Diagram.Size.width
+            right_extent = self.Diagram.Origin.x + self.Col_boundaries[-1]
+            for r, h in enumerate(self.Row_boundaries):
                 LineSegment.add(layer=grid_layer, asset='row boundary',
                                 from_here=Position(left_extent, h + self.Diagram.Origin.y),
                                 to_there=Position(right_extent, h + self.Diagram.Origin.y)
                                 )
                 ll_y = self.Diagram.Origin.y + h + boundary_label_gap
-                if ll_y < (self.Diagram.Canvas.Size.height - 10):
+                if r < len(self.Row_boundaries)-1:
                     TextElement.add_line(layer=grid_layer, asset='grid label',
                                          lower_left=Position(max(left_extent - grid_label_gap, min_grid_lable_gap),
                                                              ll_y),
@@ -160,16 +161,17 @@ class Grid:
 
             # Draw columns
             bottom_extent = self.Diagram.Origin.y
-            top_extent = bottom_extent + self.Diagram.Size.height
+            top_extent = bottom_extent + self.Diagram.Size.height - self.Diagram.Canvas.Margin.top
             for c, w in enumerate(self.Col_boundaries):
                 LineSegment.add(layer=grid_layer, asset='column boundary',
                                 from_here=Position(w + self.Diagram.Origin.x, bottom_extent),
                                 to_there=Position(w + self.Diagram.Origin.x, top_extent)
                                 )
-                TextElement.add_line(layer=grid_layer, asset='grid label',
-                                     lower_left=Position(w + self.Diagram.Origin.x + boundary_label_gap,
-                                                         max(bottom_extent - grid_label_gap, min_grid_lable_gap)),
-                                     text=str(c + 1))
+                if c < len(self.Col_boundaries)-1:
+                    TextElement.add_line(layer=grid_layer, asset='grid label',
+                                         lower_left=Position(w + self.Diagram.Origin.x + boundary_label_gap,
+                                                             max(bottom_extent - grid_label_gap, min_grid_lable_gap)),
+                                         text=str(c + 1))
 
             # Draw diagram boundary
             RectangleSE.add(layer=grid_layer, asset='grid boundary',
