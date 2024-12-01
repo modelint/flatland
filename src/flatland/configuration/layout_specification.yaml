@@ -1,21 +1,29 @@
 # layout_specification.yaml – Overall diagram layout parameters
 
-- standard:
-    default margin:
+- standard:  # Name of the system default diagram layout parameters
+    default margin:  # Distance from edge of diagram area to nearest drawn element on the diagram
       top: 10
       bottom: 10
       left: 10
       right: 10
-    default diagram origin:
-      x: 0
+    default diagram origin:  # Lower left corner of the diagram relative to the Canvas area
+      x: 0  # This origin can be overriden by the user in the mls file with padding values
       y: 0
-    default cell padding:
+    default cell padding:  # Gaps between cell and node edges, forms a margin around a node within a cell
       top: 5
       bottom: 5
       left: 5
       right: 5
-    default cell alignment:
+    default cell alignment:  # Node is aligned this way by default, user can override in mls file
       vertical: center
       horizontal: center
+    default stem positions: 5  # Number of positions wher a connector can anchor on a face of a node
+    default rut positions: 5  # Number of positions a connector can follow within a row or column
+    default new path row height: 100  # Minimum space required for a connector traveling outside the
+    default new path col width: 150   #   furthest occupied row or column to bend around to its destination face
+    default unary branch length: 48   # Default length of a unary branch like an initial or final transition on a
+                                      #    state machine, for example  (might be deprecated, not sure yet)
+
+
 
 # Add your own named variations below
