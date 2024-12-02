@@ -13,10 +13,12 @@
           about: How many instances may be associated
           minimum length: 20
           geometry: fixed  # fixed, hanging, or free
+          semantics: [ Mc mult, 1c mult, 1 mult, M mult ]
         associative mult:
           about: How many association class instances per pair of associated instances
           minimum length: 24
           geometry: hanging
+          semantics: [ 1 mult, M mult ]
     generalization:
       geometry: tree
       about: A superset class compeletely split into disjoint subset classes
@@ -25,10 +27,12 @@
           about: The superset of all subclass instances
           minimum length: 10
           geometry: fixed
+          semantics: [superclass]
         subclass:
           about: A disjoint subset of the superclass set of instances
           minimum length: 10
           geometry: fixed
+          semantics: [subclass]
 
 - state machine:
     initial transition:
@@ -39,6 +43,7 @@
           about: Points to a designated state as an initial state
           minimum length: 60
           geometry: free
+          semantics: [initial psuedo state]
     deletion transition:
       geometry: unary
       about: Designates implicit instance deletion after a state executes its activity
@@ -47,6 +52,7 @@
           about: Points away from a final state to indicate deletion
           minimum length: 50
           geometry: free
+          semantics: [final psuedo state]
     transition:
       geometry: binary
       about: Defines a path from one state to another
@@ -55,10 +61,12 @@
           about: Points to the source state in a transition
           minimum length: 10
           geometry: fixed
+          semantics: [source state]
         to state:
           about: Points to the destination state in a transition
           minimum length: 15
           geometry: fixed
+          semantics: [target state]
 
 - domain:
     bridge:
@@ -69,10 +77,12 @@
           about: Points toward a domain that fullfills the requirements of a client domain
           minimum length: 15
           geometry: fixed
+          semantics: [require]
         from service:
           about: Points toward a domain that places requirements on a service domain
           minimum length: 15
           geometry: fixed
+          semantics: [provide]
 
 - class collaboration:
     collaboration:
@@ -83,3 +93,4 @@
           about: Attaches to a communicating entity
           minimum length: 10
           geometry: fixed
+          semantics: [collaboration]
