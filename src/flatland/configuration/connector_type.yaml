@@ -1,0 +1,85 @@
+# connector_type.yaml – Connector type data
+
+# Diagram type / Connector Type / Stem Type, etc
+
+# TODO: clarify meaning of stem type geometry in comment below
+
+- class:  # Diagram type
+    binary association: # Connector type
+      geometry: binary  # unary, binary, or tree
+      about: Connects an anchor point on one node to an anchor point on the same or another node
+      stem types:
+        class mult:  # Name of stem type
+          about: How many instances may be associated
+          minimum length: 20
+          geometry: fixed  # fixed, hanging, or free
+        associative mult:
+          about: How many association class instances per pair of associated instances
+          minimum length: 24
+          geometry: hanging
+    generalization:
+      geometry: tree
+      about: A superset class compeletely split into disjoint subset classes
+      stem types:
+        superclass:
+          about: The superset of all subclass instances
+          minimum length: 10
+          geometry: fixed
+        subclass:
+          about: A disjoint subset of the superclass set of instances
+          minimum length: 10
+          geometry: fixed
+
+- state machine:
+    initial transition:
+      geometry: unary
+      about: Designates an initial state
+      stem types:
+        to initial state:
+          about: Points to a designated state as an initial state
+          minimum length: 60
+          geometry: free
+    deletion transition:
+      geometry: unary
+      about: Designates implicit instance deletion after a state executes its activity
+      stem types:
+        from deletion state:
+          about: Points away from a final state to indicate deletion
+          minimum length: 50
+          geometry: free
+    transition:
+      geometry: binary
+      about: Defines a path from one state to another
+      stem types:
+        from state:
+          about: Points to the source state in a transition
+          minimum length: 10
+          geometry: fixed
+        to state:
+          about: Points to the destination state in a transition
+          minimum length: 15
+          geometry: fixed
+
+- domain:
+    bridge:
+      geometry: binary
+      about: Defines a dependency on requirements from one domain to another
+      stem types:
+        to service:
+          about: Points toward a domain that fullfills the requirements of a client domain
+          minimum length: 15
+          geometry: fixed
+        from service:
+          about: Points toward a domain that places requirements on a service domain
+          minimum length: 15
+          geometry: fixed
+
+- class collaboration:
+    collaboration:
+      geometry: binary
+      about: Represents a path of communication between two nodes on a collaboration diagram
+      stem types:
+        on collaborator:
+          about: Attaches to a communicating entity
+          minimum length: 10
+          geometry: fixed
