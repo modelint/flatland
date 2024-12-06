@@ -14,6 +14,7 @@ from flatland.database.relvars import FlatlandSchema, SimpleAssoc, AssocRel, Gen
 from flatland.database.pop_sheet_subsys import SheetSubsysDB
 from flatland.database.pop_node_subsys import NodeSubsysDB
 from flatland.database.pop_layout_spec import LayoutSpecDB
+from flatland.database.pop_connector_subsys import ConnectorSubsysDB
 
 Header = namedtuple('Header', ['attrs', 'ids'])
 SheetInstance = namedtuple('SheetInstance', 'standard height width size_group')
@@ -73,7 +74,7 @@ class FlatlandDB:
          3. Populate each modeled subsystem using any yaml files in the users configuration path.
         """
         # Create a new PyRAL session
-        cls.db= Database.open_session(name='flatland')
+        cls.db = Database.open_session(name='flatland')
 
         # There should be no reason to create a new database unless the user has updated any of their configuration
         # files. So, in the future, there will be an option to just load an existing populated database and move on.
@@ -90,6 +91,7 @@ class FlatlandDB:
         SheetSubsysDB.populate()
         NodeSubsysDB.populate()
         LayoutSpecDB.populate()
+        ConnectorSubsysDB.populate()
 
         # Print out a depiction of the populated database as a set of filled out tables
         # organized alphabetically by relvar name

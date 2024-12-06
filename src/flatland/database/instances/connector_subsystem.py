@@ -8,7 +8,7 @@ class ConnectorLayoutSpecification(NamedTuple):
     Default_stem_positions: int
     Default_rut_positions: int
     Default_new_path_row_height: int
-    Default_new_path_col_height: int
+    Default_new_path_col_width: int
 
 class ConnectorType(NamedTuple):
     Name: str

@@ -40,7 +40,7 @@ class FlatlandSchema:
                 Attribute(name='Default_stem_positions', type='int'),
                 Attribute(name='Default_rut_positions', type='int'),
                 Attribute(name='Default_new_path_row_height', type='int'),
-                Attribute(name='Default_new_path_col_height', type='int'),
+                Attribute(name='Default_new_path_col_width', type='int'),
             ], ids={1: ['Name']}),
             'Connector_Type': Header(attrs=[
                 Attribute(name='Name', type='string'),
