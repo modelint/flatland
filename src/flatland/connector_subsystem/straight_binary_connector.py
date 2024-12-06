@@ -1,7 +1,16 @@
 """
 straight_binary_connector.py
 """
+
+# System
 import logging
+from typing import TYPE_CHECKING, Optional
+
+# Model Integration
+from pyral.relation import Relation
+
+# Flatland
+from flatland.names import app
 from flatland.exceptions import UnsupportedConnectorType, MultipleFloatsInSameStraightConnector
 from flatland.exceptions import NoFloatInStraightConnector
 from flatland.connector_subsystem.binary_connector import BinaryConnector
@@ -10,10 +19,9 @@ from flatland.datatypes.connection_types import HorizontalFace, ConnectorName
 from flatland.connector_subsystem.floating_binary_stem import FloatingBinaryStem
 from flatland.connector_subsystem.tertiary_stem import TertiaryStem
 from flatland.datatypes.command_interface import New_Stem
-from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from diagram import Diagram
+    from flatland.node_subsystem.diagram import Diagram
 
 
 class StraightBinaryConnector(BinaryConnector):
@@ -41,14 +49,14 @@ class StraightBinaryConnector(BinaryConnector):
           or Floating Stems) and extending until its Vine end attaches to the Binary Connector line
     """
 
-    def __init__(self, diagram: 'Diagram', connector_type: str, t_stem: New_Stem,
+    def __init__(self, diagram: 'Diagram', ctype_name: str, t_stem: New_Stem,
                  p_stem: New_Stem, name: Optional[ConnectorName] = None,
                  tertiary_stem: Optional[New_Stem] = None):
         """
         Constructor – see class description for meaning of the attributes
 
         :param diagram: Reference to the Diagram
-        :param connector_type: Name of connector type
+        :param ctype_name: Name of connector type
         :param t_stem: T side of the association (T and P are arbitrary side names, could have been A and B)
         :param p_stem: P side of the association
         :param name: User supplied name of the Connector
@@ -57,13 +65,14 @@ class StraightBinaryConnector(BinaryConnector):
         self.logger = logging.getLogger(__name__)
         # Verify that the specified connector type name corresponds to a supported connector type
         # found in our database
-        try:
-            ct = diagram.Diagram_type.ConnectorTypes[connector_type]
-        except IndexError:
-            raise UnsupportedConnectorType(
-                connector_type_name=connector_type, diagram_type_name=diagram.Diagram_type.Name)
+        R = f"Name:<{ctype_name}>, Diagram_type:<{diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Connector_Type', restriction=R)
+        if not result.body:
+            self.logger.exception(f"Unsupported connector type: {ctype_name}"
+                                  f" for diagram type: {diagram.Diagram_type}")
+            raise UnsupportedConnectorType(connector_type_name=ctype_name, diagram_type_name=diagram.Diagram_type)
         # Extract the user supplied connector name if any
-        BinaryConnector.__init__(self, diagram=diagram, name=name, connector_type=ct)
+        BinaryConnector.__init__(self, diagram=diagram, name=name, ctype_name=ctype_name)
 
         # One side (t or p) must be the anchor and the other floats
         if t_stem.anchor == 'float' and p_stem.anchor == 'float':

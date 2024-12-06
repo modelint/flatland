@@ -47,6 +47,19 @@ class FlatlandSchema:
                 Attribute(name='Node_type', type='string'),
                 Attribute(name='Diagram_type', type='string'),
             ], ids={1: ['Name', 'Node_type', 'Diagram_type'], 2:['Stack_order', 'Node_type', 'Diagram_type']}),
+            'Connector_Layout_Specification': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Default_stem_positions', type='int'),
+                Attribute(name='Default_rut_positions', type='int'),
+                Attribute(name='Default_new_path_row_height', type='int'),
+                Attribute(name='Default_new_path_col_height', type='int'),
+            ], ids={1: ['Name']}),
+            'Connector_Type': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='About', type='string'),
+                Attribute(name='Geometry', type='string'),
+            ], ids={1: ['Name', 'Diagram_type']}),
             'Diagram_Notation': Header(attrs=[
                 Attribute(name='Diagram_type', type='string'),
                 Attribute(name='Notation', type='string'),
@@ -148,6 +161,15 @@ class FlatlandSchema:
                 # TODO: Make use of TclRAL tuple data type to combine the above attributes
                 # TODO: to match the model attributes
             ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'X', 'Y']}),
+            'Label_Placement_Specification': Header(attrs=[
+                Attribute(name='Stem_type', type='string'),
+                Attribute(name='Semantic', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='Notation', type='string'),
+                Attribute(name='Default_stem_side', type='string'),
+                Attribute(name='Vertical_stem_offset', type='int'),
+                Attribute(name='Horizontal_stem_offset', type='int'),
+            ], ids={1: ['Name', 'Semantic', 'Diagram_type', 'Notation']}),
             'Metadata_Item': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 Attribute(name='Media', type='string'),
@@ -184,6 +206,28 @@ class FlatlandSchema:
                 Attribute(name='Size_group', type='string'),
             ], ids={1: ['Name']}),
             'Sheet_Size_Group': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
+            'Stem_Notation': Header(attrs=[
+                Attribute(name='Stem_type', type='string'),
+                Attribute(name='Semantic', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='Notation', type='string'),
+                Attribute(name='Icon', type='boolean'),
+            ], ids={1: ['Stem_type', 'Semantic', 'Diagram_type', 'Notation']}),
+            'Stem_Semantic': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+            ], ids={1: ['Name', 'Diagram_type']}),
+            'Stem_Signification': Header(attrs=[
+                Attribute(name='Stem_type', type='string'),
+                Attribute(name='Semantic', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+            ], ids={1: ['Name', 'Semantic', 'Diagram_type']}),
+            'Stem_Type': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='About', type='string'),
+                Attribute(name='Connector_type', type='string'),
+            ], ids={1: ['Name', 'Diagram_type']}),
             'Title_Block_Field': Header(attrs=[
                 Attribute(name='Metadata', type='string'),
                 Attribute(name='Frame', type='string'),

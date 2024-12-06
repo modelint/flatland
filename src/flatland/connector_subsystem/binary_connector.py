@@ -25,7 +25,7 @@ class BinaryConnector(Connector):
         Constructor
 
         :param diagram: Reference to the Diagram
-        :param connector_type: Name of the Connector Type
+        :param ctype_name: Name of the Connector Type
         """
         Connector.__init__(self, diagram=diagram, name=name, connector_type=ctype_name)
 

@@ -24,8 +24,6 @@
     default rut positions: 5  # Number of positions a connector can follow within a row or column
     default new path row height: 100  # Minimum space required for a connector traveling outside the
     default new path col width: 150   #   furthest occupied row or column to bend around to its destination face
-    default unary branch length: 48   # Default length of a unary branch like an initial or final transition on a
-                                      #    state machine, for example  (might be deprecated, not sure yet)
 
 
 

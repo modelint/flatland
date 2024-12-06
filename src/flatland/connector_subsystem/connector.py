@@ -32,7 +32,7 @@ class Connector:
         Constructor
 
         :param diagram: Reference to the Diagram
-        :param connector_type: Name of this Connector Type
+        :param ctype_name: Name of this Connector Type
         """
         self.Diagram = diagram
         self.Connector_type = ctype_name

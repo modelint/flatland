@@ -11,6 +11,7 @@ from mls_parser.layout_parser import LayoutParser
 from typing import List, Dict, Any
 
 # Flatland
+from flatland.datatypes.connection_types import NodeFace
 from flatland.exceptions import ModelParseError, LayoutParseError
 # from flatland.exceptions import MultipleFloatsInSameBranch
 from flatland.node_subsystem.canvas import Canvas
@@ -311,19 +312,19 @@ class XumlClassDiagram:
             try:
                 semantic = association['assoc_mult'] + ' mult'
             except KeyError:
-                self.logger.error(
+                cls.logger.error(
                     f"Layout sheet calls for ternary stem, but class model does not specify any"
                     f" association class on association: {rnum}")
                 sys.exit(1)
             try:
-                node= self.nodes[node_ref]
+                node= cls.nodes[node_ref]
             except KeyError:
-                self.logger.error(
+                cls.logger.error(
                     f"Association class [{node_ref}] is missing in relationship {rnum}"
                 )
                 sys.exit(1)
             a_stem = New_Stem(stem_type='associative mult', semantic=semantic,
-                              node=self.nodes[node_ref], face=astem['face'], anchor=astem.get('anchor', None),
+                              node=cls.nodes[node_ref], face=astem['face'], anchor=astem.get('anchor', None),
                               stem_name=None)
         else:
             a_stem = None
@@ -335,10 +336,12 @@ class XumlClassDiagram:
         paths = None if not binary_layout.get('paths', None) else \
             [New_Path(lane=p['lane'], rut=p['rut']) for p in binary_layout['paths']]
 
-        if not paths and OppositeFace[tstem['face']] == pstem['face']:
+        tstem_f = NodeFace[tstem['face']]
+        pstem_f = NodeFace[pstem['face']]
+        if not paths and (OppositeFace[tstem_f] == pstem_f):
             StraightBinaryConnector(
-                diagram=self.flatland_canvas.Diagram,
-                connector_type='binary association',
+                diagram=cls.flatland_canvas.Diagram,
+                ctype_name='binary association',
                 t_stem=t_stem,
                 p_stem=p_stem,
                 tertiary_stem=a_stem,
@@ -346,7 +349,7 @@ class XumlClassDiagram:
             )
         else:
             BendingBinaryConnector(
-                diagram=self.flatland_canvas.Diagram,
+                diagram=cls.flatland_canvas.Diagram,
                 connector_type='binary association',
                 anchored_stem_p=p_stem,
                 anchored_stem_t=t_stem,
