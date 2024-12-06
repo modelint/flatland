@@ -2,8 +2,8 @@
 straight_binary_connector.py
 """
 import logging
-from flatland.flatland_exceptions import UnsupportedConnectorType, MultipleFloatsInSameStraightConnector
-from flatland.flatland_exceptions import NoFloatInStraightConnector
+from flatland.exceptions import UnsupportedConnectorType, MultipleFloatsInSameStraightConnector
+from flatland.exceptions import NoFloatInStraightConnector
 from flatland.connector_subsystem.binary_connector import BinaryConnector
 from flatland.connector_subsystem.anchored_stem import AnchoredStem
 from flatland.datatypes.connection_types import HorizontalFace, ConnectorName

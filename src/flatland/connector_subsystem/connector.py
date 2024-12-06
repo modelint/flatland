@@ -2,11 +2,9 @@
 connector.py - Covers the Connector class in the Flatland3 Connector Subsystem Class Diagram
 """
 from flatland.text.text_block import TextBlock
-from flatland.flatland_exceptions import InvalidNameSide
-from flatland.connector_subsystem.connector_type import ConnectorType
+from flatland.exceptions import InvalidNameSide
 from flatland.datatypes.connection_types import ConnectorName
 from flatland.datatypes.geometry_types import Position
-from flatland.deprecated.layout_specification import default_cname_positions
 from flatland.geometry_domain.linear_geometry import step_edge_distance
 from typing import TYPE_CHECKING, Optional
 
@@ -29,7 +27,7 @@ class Connector:
         - Name -- Optional name of this Connector
     """
 
-    def __init__(self, diagram: 'Diagram', name: Optional[ConnectorName], connector_type: ConnectorType):
+    def __init__(self, diagram: 'Diagram', name: Optional[ConnectorName], ctype_name: str):
         """
         Constructor
 
@@ -37,7 +35,7 @@ class Connector:
         :param connector_type: Name of this Connector Type
         """
         self.Diagram = diagram
-        self.Connector_type = connector_type
+        self.Connector_type = ctype_name
         self.Name = name
         self.Name_size = None
         if self.Name:

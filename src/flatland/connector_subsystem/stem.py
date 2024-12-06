@@ -42,7 +42,7 @@ class Stem:
         - Stem_name -- R73/Stem Name
     """
 
-    def __init__(self, connector: 'Connector', stem_type: StemType, semantic: str, node: 'Node',
+    def __init__(self, connector: 'Connector', stem_type: str, semantic: str, node: 'Node',
                  face: NodeFace, root_position: Position, name: Optional[StemName]):
         self.logger = logging.getLogger(__name__)
         self.Connector = connector

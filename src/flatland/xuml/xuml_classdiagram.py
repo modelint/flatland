@@ -20,7 +20,8 @@ from flatland.node_subsystem.spanning_node import SpanningNode
 # from flatland.connector_subsystem.tree_connector import TreeConnector
 from flatland.datatypes.geometry_types import Alignment, VertAlign, HorizAlign
 from flatland.datatypes.command_interface import New_Compartment
-# from flatland.datatypes.command_interface import (New_Stem, New_Path, New_Trunk_Branch, New_Offshoot_Branch,
+from flatland.datatypes.command_interface import (New_Stem, New_Path)
+# from flatland.datatypes.command_interface import (New_Trunk_Branch, New_Offshoot_Branch,
 #                                                   New_Branch_Set)
 from flatland.connector_subsystem.straight_binary_connector import StraightBinaryConnector
 from flatland.connector_subsystem.bending_binary_connector import BendingBinaryConnector

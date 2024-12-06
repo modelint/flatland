@@ -3,7 +3,7 @@ bending_binary_connector.py
 """
 import logging
 import logging.config
-from flatland.flatland_exceptions import UnsupportedConnectorType, InvalidBendNumber
+from flatland.exceptions import UnsupportedConnectorType, InvalidBendNumber
 from flatland.connector_subsystem.binary_connector import BinaryConnector
 from flatland.connector_subsystem.tertiary_stem import TertiaryStem
 from flatland.connector_subsystem.anchored_stem import AnchoredStem
