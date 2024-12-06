@@ -34,19 +34,7 @@ class FlatlandSchema:
     """
 
     relvars = {
-        'Node': {
-            'Compartment_Type': Header(attrs=[
-                Attribute(name='Name', type='string'),
-                Attribute(name='Alignment_h', type='string'),
-                Attribute(name='Alignment_v', type='string'),
-                Attribute(name='Padding_top', type='int'),
-                Attribute(name='Padding_bottom', type='int'),
-                Attribute(name='Padding_left', type='int'),
-                Attribute(name='Padding_right', type='int'),
-                Attribute(name='Stack_order', type='int'),
-                Attribute(name='Node_type', type='string'),
-                Attribute(name='Diagram_type', type='string'),
-            ], ids={1: ['Name', 'Node_type', 'Diagram_type'], 2:['Stack_order', 'Node_type', 'Diagram_type']}),
+        'Connector': {
             'Connector_Layout_Specification': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 Attribute(name='Default_stem_positions', type='int'),
@@ -60,6 +48,51 @@ class FlatlandSchema:
                 Attribute(name='About', type='string'),
                 Attribute(name='Geometry', type='string'),
             ], ids={1: ['Name', 'Diagram_type']}),
+            'Label_Placement_Specification': Header(attrs=[
+                Attribute(name='Stem_type', type='string'),
+                Attribute(name='Semantic', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='Notation', type='string'),
+                Attribute(name='Default_stem_side', type='string'),
+                Attribute(name='Vertical_stem_offset', type='int'),
+                Attribute(name='Horizontal_stem_offset', type='int'),
+            ], ids={1: ['Stem_type', 'Semantic', 'Diagram_type', 'Notation']}),
+            'Stem_Notation': Header(attrs=[
+                Attribute(name='Stem_type', type='string'),
+                Attribute(name='Semantic', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='Notation', type='string'),
+                Attribute(name='Icon', type='boolean'),
+            ], ids={1: ['Stem_type', 'Semantic', 'Diagram_type', 'Notation']}),
+            'Stem_Semantic': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+            ], ids={1: ['Name', 'Diagram_type']}),
+            'Stem_Signification': Header(attrs=[
+                Attribute(name='Stem_type', type='string'),
+                Attribute(name='Semantic', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+            ], ids={1: ['Stem_type', 'Semantic', 'Diagram_type']}),
+            'Stem_Type': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='About', type='string'),
+                Attribute(name='Connector_type', type='string'),
+            ], ids={1: ['Name', 'Diagram_type']}),
+        },
+        'Node': {
+            'Compartment_Type': Header(attrs=[
+                Attribute(name='Name', type='string'),
+                Attribute(name='Alignment_h', type='string'),
+                Attribute(name='Alignment_v', type='string'),
+                Attribute(name='Padding_top', type='int'),
+                Attribute(name='Padding_bottom', type='int'),
+                Attribute(name='Padding_left', type='int'),
+                Attribute(name='Padding_right', type='int'),
+                Attribute(name='Stack_order', type='int'),
+                Attribute(name='Node_type', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+            ], ids={1: ['Name', 'Node_type', 'Diagram_type'], 2:['Stack_order', 'Node_type', 'Diagram_type']}),
             'Diagram_Notation': Header(attrs=[
                 Attribute(name='Diagram_type', type='string'),
                 Attribute(name='Notation', type='string'),
@@ -161,15 +194,6 @@ class FlatlandSchema:
                 # TODO: Make use of TclRAL tuple data type to combine the above attributes
                 # TODO: to match the model attributes
             ], ids={1: ['Metadata', 'Frame', 'Sheet', 'Orientation', 'X', 'Y']}),
-            'Label_Placement_Specification': Header(attrs=[
-                Attribute(name='Stem_type', type='string'),
-                Attribute(name='Semantic', type='string'),
-                Attribute(name='Diagram_type', type='string'),
-                Attribute(name='Notation', type='string'),
-                Attribute(name='Default_stem_side', type='string'),
-                Attribute(name='Vertical_stem_offset', type='int'),
-                Attribute(name='Horizontal_stem_offset', type='int'),
-            ], ids={1: ['Name', 'Semantic', 'Diagram_type', 'Notation']}),
             'Metadata_Item': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 Attribute(name='Media', type='string'),
@@ -206,28 +230,6 @@ class FlatlandSchema:
                 Attribute(name='Size_group', type='string'),
             ], ids={1: ['Name']}),
             'Sheet_Size_Group': Header(attrs=[Attribute(name='Name', type='string')], ids={1: ['Name']}),
-            'Stem_Notation': Header(attrs=[
-                Attribute(name='Stem_type', type='string'),
-                Attribute(name='Semantic', type='string'),
-                Attribute(name='Diagram_type', type='string'),
-                Attribute(name='Notation', type='string'),
-                Attribute(name='Icon', type='boolean'),
-            ], ids={1: ['Stem_type', 'Semantic', 'Diagram_type', 'Notation']}),
-            'Stem_Semantic': Header(attrs=[
-                Attribute(name='Name', type='string'),
-                Attribute(name='Diagram_type', type='string'),
-            ], ids={1: ['Name', 'Diagram_type']}),
-            'Stem_Signification': Header(attrs=[
-                Attribute(name='Stem_type', type='string'),
-                Attribute(name='Semantic', type='string'),
-                Attribute(name='Diagram_type', type='string'),
-            ], ids={1: ['Name', 'Semantic', 'Diagram_type']}),
-            'Stem_Type': Header(attrs=[
-                Attribute(name='Name', type='string'),
-                Attribute(name='Diagram_type', type='string'),
-                Attribute(name='About', type='string'),
-                Attribute(name='Connector_type', type='string'),
-            ], ids={1: ['Name', 'Diagram_type']}),
             'Title_Block_Field': Header(attrs=[
                 Attribute(name='Metadata', type='string'),
                 Attribute(name='Frame', type='string'),
@@ -249,6 +251,48 @@ class FlatlandSchema:
     }
 
     rels = {
+        'Connector': [
+            SimpleAssoc(name='R50',
+                        from_class='Connector_Type', from_mult=mult_tclral['Mc'],
+                        from_attrs=['Diagram_type'],
+                        to_class='Diagram_Type', to_mult=mult_tclral['1'],
+                        to_attrs=['Name'],
+                        ),
+            SimpleAssoc(name='R54',
+                        from_class='Label_Placement_Specification', from_mult=mult_tclral['1c'],
+                        from_attrs=['Stem_type', 'Semantic', 'Diagram_type', 'Notation'],
+                        to_class='Stem_Notation', to_mult=mult_tclral['1'],
+                        to_attrs=['Stem_type', 'Semantic', 'Diagram_type', 'Notation'],
+                        ),
+            AssocRel(name='R55', assoc_class='Stem_Notation',
+                     a_ref=Ref(to_class='Diagram_Notation', mult=mult_tclral['Mc'],
+                               from_attrs=['Notation', 'Diagram_type'],
+                               to_attrs=['Notation', 'Diagram_type']),
+                     b_ref=Ref(to_class='Stem_Signification', mult=mult_tclral['Mc'],
+                               from_attrs=['Stem_type', 'Semantic', 'Diagram_type'],
+                               to_attrs=['Stem_type', 'Semantic', 'Diagram_type'])
+                     ),
+            SimpleAssoc(name='R57',
+                        from_class='Stem_Semantic', from_mult=mult_tclral['Mc'],
+                        from_attrs=['Diagram_type'],
+                        to_class='Diagram_Type', to_mult=mult_tclral['1'],
+                        to_attrs=['Name'],
+                        ),
+            SimpleAssoc(name='R59',
+                        from_class='Stem_Type', from_mult=mult_tclral['M'],
+                        from_attrs=['Diagram_type', 'Connector_type'],
+                        to_class='Connector_Type', to_mult=mult_tclral['1'],
+                        to_attrs=['Diagram_type', 'Name'],
+                        ),
+            AssocRel(name='R62', assoc_class='Stem_Signification',
+                     a_ref=Ref(to_class='Stem_Semantic', mult=mult_tclral['M'],
+                               from_attrs=['Semantic', 'Diagram_type'],
+                               to_attrs=['Name', 'Diagram_type']),
+                     b_ref=Ref(to_class='Stem_Type', mult=mult_tclral['M'],
+                               from_attrs=['Stem_type', 'Diagram_type'],
+                               to_attrs=['Name', 'Diagram_type'])
+                     ),
+        ],
         'Node': [
             SimpleAssoc(name='R4',
                         from_class='Compartment_Type', from_mult=mult_tclral['M'],
