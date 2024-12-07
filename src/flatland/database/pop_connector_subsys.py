@@ -36,7 +36,30 @@ class ConnectorSubsysDB:
             for dtype_name, ctype_dict in dtype.items():
                 full_dtype_name = f"{dtype_name} diagram"
                 for ctype_name, v in ctype_dict.items():
-                    pass
+                    tr_name = f"ctype_name"
+                    Transaction.open(db=app, name=tr_name)
+                    ctype_i = ConnectorTypeInstance(Name=ctype_name,
+                                                    Diagram_type=dtype_name,
+                                                    About=v['about'],
+                                                    Geometry=v['geometry'])
+                    Relvar.insert(db=app, relvar='Connector_Type', tuples=[ctype_i], tr=tr_name)
+                    stype_instances = []
+                    for stem_type, sv in v['stem types'].items():
+                        stype_instances.append(
+                            StemTypeInstance(Name=stem_type, Diagram_type=dtype_name,
+                                             About=sv['about'], Connector_type=ctype_name)
+                        )
+                        stem_sem_i=[
+                            StemSemanticInstance(Name=ss_name, Diagram_type=dtype_name) for ss_name in sv['semantics']
+                        ]
+                        Relvar.insert(db=app, relvar='Stem_Semantic', tuples=stem_sem_i, tr=tr_name)
+                        stem_sig_i=[
+                            StemSignificationInstance(Stem_type=stem_type, Semantic=ss_name, Diagram_type=dtype_name)
+                            for ss_name in sv['semantics']
+                        ]
+                        Relvar.insert(db=app, relvar='Stem_Signification', tuples=stem_sig_i, tr=tr_name)
+
+                        pass
 
     @classmethod
     def pop_stem_notation(cls):
@@ -50,7 +73,7 @@ class ConnectorSubsysDB:
         """
         layout_data = ConfigDB.item_data['layout_specification']
         stand_layout = layout_data[0]['standard']
-        spec_instance = ConnectorLayoutSpecification(
+        spec_instance = ConnectorLayoutSpecificationInstance(
             Name='standard',
             Default_stem_positions=stand_layout['default stem positions'],
             Default_rut_positions=stand_layout['default rut positions'],
