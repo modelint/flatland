@@ -7,6 +7,26 @@
     why use it: >
       Notation was optimized for fast easy hand drawing. Perfect for whiteboards and notes where UML
       is clunky. The UML was designed with the assumption that you would rarely if ever draw by hand.
+    diagram types:
+      class:
+        1 mult:
+          iconic: true
+        1c mult:
+          iconic: true
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
+        M mult:
+          iconic: true
+        Mc mult:
+          iconic: true
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
+        superclass:
+          iconic: true
 
 - Starr:
     about: >
@@ -16,6 +36,18 @@
       don't need to drag the text around each time you change the position of an arrow.
     why use it: >
       Easy to draw with a wide variety of non-UML diagramming tools. Less visual clutter.
+    diagram types:
+      class:
+        1 mult:
+          iconic: true
+        1c mult:
+          iconic: true
+        M mult:
+          iconic: true
+        Mc mult:
+          iconic: true
+        superclass:
+          iconic: true
 
 - xUML:
     about: >
@@ -26,4 +58,49 @@
       On the downside, a lot of extra graphics and text clutter is required to display
       a model with Shlaer-Mellor semantics. This is especially the case with a class diagram,
       but not so much with a state machine diagram.
+    diagram types:
+      class:
+        1 mult:
+          iconic: false
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
+        1c mult:
+          iconic: false
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
+        M mult:
+          iconic: false
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
+        Mc mult:
+          iconic: false
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
+        associatve mult:
+          iconic: false
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
+        superclass:
+          iconic: true
+          label:
+            default stem side: +
+            vertical stem offset: 15
+            horizontal stem offset: 15
+      state:
+        target state:
+          iconic: true
+        initial pseudo state:
+          iconic: true
+        final pseudo state:
+          iconic: true
 

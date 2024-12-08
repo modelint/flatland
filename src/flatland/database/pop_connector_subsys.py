@@ -31,6 +31,7 @@ class ConnectorSubsysDB:
     def pop_stem_type(cls):
         """
         """
+        notation_data = ConfigDB.item_data['notation']
         ctype_data = ConfigDB.item_data['connector_type']
         for dtype in ctype_data:
             for dtype_name, ctype_dict in dtype.items():
