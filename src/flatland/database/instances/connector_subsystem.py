@@ -10,6 +10,17 @@ class ConnectorLayoutSpecificationInstance(NamedTuple):
     Default_new_path_row_height: int
     Default_new_path_col_width: int
 
+class ConnectorNameSpecInstance(NamedTuple):
+    Connector_type: str
+    Diagram_type: str
+    Notation: str
+    Vertical_axis_buffer: int
+    Horizontal_axis_buffer: int
+    Vertical_end_buffer: int
+    Horizontal_end_buffer: int
+    Default_name: str
+    Optional: bool
+
 class ConnectorTypeInstance(NamedTuple):
     Name: str
     Diagram_type: str
@@ -45,4 +56,5 @@ class StemTypeInstance(NamedTuple):
     Name: str
     Diagram_type: str
     About: str
+    Minimum_length: int
     Connector_type: str

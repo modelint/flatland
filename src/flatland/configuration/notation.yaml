@@ -1,6 +1,6 @@
 # notation.yaml – Supported notation
 
-- Shlaer-Mellor:
+Shlaer-Mellor:
     about: >
       Original methodology emphasizing execution semantics and platform independence with an emphasis
       on class/logic modeling foundations. Pre-dates UML.
@@ -28,7 +28,7 @@
         superclass:
           iconic: true
 
-- Starr:
+Starr:
     about: >
       Leon Starr adapted the Shlaer-Mellor and UML notations to minimize positioning operations
       when using a draw tool, such as OmniGraffle, that doesn't directly support these notations.
@@ -49,7 +49,7 @@
         superclass:
           iconic: true
 
-- xUML:
+xUML:
     about: >
       AKA, Executable UML. Usage of UML to represent executable semantics
     why use it: >

@@ -89,8 +89,7 @@ class NodeSubsysDB:
 
         notation_instances = [
             NotationInstance(Name=k, About=v['about'].rstrip(), Why_use_it=v['why use it'])
-            for i in notation_data
-            for k, v in i.items()
+            for k, v in notation_data.items()
         ]
         Relvar.insert(db=app, relvar='Notation', tuples=notation_instances)
         pass

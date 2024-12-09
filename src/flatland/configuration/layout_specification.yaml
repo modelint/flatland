@@ -25,6 +25,15 @@
     default new path row height: 100  # Minimum space required for a connector traveling outside the
     default new path col width: 150   #   furthest occupied row or column to bend around to its destination face
 
+    stem spec:
+      vertical access buffer:
+      horizontal access buffer:
+      vertical end buffer:
+      horizontal end buffer:
+      default name:
+      optional:
+
+
 
 
 # Add your own named variations below

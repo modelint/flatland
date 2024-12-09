@@ -4,7 +4,7 @@
 
 # TODO: clarify meaning of stem type geometry in comment below
 
-- class:  # Diagram type
+class:  # Diagram type
     binary association: # Connector type
       geometry: binary  # unary, binary, or tree
       about: Connects an anchor point on one node to an anchor point on the same or another node
@@ -13,12 +13,34 @@
           about: How many instances may be associated
           minimum length: 20
           geometry: fixed  # fixed, hanging, or free
-          semantics: [ Mc mult, 1c mult, 1 mult, M mult ]
+          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
         associative mult:
           about: How many association class instances per pair of associated instances
           minimum length: 24
           geometry: hanging
-          semantics: [ 1 mult, M mult ]
+          stem semantics: [ 1 mult, M mult ]
+      layout:
+        Starr:
+          vertical axis buffer: 6
+          horizontal axis buffer: 6
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Rxx
+          optional: False
+        Shlaer-Mellor:
+          vertical axis buffer: 11
+          horizontal axis buffer: 11
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Rxx
+          optional: False
+        xUML:
+          vertical axis buffer: 11
+          horizontal axis buffer: 11
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Rxx
+          optional: False
     generalization:
       geometry: tree
       about: A superset class compeletely split into disjoint subset classes
@@ -27,14 +49,36 @@
           about: The superset of all subclass instances
           minimum length: 10
           geometry: fixed
-          semantics: [superclass]
+          stem semantics: [superclass]
         subclass:
           about: A disjoint subset of the superclass set of instances
           minimum length: 10
           geometry: fixed
-          semantics: [subclass]
+          stem semantics: [subclass]
+      layout:
+        Starr:
+          vertical axis buffer: 13
+          horizontal axis buffer: 16
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Rxx
+          optional: False
+        Shlaer-Mellor:
+          vertical axis buffer: 11
+          horizontal axis buffer: 11
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Rxx
+          optional: False
+        xUML:
+          vertical axis buffer: 11
+          horizontal axis buffer: 11
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Rxx
+          optional: False
 
-- state machine:
+state machine:
     initial transition:
       geometry: unary
       about: Designates an initial state
@@ -43,7 +87,15 @@
           about: Points to a designated state as an initial state
           minimum length: 60
           geometry: free
-          semantics: [initial psuedo state]
+          stem semantics: [initial psuedo state]
+      layout:
+        xUML:
+          vertical axis buffer: 6
+          horizontal axis buffer: 6
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Event XX
+          optional: False
     deletion transition:
       geometry: unary
       about: Designates implicit instance deletion after a state executes its activity
@@ -52,7 +104,15 @@
           about: Points away from a final state to indicate deletion
           minimum length: 50
           geometry: free
-          semantics: [final psuedo state]
+          stem semantics: [final psuedo state]
+      layout:
+        xUML:
+          vertical axis buffer: 6
+          horizontal axis buffer: 6
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Event XX
+          optional: False
     transition:
       geometry: binary
       about: Defines a path from one state to another
@@ -61,14 +121,22 @@
           about: Points to the source state in a transition
           minimum length: 10
           geometry: fixed
-          semantics: [source state]
+          stem semantics: [source state]
         to state:
           about: Points to the destination state in a transition
           minimum length: 15
           geometry: fixed
-          semantics: [target state]
+          stem semantics: [target state]
+      layout:
+        xUML:
+          vertical axis buffer: 11
+          horizontal axis buffer: 11
+          vertical end buffer: 11
+          horizontal end buffer: 20
+          default name: Event xx
+          optional: False
 
-- domain:
+domain:
     bridge:
       geometry: binary
       about: Defines a dependency on requirements from one domain to another
@@ -77,14 +145,14 @@
           about: Points toward a domain that fullfills the requirements of a client domain
           minimum length: 15
           geometry: fixed
-          semantics: [require]
+          stem semantics: [require]
         from service:
           about: Points toward a domain that places requirements on a service domain
           minimum length: 15
           geometry: fixed
-          semantics: [provide]
+          stem semantics: [provide]
 
-- class collaboration:
+class collaboration:
     collaboration:
       geometry: binary
       about: Represents a path of communication between two nodes on a collaboration diagram
@@ -93,4 +161,4 @@
           about: Attaches to a communicating entity
           minimum length: 10
           geometry: fixed
-          semantics: [collaboration]
+          stem semantics: [collaboration]
