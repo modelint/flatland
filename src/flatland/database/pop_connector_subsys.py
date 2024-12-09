@@ -102,6 +102,7 @@ class ConnectorSubsysDB:
         """
         notations = ConfigDB.item_data['notation']
         stem_notation_instances = []
+        label_placement_spec_instances = []
         for notation, notation_data in notations.items():
             for dtype_name, stem_semantics in notation_data['diagram types'].items():
                 for stem_semantic, stem_semantic_display in stem_semantics.items():
@@ -116,8 +117,20 @@ class ConnectorSubsysDB:
                                                  Diagram_type=dtype_name,
                                                  Icon=stem_semantic_display['iconic'])
                         )
+                        if stem_semantic_display.get('label'):
+                            label_placement_spec_instances.append(
+                                LabelPlacementSpecificationInstance(
+                                    Stem_type=stem_type_name,
+                                    Semantic=stem_semantic,
+                                    Notation=notation,
+                                    Diagram_type=dtype_name,
+                                    Default_stem_side=stem_semantic_display['label']['default stem side'],
+                                    Vertical_stem_offset=stem_semantic_display['label']['vertical stem offset'],
+                                    Horizontal_stem_offset=stem_semantic_display['label']['horizontal stem offset'],
+                                )
+                            )
         Relvar.insert(db=app, relvar='Stem_Notation', tuples=stem_notation_instances)
-        pass
+        Relvar.insert(db=app, relvar='Label_Placement_Specification', tuples=label_placement_spec_instances)
 
     @classmethod
     def pop_clayout_spec(cls):
