@@ -2,6 +2,7 @@
 
 # Model Integration
 from pyral.relvar import Relvar
+from pyral.relation import Relation
 from pyral.transaction import Transaction
 
 # Flatland
@@ -25,14 +26,12 @@ class ConnectorSubsysDB:
         # references to data populated in the previous call.
         cls.pop_clayout_spec()
         cls.pop_stem_type()
-        # cls.pop_cname_spec()
-        # cls.pop_stem_notation()
+        cls.pop_stem_notation()
 
     @classmethod
     def pop_stem_type(cls):
         """
         """
-        # notation_data = ConfigDB.item_data['notation']
         ctype_data = ConfigDB.item_data['connector_type']
         cname_spec_instances = []
         # Diagram Types
@@ -101,30 +100,24 @@ class ConnectorSubsysDB:
     def pop_stem_notation(cls):
         """
         """
+        notations = ConfigDB.item_data['notation']
+        stem_notation_instances = []
+        for notation, notation_data in notations.items():
+            for dtype_name, stem_semantics in notation_data['diagram types'].items():
+                for stem_semantic, stem_semantic_display in stem_semantics.items():
+                    R = f"Semantic:<{stem_semantic}>, Diagram_type:<{dtype_name}>"
+                    result = Relation.restrict(db=app, relation='Stem_Signification', restriction=R)
+                    stem_types = [r['Stem_type'] for r in result.body]
+                    for stem_type_name in stem_types:
+                        stem_notation_instances.append(
+                            StemNotationInstance(Stem_type=stem_type_name,
+                                                 Semantic=stem_semantic,
+                                                 Notation=notation,
+                                                 Diagram_type=dtype_name,
+                                                 Icon=stem_semantic_display['iconic'])
+                        )
+        Relvar.insert(db=app, relvar='Stem_Notation', tuples=stem_notation_instances)
         pass
-
-    @classmethod
-    def pop_cname_spec(cls):
-        """
-        """
-        cname_spec_instances = []
-        ctypes = ConfigDB.item_data['connector_type']
-        for dtype_name, ctype in ctypes.items():
-            for ctype_name, ctype_data in ctype.items():
-                if ctype_data.get('layout'):
-                    for notation, cname_spec in ctype_data['layout'].items():
-                        cname_spec_instances.append(
-                            ConnectorNameSpecInstance(Connector_type=ctype_name, Diagram_type=dtype_name,
-                                                      Notation=notation,
-                                                      Vertical_axis_buffer=cname_spec['vertical axis buffer'],
-                                                      Horizontal_axis_buffer=cname_spec['horizontal axis buffer'],
-                                                      Vertical_end_buffer=cname_spec['vertical end buffer'],
-                                                      Horizontal_end_buffer=cname_spec['horizontal end buffer'],
-                                                      Default_name=cname_spec['default name'],
-                                                      Optional=cname_spec['optional']
-                                                      ))
-        if cname_spec_instances:
-            Relvar.insert(db=app, relvar='Connector_Name_Specification', tuples=cname_spec_instances)
 
     @classmethod
     def pop_clayout_spec(cls):
