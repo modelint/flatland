@@ -19,28 +19,6 @@ class:  # Diagram type
           minimum length: 24
           geometry: hanging
           stem semantics: [ 1 mult, M mult ]
-      layout:
-        Starr:
-          vertical axis buffer: 6
-          horizontal axis buffer: 6
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Rxx
-          optional: False
-        Shlaer-Mellor:
-          vertical axis buffer: 11
-          horizontal axis buffer: 11
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Rxx
-          optional: False
-        xUML:
-          vertical axis buffer: 11
-          horizontal axis buffer: 11
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Rxx
-          optional: False
     generalization:
       geometry: tree
       about: A superset class compeletely split into disjoint subset classes
@@ -55,28 +33,6 @@ class:  # Diagram type
           minimum length: 10
           geometry: fixed
           stem semantics: [subclass]
-      layout:
-        Starr:
-          vertical axis buffer: 13
-          horizontal axis buffer: 16
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Rxx
-          optional: False
-        Shlaer-Mellor:
-          vertical axis buffer: 11
-          horizontal axis buffer: 11
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Rxx
-          optional: False
-        xUML:
-          vertical axis buffer: 11
-          horizontal axis buffer: 11
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Rxx
-          optional: False
 
 state machine:
     initial transition:
@@ -88,14 +44,6 @@ state machine:
           minimum length: 60
           geometry: free
           stem semantics: [initial psuedo state]
-      layout:
-        xUML:
-          vertical axis buffer: 6
-          horizontal axis buffer: 6
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Event XX
-          optional: False
     deletion transition:
       geometry: unary
       about: Designates implicit instance deletion after a state executes its activity
@@ -105,14 +53,6 @@ state machine:
           minimum length: 50
           geometry: free
           stem semantics: [final psuedo state]
-      layout:
-        xUML:
-          vertical axis buffer: 6
-          horizontal axis buffer: 6
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Event XX
-          optional: False
     transition:
       geometry: binary
       about: Defines a path from one state to another
@@ -127,14 +67,6 @@ state machine:
           minimum length: 15
           geometry: fixed
           stem semantics: [target state]
-      layout:
-        xUML:
-          vertical axis buffer: 11
-          horizontal axis buffer: 11
-          vertical end buffer: 11
-          horizontal end buffer: 20
-          default name: Event xx
-          optional: False
 
 domain:
     bridge:

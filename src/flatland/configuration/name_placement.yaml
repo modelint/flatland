@@ -1,0 +1,112 @@
+# name_placmeent.yaml – Name Placement Specification data
+
+class:  # Diagram type
+  connector types:
+    binary association:
+      Starr:
+        vertical axis buffer: 6
+        horizontal axis buffer: 6
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: Rxx
+        optional: False
+      Shlaer-Mellor:
+        vertical axis buffer: 11
+        horizontal axis buffer: 11
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: Rxx
+        optional: False
+      xUML:
+        vertical axis buffer: 11
+        horizontal axis buffer: 11
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: Rxx
+        optional: False
+    generalization:
+      Starr:
+        vertical axis buffer: 13
+        horizontal axis buffer: 16
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: Rxx
+        optional: False
+      Shlaer-Mellor:
+        vertical axis buffer: 11
+        horizontal axis buffer: 11
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: Rxx
+        optional: False
+      xUML:
+        vertical axis buffer: 11
+        horizontal axis buffer: 11
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: Rxx
+        optional: False
+    stem types:
+      class_mult:
+        Starr:
+          vertical axis buffer: 8
+          horizontal axis buffer: 8
+          vertical face buffer: 10
+          horizontal face buffer: 10
+          default name: xx
+          optional: False
+
+state machine:
+  stem types:
+    to initial state:
+      xUML:
+        vertical axis buffer: 6
+        horizontal axis buffer: 6
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: Event XX
+        optional: False
+    to state:
+      xUML:
+        vertical axis buffer: 6
+        horizontal axis buffer: 6
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: Event xx
+        optional: False
+
+domain:
+  stem types:
+    to service:
+      Starr:
+        vertical axis buffer: 11
+        horizontal axis buffer: 11
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: xx
+        optional: False
+      xUML:
+        vertical axis buffer: 11
+        horizontal axis buffer: 11
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: xx
+        optional: False
+
+class collaboration:
+  stem types:
+    on collaborator:
+      Starr:
+        vertical axis buffer: 11
+        horizontal axis buffer: 11
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: xx
+        optional: False
+      xUML:
+        vertical axis buffer: 11
+        horizontal axis buffer: 11
+        vertical face buffer: 11
+        horizontal face buffer: 20
+        default name: xx
+        optional: False

@@ -38,6 +38,7 @@ class ConfigDB:
         ConfigItem(name="layout_specification", collector=None),
         ConfigItem(name="diagram_type", collector=None),
         ConfigItem(name="connector_type", collector=None),
+        ConfigItem(name="name_placement", collector=None),
     ]
 
     @classmethod
