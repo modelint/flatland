@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING, Optional
 
 # Model Integration
 from pyral.relation import Relation
+from tabletqt.graphics.line_segment import LineSegment
+from tabletqt.graphics.text_element import TextElement
 
 # Flatland
 from flatland.names import app
@@ -107,7 +109,6 @@ class StraightBinaryConnector(BinaryConnector):
                                       f"for diagram type: [{self.Diagram.Diagram_type}]")
             raise UnsupportedStemType
 
-
         # Create the two opposing Stems, one Anchored and one Floating (lined up with Anchor)
         self.Projecting_stem = AnchoredStem(
             connector=self,
@@ -162,11 +163,10 @@ class StraightBinaryConnector(BinaryConnector):
         layer = self.Diagram.Layer
 
         # Add line segment between the node faces
-        layer.add_line_segment(
-            asset=self.Connector_type_name.Name + ' connector',
-            from_here=self.Projecting_stem.Root_end,
-            to_there=self.Floating_stem.Root_end
-        )  # Symbols will be drawn on top of this line
+        asset = f"{self.Connector_type_name} connector"
+        LineSegment.add(layer=layer, asset=asset,
+                        from_here=self.Projecting_stem.Root_end,
+                        to_there=self.Floating_stem.Root_end)  # Symbols will be drawn on top of this line
 
         # Add stem decorations, if any
         self.Projecting_stem.render()
@@ -178,5 +178,5 @@ class StraightBinaryConnector(BinaryConnector):
         name_position = self.compute_name_position(
             point_t=self.Projecting_stem.Root_end, point_p=self.Floating_stem.Root_end
         )
-        layer.add_text_block(asset=self.Connector_type_name.Name + ' name', lower_left=name_position, text=self.Name.text)
-
+        TextElement.add_block(layer=layer, asset=f"{self.Connector_type_name} name",
+                              lower_left=name_position, text=self.Name.text)

@@ -183,8 +183,8 @@ class Grid:
         [n.render() for n in self.Nodes]
 
     #
-    #     # Draw connectors
-    #     [c.render() for c in self.Connectors]
+        # Draw connectors
+        [c.render() for c in self.Connectors]
     #
     def add_row(self, cell_height):
         """Adds an empty row upward with the given height"""
