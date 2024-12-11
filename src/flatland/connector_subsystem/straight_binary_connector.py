@@ -11,11 +11,11 @@ from pyral.relation import Relation
 
 # Flatland
 from flatland.names import app
-from flatland.exceptions import UnsupportedConnectorType, MultipleFloatsInSameStraightConnector
-from flatland.exceptions import NoFloatInStraightConnector
+from flatland.exceptions import (UnsupportedConnectorType, MultipleFloatsInSameStraightConnector,
+                                 NoFloatInStraightConnector, UnsupportedStemType)
 from flatland.connector_subsystem.binary_connector import BinaryConnector
 from flatland.connector_subsystem.anchored_stem import AnchoredStem
-from flatland.datatypes.connection_types import HorizontalFace, ConnectorName
+from flatland.datatypes.connection_types import HorizontalFace, ConnectorName, NodeFace
 from flatland.connector_subsystem.floating_binary_stem import FloatingBinaryStem
 from flatland.connector_subsystem.tertiary_stem import TertiaryStem
 from flatland.datatypes.command_interface import New_Stem
@@ -84,29 +84,46 @@ class StraightBinaryConnector(BinaryConnector):
         projecting_stem = t_stem if t_stem.anchor != 'float' else p_stem
         floating_stem = p_stem if projecting_stem is t_stem else t_stem
 
-        # Unpack the user specification by looking up the requested Stem Types loaded from our database
-        projecting_stem_type = self.Connector_type.Stem_type[projecting_stem.stem_type]
-        floating_stem_type = self.Connector_type.Stem_type[floating_stem.stem_type]
-        tertiary_stem_type = None
+        # Validate the user requested stem types
+        # These should be correct unless there is an issue with the model parser, but
+        # we'll validate them nonetheless
+        R = f"Name:<{projecting_stem.stem_type}>, Diagram_type:<{self.Diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Stem_Type', restriction=R)
+        if not result.body:
+            self.logger.exception(f"Undefined stem type: [{projecting_stem.stem_type}]"
+                                  f"for diagram type: [{self.Diagram.Diagram_type}]")
+            raise UnsupportedStemType
+        R = f"Name:<{floating_stem.stem_type}>, Diagram_type:<{self.Diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Stem_Type', restriction=R)
+        if not result.body:
+            self.logger.exception(f"Undefined stem type: [{projecting_stem.stem_type}]"
+                                  f"for diagram type: [{self.Diagram.Diagram_type}]")
+            raise UnsupportedStemType
         if tertiary_stem:
-            tertiary_stem_type = self.Connector_type.Stem_type[tertiary_stem.stem_type]
+            R = f"Name:<{tertiary_stem.stem_type}>, Diagram_type:<{self.Diagram.Diagram_type}>"
+            result = Relation.restrict(db=app, relation='Stem_Type', restriction=R)
+            if not result.body:
+                self.logger.exception(f"Undefined stem type: [{projecting_stem.stem_type}]"
+                                      f"for diagram type: [{self.Diagram.Diagram_type}]")
+            raise UnsupportedStemType
+
 
         # Create the two opposing Stems, one Anchored and one Floating (lined up with Anchor)
         self.Projecting_stem = AnchoredStem(
             connector=self,
-            stem_type=projecting_stem_type,
+            stem_type=projecting_stem.stem_type,
             semantic=projecting_stem.semantic,
             node=projecting_stem.node,
-            face=projecting_stem.face,
+            face=NodeFace[projecting_stem.face],
             anchor_position=projecting_stem.anchor,
             name=projecting_stem.stem_name
         )
         self.Floating_stem = FloatingBinaryStem(
             connector=self,
-            stem_type=floating_stem_type,
+            stem_type=floating_stem.stem_type,
             semantic=floating_stem.semantic,
             node=floating_stem.node,
-            face=floating_stem.face,
+            face=NodeFace[floating_stem.face],
             projecting_stem=self.Projecting_stem,
             name=floating_stem.stem_name
         )
@@ -117,10 +134,10 @@ class StraightBinaryConnector(BinaryConnector):
             anchor = tertiary_stem.anchor if tertiary_stem.anchor is not None else 0
             self.Tertiary_stem = TertiaryStem(
                 connector=self,
-                stem_type=tertiary_stem_type,
+                stem_type=tertiary_stem.stem_type,
                 semantic=tertiary_stem.semantic,
                 node=tertiary_stem.node,
-                face=tertiary_stem.face,
+                face=NodeFace[tertiary_stem.face],
                 anchor_position=anchor,
                 name=tertiary_stem.stem_name,
                 parallel_segs={(self.Projecting_stem.Vine_end, self.Floating_stem.Vine_end)}
@@ -146,7 +163,7 @@ class StraightBinaryConnector(BinaryConnector):
 
         # Add line segment between the node faces
         layer.add_line_segment(
-            asset=self.Connector_type.Name+' connector',
+            asset=self.Connector_type_name.Name + ' connector',
             from_here=self.Projecting_stem.Root_end,
             to_there=self.Floating_stem.Root_end
         )  # Symbols will be drawn on top of this line
@@ -161,5 +178,5 @@ class StraightBinaryConnector(BinaryConnector):
         name_position = self.compute_name_position(
             point_t=self.Projecting_stem.Root_end, point_p=self.Floating_stem.Root_end
         )
-        layer.add_text_block(asset=self.Connector_type.Name + ' name', lower_left=name_position, text=self.Name.text)
+        layer.add_text_block(asset=self.Connector_type_name.Name + ' name', lower_left=name_position, text=self.Name.text)
 

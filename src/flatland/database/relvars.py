@@ -89,6 +89,7 @@ class FlatlandSchema:
                 Attribute(name='Diagram_type', type='string'),
                 Attribute(name='About', type='string'),
                 Attribute(name='Minimum_length', type='int'),
+                Attribute(name='Geometry', type='string'),
                 Attribute(name='Connector_type', type='string'),
             ], ids={1: ['Name', 'Diagram_type']}),
         },

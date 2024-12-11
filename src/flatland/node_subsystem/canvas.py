@@ -79,7 +79,7 @@ class Canvas:
             raise InvalidOrientation(orientation)
         self.Orientation = orientation
         # We want to convert all units, inch, mm, etc to points since that's all we use from here on
-        factor = points_in_inch if self.Sheet.Units == 'in' else points_in_cm
+        factor = points_in_inch if self.Sheet.Units == 'in' else points_in_mm
 
         # Set point size height and width based on portrait vs. landscape orientation
         h, w = (self.Sheet.Size.height, self.Sheet.Size.width) if self.Orientation == 'landscape' else (

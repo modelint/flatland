@@ -5,7 +5,12 @@ stem.py
 import sys
 import logging
 
+# Model Integration
+from tabletqt.graphics.text_element import TextElement
+from pyral.relation import Relation
+
 # Flatland
+from flatland.names import app
 from flatland.exceptions import InvalidNameSide
 from flatland.datatypes.geometry_types import Position, HorizAlign
 from flatland.connector_subsystem.rendered_symbol import RenderedSymbol
@@ -55,21 +60,29 @@ class Stem:
         self.Name_size = None  # Computed below if name was specified
         self.Leading = None  # TODO: This and next attr needs to go into an add text block function in tablet
         self.Line_height = None
+        self.Stem_type_geometry = None
+        self.Stem_type_minimum_length = None
         if self.Name:
             if self.Name.side not in {1, -1}:
                 raise InvalidNameSide(self.Name.side)
             layer = self.Connector.Diagram.Layer
             # Get size of name bounding box
-            self.Name_size = layer.text_block_size(asset=self.Stem_type.Name + ' name', text_block=self.Name.text.text)
+            asset = f"{self.Stem_type} name"
+            self.Name_size = TextElement.text_block_size(layer=layer, asset=asset, text_block=self.Name.text.text)
 
         # There are at most two rendered symbols (one on each end) of a Stem and usually none or one
         self.Root_rendered_symbol = None  # Default assumption until lookup a bit later
         self.Vine_rendered_symbol = None
 
         # Some stem subclasses will compute their vine end, but for a fixed geometry, we can do it right here
-        if self.Stem_type.Geometry in {'fixed', 'free'}:
+        R = f"Name:<{self.Stem_type}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Stem_Type', restriction=R)
+        self.Stem_type_geometry = result.body[0]['Geometry']
+        self.Stem_type_minimum_length = int(result.body[0]['Minimum_length'])
+
+        if self.Stem_type_geometry in {'fixed', 'free'}:
             # For a fixed geometry, the Vine end is a fixed distance from the Root End
-            stem_len = self.Stem_type.Minimum_length
+            stem_len = self.Stem_type_minimum_length
             # Compute the coordinates based on the stem direction using the rooted node face
             x, y = self.Root_end
             if face == NodeFace.RIGHT:

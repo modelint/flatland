@@ -90,6 +90,7 @@ class ConnectorSubsysDB:
                         StemTypeInstance(Name=stem_type_name, Diagram_type=dtype_name,
                                          About=stem_type_data['about'],
                                          Minimum_length=stem_type_data['minimum length'],
+                                         Geometry=stem_type_data['geometry'],
                                          Connector_type=ctype_name)
                     )
                     for ss_name in stem_type_data['stem semantics']:

@@ -57,4 +57,5 @@ class StemTypeInstance(NamedTuple):
     Diagram_type: str
     About: str
     Minimum_length: int
+    Geometry: str
     Connector_type: str

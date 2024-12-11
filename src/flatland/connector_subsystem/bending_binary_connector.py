@@ -53,11 +53,11 @@ class BendingBinaryConnector(BinaryConnector):
         self.Paths = paths if not None else []
 
         # Look up the stem types loaded from our database
-        anchored_stem_t_type = self.Connector_type.Stem_type[anchored_stem_t.stem_type]
-        anchored_stem_p_type = self.Connector_type.Stem_type[anchored_stem_p.stem_type]
+        anchored_stem_t_type = self.Connector_type_name.Stem_type[anchored_stem_t.stem_type]
+        anchored_stem_p_type = self.Connector_type_name.Stem_type[anchored_stem_p.stem_type]
         tertiary_stem_type = None
         if tertiary_stem:
-            tertiary_stem_type = self.Connector_type.Stem_type[tertiary_stem.stem_type]
+            tertiary_stem_type = self.Connector_type_name.Stem_type[tertiary_stem.stem_type]
 
         # Create the two opposing Anchored Stems
         self.T_stem = AnchoredStem(
@@ -152,7 +152,7 @@ class BendingBinaryConnector(BinaryConnector):
         self.logger.info("Drawing bending binary connector")
         layer = self.Diagram.Layer
         layer.add_open_polygon(
-            asset=self.Connector_type.Name+' connector',
+            asset=self.Connector_type_name.Name + ' connector',
             vertices=[self.T_stem.Root_end] + self.Corners + [self.P_stem.Root_end]
         )
         # Draw the stems and their decorations
@@ -174,4 +174,4 @@ class BendingBinaryConnector(BinaryConnector):
         # If there are two corners and the bend is 2, use the Corner at index 1 (2nd corner)
         point_p = self.P_stem.Root_end if bend == len(self.Corners)+1 else self.Corners[bend-1]
         name_position = self.compute_name_position(point_t, point_p)
-        layer.add_text_block(asset=self.Connector_type.Name + ' name', lower_left=name_position, text=self.Name.text)
+        layer.add_text_block(asset=self.Connector_type_name.Name + ' name', lower_left=name_position, text=self.Name.text)

@@ -1,15 +1,22 @@
 """
 connector.py - Covers the Connector class in the Flatland3 Connector Subsystem Class Diagram
 """
+# System
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from flatland.node_subsystem.diagram import Diagram
+
+# Model Integration
+from tabletqt.graphics.text_element import TextElement
+
+# Flatland
 from flatland.text.text_block import TextBlock
 from flatland.exceptions import InvalidNameSide
 from flatland.datatypes.connection_types import ConnectorName
 from flatland.datatypes.geometry_types import Position
 from flatland.geometry_domain.linear_geometry import step_edge_distance
-from typing import TYPE_CHECKING, Optional
 
-if TYPE_CHECKING:
-    from flatland.node_subsystem.diagram import Diagram
 
 
 class Connector:
@@ -35,22 +42,21 @@ class Connector:
         :param ctype_name: Name of this Connector Type
         """
         self.Diagram = diagram
-        self.Connector_type = ctype_name
+        self.Connector_type_name = ctype_name
         self.Name = name
         self.Name_size = None
         if self.Name:
             if self.Name.side not in {1, -1}:
                 raise InvalidNameSide(self.Name.side)
-            layer = self.Diagram.Layer
             # Wrap the text if the user specified more than one line of wrapping
             name_block = TextBlock(line=self.Name.text, wrap=self.Name.wrap)
             # Tuples are immutable, so we need to update the whole thing
             self.Name = ConnectorName(side=self.Name.side, bend=self.Name.bend, notch=self.Name.notch,
                                       text=name_block.text, wrap=self.Name.wrap)
             # Get size of bounding box
-            asset = ' '.join([self.Connector_type.Name, 'name'])
-            self.Name_size = layer.text_block_size(
-                asset=asset, text_block=self.Name.text
+            asset = f"{self.Connector_type_name} name"
+            self.Name_size = TextElement.text_block_size(
+                layer=self.Diagram.Layer, asset=asset, text_block=self.Name.text
             )
 
         self.Diagram.Grid.Connectors.append(self)
@@ -65,7 +71,7 @@ class Connector:
         :param point_p: Point closest to the P Node (for binary connector only, vine end if unary)
         :return: Position of name bounding box lower left corner
         """
-        name_spec = self.Connector_type.Name_spec  # For easy access below
+        name_spec = self.Connector_type_name.Name_spec  # For easy access below
         if point_t.y == point_p.y:
             # Bend is horizontal
             bend_extent = abs(point_t.x-point_p.x)
@@ -93,4 +99,4 @@ class Connector:
         pass  # overriden
 
     def __repr__(self):
-        return f'ID: {id(self)}, Diagram: {self.Diagram}, Type: {self.Connector_type.Name}, Name: {self.Name}'
+        return f'ID: {id(self)}, Diagram: {self.Diagram}, Type: {self.Connector_type_name.Name}, Name: {self.Name}'

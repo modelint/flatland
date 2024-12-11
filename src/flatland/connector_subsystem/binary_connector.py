@@ -2,7 +2,6 @@
 binary_connector.py
 """
 from flatland.connector_subsystem.connector import Connector
-from flatland.datatypes.connection_types import ConnectorName
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
@@ -20,15 +19,14 @@ class BinaryConnector(Connector):
     """
     # TODO: Promote tertiary stem
 
-    def __init__(self, diagram: 'Diagram', name: Optional[ConnectorName], ctype_name: str):
+    def __init__(self, diagram: 'Diagram', name: Optional[str], ctype_name: str):
         """
         Constructor
 
         :param diagram: Reference to the Diagram
         :param ctype_name: Name of the Connector Type
         """
-        Connector.__init__(self, diagram=diagram, name=name, connector_type=ctype_name)
-
+        super().__init__(diagram, name, ctype_name)
 
     def render(self):
         pass  # Overridden
