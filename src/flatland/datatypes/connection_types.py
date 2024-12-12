@@ -102,6 +102,13 @@ OppositeFace = {
     NodeFace.RIGHT: NodeFace.LEFT
 }
 
+StemAngle = {
+    NodeFace.TOP: 180,
+    NodeFace.BOTTOM: 0,
+    NodeFace.LEFT: 90,
+    NodeFace.RIGHT: 270
+}
+
 
 class Geometry(Enum):
     """

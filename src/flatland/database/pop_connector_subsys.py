@@ -79,6 +79,8 @@ class ConnectorSubsysDB:
         # The single instance is named "standard"
         spec_instance = ConnectorLayoutSpecificationInstance(
             Name='standard',
+            Default_cname_positions=stand_layout['default cname positions'],
+            Undecorated_stem_clearance=stand_layout['undecorated stem clearance'],
             Default_stem_positions=stand_layout['default stem positions'],
             Default_rut_positions=stand_layout['default rut positions'],
             Default_new_path_row_height=stand_layout['default new path row height'],

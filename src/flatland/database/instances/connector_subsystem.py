@@ -8,6 +8,8 @@ from flatland.datatypes.connection_types import BufferDistance
 
 class ConnectorLayoutSpecificationInstance(NamedTuple):
     Name: str
+    Undecorated_stem_clearance: int
+    Default_cname_positions: int
     Default_stem_positions: int
     Default_rut_positions: int
     Default_new_path_row_height: int

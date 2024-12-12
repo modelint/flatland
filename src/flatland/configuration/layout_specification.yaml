@@ -20,6 +20,12 @@
       vertical: center
       horizontal: center
     # Connector layout
+
+    # For a Stem that has no graphic decoration, such as an xUML class binary association connection or a xUML subclass
+    # connection, this is the minimum distance from the node face to either a bend or the opposing Stem end. It prevents
+    # a bend too close to a Node face or a connection too close to another Node.
+    undecorated stem clearance: 11
+    default cname positions: 5  # The number of connector name positions along a bend
     default stem positions: 5  # Number of positions wher a connector can anchor on a face of a node
     default rut positions: 5  # Number of positions a connector can follow within a row or column
     default new path row height: 100  # Minimum space required for a connector traveling outside the
@@ -32,8 +38,5 @@
       horizontal end buffer:
       default name:
       optional:
-
-
-
 
 # Add your own named variations below

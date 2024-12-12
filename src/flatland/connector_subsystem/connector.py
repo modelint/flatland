@@ -3,17 +3,20 @@ connector.py - Covers the Connector class in the Flatland3 Connector Subsystem C
 """
 # System
 from typing import TYPE_CHECKING, Optional
+import logging
 
 if TYPE_CHECKING:
     from flatland.node_subsystem.diagram import Diagram
 
 # Model Integration
 from tabletqt.graphics.text_element import TextElement
+from pyral.relation import Relation
 
 # Flatland
+from flatland.names import app
 from flatland.text.text_block import TextBlock
-from flatland.exceptions import InvalidNameSide
-from flatland.datatypes.connection_types import ConnectorName
+from flatland.exceptions import InvalidNameSide, FlatlandDBException
+from flatland.datatypes.connection_types import ConnectorName, BufferDistance
 from flatland.datatypes.geometry_types import Position
 from flatland.geometry_domain.linear_geometry import step_edge_distance
 
@@ -41,6 +44,7 @@ class Connector:
         :param diagram: Reference to the Diagram
         :param ctype_name: Name of this Connector Type
         """
+        self.logger = logging.getLogger(__name__)
         self.Diagram = diagram
         self.Connector_type_name = ctype_name
         self.Name = name
@@ -71,17 +75,37 @@ class Connector:
         :param point_p: Point closest to the P Node (for binary connector only, vine end if unary)
         :return: Position of name bounding box lower left corner
         """
-        name_spec = self.Connector_type_name.Name_spec  # For easy access below
+        # Get the Name Placement Specification
+        R = (f"Name:<{self.Connector_type_name}>, Diagram_type:<{self.Diagram.Diagram_type}>, "
+             f"Notation:<{self.Diagram.Notation}>")
+        result = Relation.restrict(db=app, relation='Name_Placement_Specification', restriction=R)
+        if not result.body:
+            self.logger.exception(f"No Name Placement Specification for stem: {self.Stem_type},"
+                                  f"Diagram type: {self.Diagram.Diagram_type},"
+                                  f"Notation: {self.Diagram.Notation}")
+            raise FlatlandDBException
+        np_spec = result.body[0]
+        axis_buffer = BufferDistance(h=int(np_spec['Horizontal_axis_buffer']),
+                                     v=int(np_spec['Horizontal_axis_buffer']))
+        # Get the Connector Layout Specification
+        R = f"Name:<standard>"
+        result = Relation.restrict(db=app, relation='Connector_Layout_Specification', restriction=R)
+        if not result.body:
+            self.logger.exception("Connector Layout Specification not found")
+            raise FlatlandDBException
+
+        clayout_spec = result.body[0]
+        default_cname_positions = int(clayout_spec['Default_cname_positions'])
         if point_t.y == point_p.y:
             # Bend is horizontal
             bend_extent = abs(point_t.x-point_p.x)
-            edge_offset = step_edge_distance(num_of_steps=default_cname_positions, extent=bend_extent,
-                                             step=self.Name.notch)
+            edge_offset = step_edge_distance(num_of_steps=default_cname_positions,
+                                             extent=bend_extent, step=self.Name.notch)
             notch_x = min(point_t.x, point_p.x) + edge_offset
             name_x = notch_x - round(self.Name_size.height / 2)
             # If box is below the connector, subtract the height of the box as well to get lower left corner y
             height_offset = self.Name_size.height if self.Name.side == -1 else 0
-            name_y = point_t.y + name_spec.axis_buffer.vertical * self.Name.side - height_offset
+            name_y = point_t.y + axis_buffer.v * self.Name.side - height_offset
             #  TODO: Above line doesn't look right, also adapt to use end buffer
         else:
             # Connector is vertical
@@ -92,7 +116,7 @@ class Connector:
             name_y = notch_y - round(self.Name_size.height / 2)
             # If box is left of the connector, subtract the width of the box as well to get the lower left corner x
             width_offset = self.Name_size.width if self.Name.side == -1 else 0
-            name_x = point_t.x + name_spec.axis_buffer.horizontal * self.Name.side - width_offset
+            name_x = point_t.x + axis_buffer.h * self.Name.side - width_offset
         return Position(name_x, name_y)
 
     def render(self):

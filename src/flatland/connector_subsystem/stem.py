@@ -4,23 +4,21 @@ stem.py
 # System
 import sys
 import logging
+from typing import TYPE_CHECKING, Optional
+if TYPE_CHECKING:
+    from flatland.connector_subsystem.connector import Connector
+    from flatland.node_subsystem.node import Node
 
 # Model Integration
 from tabletqt.graphics.text_element import TextElement
+from tabletqt.graphics.symbol import Symbol
 from pyral.relation import Relation
 
 # Flatland
 from flatland.names import app
-from flatland.exceptions import InvalidNameSide
+from flatland.exceptions import InvalidNameSide, FlatlandDBException
 from flatland.datatypes.geometry_types import Position, HorizAlign
-from flatland.connector_subsystem.rendered_symbol import RenderedSymbol
-from flatland.datatypes.connection_types import NodeFace, StemName
-
-from typing import TYPE_CHECKING, Optional
-
-if TYPE_CHECKING:
-    from connector import Connector
-    from node import Node
+from flatland.datatypes.connection_types import NodeFace, StemName, StemAngle
 
 
 class Stem:
@@ -103,7 +101,16 @@ class Stem:
 
         if self.Name:
             align = HorizAlign.LEFT  # Assume left alignment of text lines
-            name_spec = self.Stem_type.Name_spec
+            R = (f"Name:<{self.Stem_type}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
+                 f"Notation:<{self.Connector.Diagram.Notation}>")
+            result = Relation.restrict(db=app, relation='Name_Placement_Specification', restriction=R)
+            if not result.body:
+                self.logger.exception(f"No Name Placement Specification for stem: {self.Stem_type},"
+                                      f"Diagram type: {self.Connector.Diagram.Diagram_type},"
+                                      f"Notation: {self.Connector.Diagram.Notation}")
+                raise FlatlandDBException
+
+            name_spec = result.body[0]
             if self.Vine_end.y == self.Root_end.y:
                 # Horizontal stem
                 if self.Node_face == NodeFace.LEFT:
@@ -116,15 +123,17 @@ class Stem:
                 name_y = self.Root_end.y + (name_spec.axis_buffer.vertical + height_offset) * self.Name.side
             else:
                 # Vertical stem
+                vertical_face_buffer = int(name_spec['Vertical_face_buffer'])
+                horizontal_axis_buffer = int(name_spec['Horizontal_axis_buffer'])
                 if self.Name.side == -1:  # Text is to the left of vertical stem, so right align it
                     align = HorizAlign.RIGHT
                 if self.Node_face == NodeFace.BOTTOM:
-                    height_offset = -(self.Name_size.height + name_spec.end_buffer.vertical)
+                    height_offset = -(self.Name_size.height + vertical_face_buffer)
                 else:
-                    height_offset = name_spec.end_buffer.vertical
+                    height_offset = vertical_face_buffer
                 name_y = self.Root_end.y + height_offset
                 width_offset = self.Name_size.width if self.Name.side == -1 else 0
-                name_x = self.Root_end.x + (name_spec.axis_buffer.horizontal + width_offset) * self.Name.side
+                name_x = self.Root_end.x + (horizontal_axis_buffer + width_offset) * self.Name.side
 
             diagram = self.Connector.Diagram
             if name_x < diagram.Origin.x or \
@@ -135,24 +144,30 @@ class Stem:
                                   f"\n\tConsider wrapping name across more lines of text or move it to the other side of the stem")
                 sys.exit(1)
 
-            layer.add_text_block(asset=self.Stem_type.Name + ' name', lower_left=Position(name_x, name_y),
+            TextElement.add_block(layer=layer, asset=f"{self.Stem_type} name",
+                                  lower_left=Position(name_x, name_y),
                                   text=self.Name.text.text, align=align)
 
+        symbol_name = f"{self.Connector.Diagram.Notation} {self.Connector.Diagram.Diagram_type}"
+        s = Symbol(app=app, layer=layer,
+                   group=symbol_name, name=self.Semantic,
+                   pin=self.Vine_end, angle=StemAngle[self.Node_face])
+        pass
         # TODO: Double check four lines below (especially for class diagram ternary connector root)
-        root_dec_stem = self.Stem_type.DecoratedStems.get(self.Semantic)
-        root_symbol_name = None if not root_dec_stem else root_dec_stem.Root_symbol
-        vine_dec_stem = self.Stem_type.DecoratedStems.get(self.Semantic)
-        vine_symbol_name = None if not vine_dec_stem else vine_dec_stem.Vine_symbol
-
-        if root_symbol_name:
-            self.Root_rendered_symbol = RenderedSymbol(
-                stem=self,
-                end='root', location=self.Root_end,
-                symbol_name=root_symbol_name
-            )
-        if vine_symbol_name:
-            self.Vine_rendered_symbol = RenderedSymbol(
-                stem=self,
-                end='vine', location=self.Vine_end,
-                symbol_name=vine_symbol_name
-            )
+        # root_dec_stem = self.Stem_type.DecoratedStems.get(self.Semantic)
+        # root_symbol_name = None if not root_dec_stem else root_dec_stem.Root_symbol
+        # vine_dec_stem = self.Stem_type.DecoratedStems.get(self.Semantic)
+        # vine_symbol_name = None if not vine_dec_stem else vine_dec_stem.Vine_symbol
+        #
+        # if root_symbol_name:
+        #     self.Root_rendered_symbol = RenderedSymbol(
+        #         stem=self,
+        #         end='root', location=self.Root_end,
+        #         symbol_name=root_symbol_name
+        #     )
+        # if vine_symbol_name:
+        #     self.Vine_rendered_symbol = RenderedSymbol(
+        #         stem=self,
+        #         end='vine', location=self.Vine_end,
+        #         symbol_name=vine_symbol_name
+        #     )
