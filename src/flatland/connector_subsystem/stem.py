@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 # Model Integration
 from tabletqt.graphics.text_element import TextElement
 from tabletqt.graphics.symbol import Symbol
+from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
 from pyral.relation import Relation
 
 # Flatland
@@ -149,25 +150,5 @@ class Stem:
                                   text=self.Name.text.text, align=align)
 
         symbol_name = f"{self.Connector.Diagram.Notation} {self.Connector.Diagram.Diagram_type}"
-        s = Symbol(app=app, layer=layer,
-                   group=symbol_name, name=self.Semantic,
-                   pin=self.Vine_end, angle=StemAngle[self.Node_face])
-        pass
-        # TODO: Double check four lines below (especially for class diagram ternary connector root)
-        # root_dec_stem = self.Stem_type.DecoratedStems.get(self.Semantic)
-        # root_symbol_name = None if not root_dec_stem else root_dec_stem.Root_symbol
-        # vine_dec_stem = self.Stem_type.DecoratedStems.get(self.Semantic)
-        # vine_symbol_name = None if not vine_dec_stem else vine_dec_stem.Vine_symbol
-        #
-        # if root_symbol_name:
-        #     self.Root_rendered_symbol = RenderedSymbol(
-        #         stem=self,
-        #         end='root', location=self.Root_end,
-        #         symbol_name=root_symbol_name
-        #     )
-        # if vine_symbol_name:
-        #     self.Vine_rendered_symbol = RenderedSymbol(
-        #         stem=self,
-        #         end='vine', location=self.Vine_end,
-        #         symbol_name=vine_symbol_name
-        #     )
+        Symbol(app=app, layer=layer, group=symbol_name, name=self.Semantic,
+               pin=self.Root_end, angle=StemAngle[self.Node_face])

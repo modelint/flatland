@@ -103,10 +103,10 @@ OppositeFace = {
 }
 
 StemAngle = {
-    NodeFace.TOP: 180,
-    NodeFace.BOTTOM: 0,
-    NodeFace.LEFT: 90,
-    NodeFace.RIGHT: 270
+    NodeFace.TOP: 0,
+    NodeFace.BOTTOM: 180,
+    NodeFace.LEFT: 270,
+    NodeFace.RIGHT: 90
 }
 
 
