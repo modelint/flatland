@@ -114,14 +114,16 @@ class Stem:
             name_spec = result.body[0]
             if self.Vine_end.y == self.Root_end.y:
                 # Horizontal stem
+                horizontal_face_buffer = int(name_spec['Horizontal_face_buffer'])
+                vertical_axis_buffer = int(name_spec['Vertical_axis_buffer'])
                 if self.Node_face == NodeFace.LEFT:
                     align = HorizAlign.RIGHT  # Text is to the left of node face, so right align it
-                    width_offset = -(self.Name_size.width + name_spec.end_buffer.horizontal)
+                    width_offset = -(self.Name_size.width + horizontal_face_buffer)
                 else:
-                    width_offset = name_spec.end_buffer.horizontal
+                    width_offset = horizontal_face_buffer
                 name_x = self.Root_end.x + width_offset
                 height_offset = self.Name_size.height if self.Name.side == -1 else 0
-                name_y = self.Root_end.y + (name_spec.axis_buffer.vertical + height_offset) * self.Name.side
+                name_y = self.Root_end.y + (vertical_axis_buffer + height_offset) * self.Name.side
             else:
                 # Vertical stem
                 vertical_face_buffer = int(name_spec['Vertical_face_buffer'])
