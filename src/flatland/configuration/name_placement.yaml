@@ -46,15 +46,15 @@ class:  # Diagram type
         horizontal face buffer: 20
         default name: Rxx
         optional: False
-    stem types:
-      class_mult:
-        Starr:
-          vertical axis buffer: 8
-          horizontal axis buffer: 8
-          vertical face buffer: 10
-          horizontal face buffer: 10
-          default name: xx
-          optional: False
+  stem types:
+    class mult:
+      Starr:
+        vertical axis buffer: 8
+        horizontal axis buffer: 8
+        vertical face buffer: 10
+        horizontal face buffer: 10
+        default name: xx
+        optional: False
 
 state machine:
   stem types:

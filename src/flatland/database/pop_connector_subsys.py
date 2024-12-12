@@ -9,6 +9,7 @@ from pyral.transaction import Transaction
 from flatland.names import app
 from flatland.configuration.configDB import ConfigDB
 from flatland.database.instances.connector_subsystem import *
+from flatland.datatypes.connection_types import BufferDistance
 
 
 class ConnectorSubsysDB:
@@ -27,6 +28,45 @@ class ConnectorSubsysDB:
         cls.pop_clayout_spec()
         cls.pop_stem_type()
         cls.pop_stem_notation()
+        # Relvar.printall('flatland')
+        cls.pop_name_placement_spec()
+
+    @classmethod
+    def pop_name_placement_spec(cls):
+        """
+        Populate name placement specs for Connector Types and Stem Types that support naming
+        """
+        def make_np_inst(valdict):
+            """
+            Both stem types and connector types are processed the same, but under different
+            keys in the yaml file. So we can create the Named Placement Instance using the same
+            code here for either case.
+
+            :param valdict: The yaml extracted dictionary of either connector or stem name placement spec values
+            """
+            for name, notations in valdict.items():
+                for notation, np_values in notations.items():
+                    np_spec_instances.append(
+                        NamePlacementSpecInstance(
+                            Name=name, Diagram_type=dtype_name, Notation=notation,
+                            Vertical_axis_buffer=int(np_values['vertical axis buffer']),
+                            Horizontal_axis_buffer=int(np_values['vertical axis buffer']),
+                            Vertical_face_buffer=int(np_values['vertical face buffer']),
+                            Horizontal_face_buffer=int(np_values['horizontal face buffer']),
+                            Default_name=np_values['default name'],
+                            Optional=np_values['optional']
+                    ))
+
+        # Grab the layout_specification.yaml input
+        np_data = ConfigDB.item_data['name_placement']
+        np_spec_instances = [] # The Name Placement Specification instance tuple values to populate
+        for dtype_name, dtype_data in np_data.items():
+            if dtype_data.get('connector types'):
+                make_np_inst(valdict=dtype_data['connector types'])
+            if dtype_data.get('stem types'):
+                make_np_inst(valdict=dtype_data['stem types'])
+
+        Relvar.insert(db=app, relvar='Name_Placement_Specification', tuples=np_spec_instances)
 
     @classmethod
     def pop_clayout_spec(cls):
@@ -69,6 +109,7 @@ class ConnectorSubsysDB:
             Transaction.open(db=app, name=tr_name)
 
             # Empty lists to gather instance tuples for this Diagram Type
+            la_name_instances = []  # Line adjacent name instances
             ctype_instances = []  # Connector type instances
             dtype_stem_semantic_names = set()  # Stem stemantics names
             # We need to build up this set as we go (across the hiearchy) since there is no specific section
@@ -84,6 +125,7 @@ class ConnectorSubsysDB:
                                                              About=ctype_data['about'],
                                                              Geometry=ctype_data['geometry'])
                                        )
+                la_name_instances.append(LineAdjacentNameInstance(Name=ctype_name, Diagram_type=dtype_name))
                 # Stem Types for this Connector Type
                 for stem_type_name, stem_type_data in ctype_data['stem types'].items():
                     stem_type_instances.append(
@@ -93,6 +135,7 @@ class ConnectorSubsysDB:
                                          Geometry=stem_type_data['geometry'],
                                          Connector_type=ctype_name)
                     )
+                    la_name_instances.append(LineAdjacentNameInstance(Name=stem_type_name, Diagram_type=dtype_name))
                     for ss_name in stem_type_data['stem semantics']:
                         stem_sig_instances.append(
                             StemSignificationInstance(Stem_type=stem_type_name,
@@ -102,21 +145,6 @@ class ConnectorSubsysDB:
                     # Update the set of referenced Stem Semantics defined for this Connector Type
                     dtype_stem_semantic_names.update(stem_type_data['stem semantics'])
 
-                # Insert a Connector Name Spec for each Notation for this Connector Type
-                if ctype_data.get('layout'):
-                    for notation, cname_spec_data in ctype_data['layout'].items():
-                        cname_spec_instances.append(
-                            ConnectorNameSpecInstance(Connector_type=ctype_name,
-                                                      Diagram_type=dtype_name,
-                                                      Notation=notation,
-                                                      Vertical_axis_buffer=cname_spec_data['vertical axis buffer'],
-                                                      Horizontal_axis_buffer=cname_spec_data['horizontal axis buffer'],
-                                                      Vertical_end_buffer=cname_spec_data['vertical end buffer'],
-                                                      Horizontal_end_buffer=cname_spec_data['horizontal end buffer'],
-                                                      Default_name=cname_spec_data['default name'],
-                                                      Optional=cname_spec_data['optional']
-                                                      )
-                        )
             # All Connector Types have been processed for this Diagram Type
 
             # Insert all Stem Types for this Diagram Type
@@ -124,6 +152,10 @@ class ConnectorSubsysDB:
 
             # Insert all Connector Types for this Diagram Type
             Relvar.insert(db=app, relvar='Connector_Type', tuples=ctype_instances, tr=tr_name)
+
+            # Insert all Line Adjacent Name superclass instances
+            Relvar.insert(db=app, relvar='Line_Adjacent_Name', tuples=la_name_instances, tr=tr_name)
+
             # Here's where we use that set of Stem Semantic names
             stem_semantic_instances = [
                 StemSemanticInstance(Name=ss_name, Diagram_type=dtype_name)
@@ -132,9 +164,6 @@ class ConnectorSubsysDB:
             Relvar.insert(db=app, relvar='Stem_Semantic', tuples=stem_semantic_instances, tr=tr_name)
             Relvar.insert(db=app, relvar='Stem_Signification', tuples=stem_sig_instances, tr=tr_name)
             Transaction.execute(db=app, name=tr_name)
-
-        # All Diagram Types have been processed
-        Relvar.insert(db=app, relvar='Connector_Name_Specification', tuples=cname_spec_instances)
 
 
     @classmethod

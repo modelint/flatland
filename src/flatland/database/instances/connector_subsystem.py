@@ -3,23 +3,15 @@
 # System
 from typing import NamedTuple
 
+# Flatland
+from flatland.datatypes.connection_types import BufferDistance
+
 class ConnectorLayoutSpecificationInstance(NamedTuple):
     Name: str
     Default_stem_positions: int
     Default_rut_positions: int
     Default_new_path_row_height: int
     Default_new_path_col_width: int
-
-class ConnectorNameSpecInstance(NamedTuple):
-    Connector_type: str
-    Diagram_type: str
-    Notation: str
-    Vertical_axis_buffer: int
-    Horizontal_axis_buffer: int
-    Vertical_end_buffer: int
-    Horizontal_end_buffer: int
-    Default_name: str
-    Optional: bool
 
 class ConnectorTypeInstance(NamedTuple):
     Name: str
@@ -35,6 +27,21 @@ class LabelPlacementSpecificationInstance(NamedTuple):
     Default_stem_side: str
     Vertical_stem_offset: int
     Horizontal_stem_offset: int
+
+class LineAdjacentNameInstance(NamedTuple):
+    Name: str
+    Diagram_type: str
+
+class NamePlacementSpecInstance(NamedTuple):
+    Name: str
+    Diagram_type: str
+    Notation: str
+    Vertical_axis_buffer: int
+    Horizontal_axis_buffer: int
+    Vertical_face_buffer: int
+    Horizontal_face_buffer: int
+    Default_name: str
+    Optional: bool
 
 class StemNotationInstance(NamedTuple):
     Stem_type: str

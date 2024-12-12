@@ -301,7 +301,7 @@ class FlatlandSchema:
                         to_class='Connector_Type', to_mult=mult_tclral['1'],
                         to_attrs=['Diagram_type', 'Name'],
                         ),
-            GenRel(name='R60', superclass='Box', superattrs=['Name', 'Diagram_type'],
+            GenRel(name='R60', superclass='Line_Adjacent_Name', superattrs=['Name', 'Diagram_type'],
                    subrefs={
                        'Connector_Type': ['Name', 'Diagram_type'],
                        'Stem_Type': ['Name', 'Diagram_type'],
@@ -314,7 +314,7 @@ class FlatlandSchema:
                                from_attrs=['Stem_type', 'Diagram_type'],
                                to_attrs=['Name', 'Diagram_type'])
                      ),
-            AssocRel(name='R64', assoc_class='Name_Placement_Signification',
+            AssocRel(name='R64', assoc_class='Name_Placement_Specification',
                      a_ref=Ref(to_class='Diagram_Notation', mult=mult_tclral['Mc'],
                                from_attrs=['Notation', 'Diagram_type'],
                                to_attrs=['Notation', 'Diagram_type']),

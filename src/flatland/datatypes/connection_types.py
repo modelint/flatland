@@ -6,7 +6,7 @@ Data types to support Connectors and Stems
 
 from enum import Enum
 from collections import namedtuple
-from typing import NewType
+from typing import NewType, NamedTuple
 
 AnchorPosition = NewType('AnchorPosition', int)
 
@@ -66,6 +66,12 @@ A position within a row or column where a Connector line segment is drawn
 """
 DecoratedStemEnd = namedtuple('DecoratedStemEnd', 'stem_type semantic diagram_type notation end')
 
+class BufferDistance(NamedTuple):
+    """
+    The vertical and horizontal mimimum distance to some obstacle
+    """
+    h: int # horizontal buffer
+    v: int # vertical buffer
 
 class Orientation(Enum):
     Horizontal = 0
