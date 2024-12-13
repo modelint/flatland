@@ -47,8 +47,8 @@ class AnchoredStem(Stem):
         anchor = AnchoredStem.anchor_to_position(node, face, anchor_position)
 
         # Anchored position is used to compute the root end position
-        Stem.__init__(self, connector=connector, stem_type=stem_type,
-                      semantic=semantic, node=node, face=face, root_position=anchor, name=name)
+        super().__init__(connector=connector, stem_type=stem_type, semantic=semantic,
+                         node=node, face=face, root_position=anchor, name=name)
 
     @classmethod
     def anchor_to_position(cls, node: 'Node', face: NodeFace, anchor_position: AnchorPosition) -> Position:

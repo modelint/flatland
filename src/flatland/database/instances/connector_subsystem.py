@@ -3,9 +3,6 @@
 # System
 from typing import NamedTuple
 
-# Flatland
-from flatland.datatypes.connection_types import BufferDistance
-
 class ConnectorLayoutSpecificationInstance(NamedTuple):
     Name: str
     Undecorated_stem_clearance: int

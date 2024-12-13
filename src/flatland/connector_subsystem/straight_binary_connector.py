@@ -73,8 +73,9 @@ class StraightBinaryConnector(BinaryConnector):
             self.logger.exception(f"Unsupported connector type: {ctype_name}"
                                   f" for diagram type: {diagram.Diagram_type}")
             raise UnsupportedConnectorType(connector_type_name=ctype_name, diagram_type_name=diagram.Diagram_type)
+
         # Extract the user supplied connector name if any
-        BinaryConnector.__init__(self, diagram=diagram, name=name, ctype_name=ctype_name)
+        super().__init__(diagram=diagram, name=name, ctype_name=ctype_name)
 
         # One side (t or p) must be the anchor and the other floats
         if t_stem.anchor == 'float' and p_stem.anchor == 'float':

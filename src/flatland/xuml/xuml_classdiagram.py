@@ -350,7 +350,7 @@ class XumlClassDiagram:
         else:
             BendingBinaryConnector(
                 diagram=cls.flatland_canvas.Diagram,
-                connector_type='binary association',
+                ctype_name='binary association',
                 anchored_stem_p=p_stem,
                 anchored_stem_t=t_stem,
                 tertiary_stem=a_stem,

@@ -1,20 +1,29 @@
 """
 bending_binary_connector.py
 """
+
+# System
 import logging
-import logging.config
-from flatland.exceptions import UnsupportedConnectorType, InvalidBendNumber
-from flatland.connector_subsystem.binary_connector import BinaryConnector
-from flatland.connector_subsystem.tertiary_stem import TertiaryStem
-from flatland.connector_subsystem.anchored_stem import AnchoredStem
-from flatland.datatypes.connection_types import HorizontalFace, Orientation, ConnectorName
-from flatland.datatypes.geometry_types import Position
-from flatland.datatypes.command_interface import New_Stem, New_Path
 from typing import List, TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from flatland.node_subsystem.diagram import Diagram
 
+# Model Integration
+from pyral.relation import Relation
+from tabletqt.graphics.polygon_se import PolygonSE
+from tabletqt.graphics.text_element import TextElement
+
+# Flatland
+from flatland.names import app
+from flatland.exceptions import (UnsupportedConnectorType, InvalidBendNumber, NoFloatInStraightConnector,
+                                 UnsupportedStemType)
+from flatland.connector_subsystem.binary_connector import BinaryConnector
+from flatland.connector_subsystem.tertiary_stem import TertiaryStem
+from flatland.connector_subsystem.anchored_stem import AnchoredStem
+from flatland.datatypes.connection_types import HorizontalFace, Orientation, ConnectorName, NodeFace
+from flatland.datatypes.geometry_types import Position
+from flatland.datatypes.command_interface import New_Stem, New_Path
 
 class BendingBinaryConnector(BinaryConnector):
     """
@@ -25,7 +34,7 @@ class BendingBinaryConnector(BinaryConnector):
     just as easily have been labeled “A” and “B”.
     """
 
-    def __init__(self, diagram: 'Diagram', connector_type: str, anchored_stem_t: New_Stem,
+    def __init__(self, diagram: 'Diagram', ctype_name: str, anchored_stem_t: New_Stem,
                  anchored_stem_p: New_Stem, paths: Optional[New_Path] = None, name: Optional[ConnectorName] = None,
                  tertiary_stem: Optional[New_Stem] = None):
         """
@@ -42,39 +51,42 @@ class BendingBinaryConnector(BinaryConnector):
         self.logger = logging.getLogger(__name__)
         # Verify that the specified connector type name corresponds to a supported connector type
         # found in our database
-        try:
-            ct = diagram.Diagram_type.ConnectorTypes[connector_type]
-        except IndexError:
-            raise UnsupportedConnectorType(
-                connector_type_name=connector_type, diagram_type_name=diagram.Diagram_type.Name)
-        BinaryConnector.__init__(self, diagram=diagram, name=name, connector_type=ct)
+        R = f"Name:<{ctype_name}>, Diagram_type:<{diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Connector_Type', restriction=R)
+        if not result.body:
+            self.logger.exception(f"Unsupported connector type: {ctype_name}"
+                                  f" for diagram type: {diagram.Diagram_type}")
+            raise UnsupportedConnectorType(connector_type_name=ctype_name, diagram_type_name=diagram.Diagram_type)
+
+        super().__init__(diagram=diagram, name=name, ctype_name=ctype_name)
 
         # Paths are only necessary if the connector bends more than once
         self.Paths = paths if not None else []
 
         # Look up the stem types loaded from our database
-        anchored_stem_t_type = self.Connector_type_name.Stem_type[anchored_stem_t.stem_type]
-        anchored_stem_p_type = self.Connector_type_name.Stem_type[anchored_stem_p.stem_type]
-        tertiary_stem_type = None
-        if tertiary_stem:
-            tertiary_stem_type = self.Connector_type_name.Stem_type[tertiary_stem.stem_type]
+        # anchored_stem_t_type = self.Connector_type_name.Stem_type[anchored_stem_t.stem_type]
+        # anchored_stem_p_type = self.Connector_type_name.Stem_type[anchored_stem_p.stem_type]
+        # tertiary_stem_type = None
+        # if tertiary_stem:
+        #     tertiary_stem_type = self.Connector_type_name.Stem_type[tertiary_stem.stem_type]
+            # tertiary_stem_type = self.Connector_type_name.Stem_type[tertiary_stem.stem_type]
 
         # Create the two opposing Anchored Stems
         self.T_stem = AnchoredStem(
             connector=self,
-            stem_type=anchored_stem_t_type,
+            stem_type=anchored_stem_t.stem_type,
             semantic=anchored_stem_t.semantic,
             node=anchored_stem_t.node,
-            face=anchored_stem_t.face,
+            face=NodeFace[anchored_stem_t.face],
             anchor_position=anchored_stem_t.anchor if anchored_stem_t.anchor is not None else 0,
             name=anchored_stem_t.stem_name,
         )
         self.P_stem = AnchoredStem(
             connector=self,
-            stem_type=anchored_stem_p_type,
+            stem_type=anchored_stem_p.stem_type,
             semantic=anchored_stem_p.semantic,
             node=anchored_stem_p.node,
-            face=anchored_stem_p.face,
+            face=NodeFace[anchored_stem_p.face],
             anchor_position=anchored_stem_p.anchor if anchored_stem_p.anchor is not None else 0,
             name=anchored_stem_p.stem_name,
         )
@@ -90,7 +102,7 @@ class BendingBinaryConnector(BinaryConnector):
             parallel_segs = horizontal_segs if tertiary_stem.face in HorizontalFace else segs - horizontal_segs
             self.Tertiary_stem = TertiaryStem(
                 connector=self,
-                stem_type=tertiary_stem_type,
+                stem_type=tertiary_stem.stem_type,
                 semantic=tertiary_stem.semantic,
                 node=tertiary_stem.node,
                 face=tertiary_stem.face,
@@ -150,11 +162,8 @@ class BendingBinaryConnector(BinaryConnector):
         """
         # Create line from root end of T_stem to root end of P_stem, bending along the way
         self.logger.info("Drawing bending binary connector")
-        layer = self.Diagram.Layer
-        layer.add_open_polygon(
-            asset=self.Connector_type_name.Name + ' connector',
-            vertices=[self.T_stem.Root_end] + self.Corners + [self.P_stem.Root_end]
-        )
+        PolygonSE.add_open(layer=self.Diagram.Layer, asset=f"{self.Connector_type_name} connector",
+                           vertices=[self.T_stem.Root_end] + self.Corners + [self.P_stem.Root_end])
         # Draw the stems and their decorations
         self.T_stem.render()
         self.P_stem.render()
@@ -174,4 +183,5 @@ class BendingBinaryConnector(BinaryConnector):
         # If there are two corners and the bend is 2, use the Corner at index 1 (2nd corner)
         point_p = self.P_stem.Root_end if bend == len(self.Corners)+1 else self.Corners[bend-1]
         name_position = self.compute_name_position(point_t, point_p)
-        layer.add_text_block(asset=self.Connector_type_name.Name + ' name', lower_left=name_position, text=self.Name.text)
+        TextElement.add_block(layer=self.Diagram.Layer, asset=f"{self.Connector_type_name} name",
+                              lower_left=name_position, text=self.Name.text)
