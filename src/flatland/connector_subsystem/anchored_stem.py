@@ -44,7 +44,7 @@ class AnchoredStem(Stem):
         :param name: Optional name to be placed next to vine end of stem
         """
         # The anchor is resolved to an x,y coordinate on the node face
-        anchor = AnchoredStem.anchor_to_position(node, face, anchor_position)
+        anchor = AnchoredStem.anchor_to_position(node=node, face=face, anchor_position=anchor_position)
 
         # Anchored position is used to compute the root end position
         super().__init__(connector=connector, stem_type=stem_type, semantic=semantic,

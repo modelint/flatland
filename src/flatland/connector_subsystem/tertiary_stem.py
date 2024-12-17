@@ -1,18 +1,23 @@
 """
 tertiary_stem.py
 """
-
+# System
 import logging
 import sys
-from flatland.connector_subsystem.anchored_stem import AnchoredStem
-from flatland.datatypes.connection_types import HorizontalFace, NodeFace, AnchorPosition, StemName
-from flatland.datatypes.geometry_types import Position
-from flatland.geometry_domain.linear_geometry import nearest_parallel_segment
 from typing import TYPE_CHECKING, Set, Optional
 
 if TYPE_CHECKING:
     from flatland.node_subsystem.node import Node
     from flatland.connector_subsystem.binary_connector import BinaryConnector
+
+# Model Integration
+from tabletqt.graphics.line_segment import LineSegment
+
+# Flatland
+from flatland.connector_subsystem.anchored_stem import AnchoredStem
+from flatland.datatypes.connection_types import HorizontalFace, NodeFace, AnchorPosition, StemName
+from flatland.datatypes.geometry_types import Position
+from flatland.geometry_domain.linear_geometry import nearest_parallel_segment
 
 
 class TertiaryStem(AnchoredStem):
@@ -37,7 +42,8 @@ class TertiaryStem(AnchoredStem):
         :param name: Optional name to be drawn next to stem vine end
         """
         self.logger = logging.getLogger(__name__)
-        AnchoredStem.__init__(self, connector, stem_type, semantic, node, face, anchor_position, name)
+        super().__init__(connector=connector, stem_type=stem_type, semantic=semantic, node=node,
+                         face=face, anchor_position=anchor_position, name=name)
         # At this point the anchor_position has been resolved to an x,y coordinate on the node face
 
         self.Root_start = None
@@ -59,6 +65,7 @@ class TertiaryStem(AnchoredStem):
         """
         Create line from root end to the vine end attached to the Binary Connector line
         """
-        layer = self.Connector.Diagram.Layer
-        layer.add_line_segment(asset=self.Stem_type.Name+' stem', from_here=self.Root_end, to_there=self.Vine_end)
+        LineSegment.add(layer=self.Connector.Diagram.Layer, asset=f"{self.Stem_type} stem",
+                        from_here=self.Root_end, to_there=self.Vine_end)
+
         super().render()

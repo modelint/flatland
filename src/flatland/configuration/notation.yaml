@@ -9,24 +9,30 @@ Shlaer-Mellor:
       is clunky. The UML was designed with the assumption that you would rarely if ever draw by hand.
     diagram types:
       class:
-        1 mult:
-          iconic: true
-        1c mult:
-          iconic: true
-          label:
-            default stem side: +
-            vertical stem offset: 9
-            horizontal stem offset: 9
-        M mult:
-          iconic: true
-        Mc mult:
-          iconic: true
-          label:
-            default stem side: +
-            vertical stem offset: 9
-            horizontal stem offset: 9
+        class mult:
+          1 mult:
+            iconic: true
+            end: root
+          1c mult:
+            iconic: true
+            end: root
+            label:
+              default stem side: +
+              vertical stem offset: 9
+              horizontal stem offset: 9
+          M mult:
+            iconic: true
+            end: root
+          Mc mult:
+            iconic: true
+            end: root
+            label:
+              default stem side: +
+              vertical stem offset: 9
+              horizontal stem offset: 9
         superclass:
           iconic: true
+          end: root
 
 Starr:
     about: >
@@ -38,16 +44,34 @@ Starr:
       Easy to draw with a wide variety of non-UML diagramming tools. Less visual clutter.
     diagram types:
       class:
-        1 mult:
-          iconic: true
-        1c mult:
-          iconic: true
-        M mult:
-          iconic: true
-        Mc mult:
-          iconic: true
+        class mult:
+          1 mult:
+            iconic: true
+            end: root
+          1c mult:
+            iconic: true
+            end: root
+          M mult:
+            iconic: true
+            end: root
+          Mc mult:
+            iconic: true
+            end: root
+        associative mult:
+          1 mult:
+            iconic: true
+            end: vine
+          M mult:
+            iconic: true
+            end: vine
         superclass:
-          iconic: true
+          superclass:
+            iconic: true
+            end: root
+        subclass:
+          subclass:
+            iconic: false
+            end: root
 
 xUML:
     about: >

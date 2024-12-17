@@ -108,7 +108,7 @@ class StraightBinaryConnector(BinaryConnector):
             if not result.body:
                 self.logger.exception(f"Undefined stem type: [{projecting_stem.stem_type}]"
                                       f"for diagram type: [{self.Diagram.Diagram_type}]")
-            raise UnsupportedStemType
+                raise UnsupportedStemType
 
         # Create the two opposing Stems, one Anchored and one Floating (lined up with Anchor)
         self.Projecting_stem = AnchoredStem(
