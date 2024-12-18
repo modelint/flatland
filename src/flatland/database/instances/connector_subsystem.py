@@ -58,10 +58,10 @@ class StemSignificationInstance(NamedTuple):
     Semantic: str
     Diagram_type: str
 
-class StemTypeInstance(NamedTuple):
+class StemPositionInstance(NamedTuple):
     Name: str
     Diagram_type: str
     About: str
     Minimum_length: int
-    Geometry: str
+    Stretch: str
     Connector_type: str

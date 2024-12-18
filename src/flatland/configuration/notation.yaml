@@ -9,30 +9,18 @@ Shlaer-Mellor:
       is clunky. The UML was designed with the assumption that you would rarely if ever draw by hand.
     diagram types:
       class:
-        class mult:
-          1 mult:
-            iconic: true
-            end: root
-          1c mult:
-            iconic: true
-            end: root
-            label:
-              default stem side: +
-              vertical stem offset: 9
-              horizontal stem offset: 9
-          M mult:
-            iconic: true
-            end: root
-          Mc mult:
-            iconic: true
-            end: root
-            label:
-              default stem side: +
-              vertical stem offset: 9
-              horizontal stem offset: 9
+        class face:
+          icon placement: root
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
         superclass:
-          iconic: true
-          end: root
+          icon placement: root
+          label:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
 
 Starr:
     about: >
@@ -44,34 +32,12 @@ Starr:
       Easy to draw with a wide variety of non-UML diagramming tools. Less visual clutter.
     diagram types:
       class:
-        class mult:
-          1 mult:
-            iconic: true
-            end: root
-          1c mult:
-            iconic: true
-            end: root
-          M mult:
-            iconic: true
-            end: root
-          Mc mult:
-            iconic: true
-            end: root
+        class face:
+          icon placement: root
         associative mult:
-          1 mult:
-            iconic: true
-            end: vine
-          M mult:
-            iconic: true
-            end: vine
-        superclass:
-          superclass:
-            iconic: true
-            end: root
-        subclass:
-          subclass:
-            iconic: false
-            end: root
+          icon placement: vine
+        superclass face:
+          icon placement: root
 
 xUML:
     about: >
@@ -84,47 +50,26 @@ xUML:
       but not so much with a state machine diagram.
     diagram types:
       class:
-        1 mult:
-          iconic: false
-          label:
+        class face:
+          label placement:
             default stem side: +
             vertical stem offset: 9
             horizontal stem offset: 9
-        1c mult:
-          iconic: false
-          label:
-            default stem side: +
-            vertical stem offset: 9
-            horizontal stem offset: 9
-        M mult:
-          iconic: false
-          label:
-            default stem side: +
-            vertical stem offset: 9
-            horizontal stem offset: 9
-        Mc mult:
-          iconic: false
-          label:
-            default stem side: +
-            vertical stem offset: 9
-            horizontal stem offset: 9
-        associatve mult:
-          iconic: false
-          label:
-            default stem side: +
-            vertical stem offset: 9
-            horizontal stem offset: 9
-        superclass:
-          iconic: true
+        association face:
+          default stem side: +
+          vertical stem offset: 9
+          horizontal stem offset: 9
+        superclass face:
+          icon placement: root
           label:
             default stem side: +
             vertical stem offset: 15
             horizontal stem offset: 15
       state:
-        target state:
-          iconic: true
-        initial pseudo state:
-          iconic: true
-        final pseudo state:
-          iconic: true
+        to state:
+          icon placement: root
+        to initial state:
+          icon placement: both
+        from final state:
+          icon placement: vine
 
