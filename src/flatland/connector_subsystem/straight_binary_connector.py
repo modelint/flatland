@@ -116,7 +116,7 @@ class StraightBinaryConnector(BinaryConnector):
             stem_position=projecting_stem.stem_position,
             semantic=projecting_stem.semantic,
             node=projecting_stem.node,
-            face=NodeFace[projecting_stem.face],
+            face=projecting_stem.face,
             anchor_position=projecting_stem.anchor,
             name=projecting_stem.stem_name
         )
@@ -125,7 +125,7 @@ class StraightBinaryConnector(BinaryConnector):
             stem_type=floating_stem.stem_position,
             semantic=floating_stem.semantic,
             node=floating_stem.node,
-            face=NodeFace[floating_stem.face],
+            face=floating_stem.face,
             projecting_stem=self.Projecting_stem,
             name=floating_stem.stem_name
         )
@@ -139,7 +139,7 @@ class StraightBinaryConnector(BinaryConnector):
                 stem_position=tertiary_stem.stem_position,
                 semantic=tertiary_stem.semantic,
                 node=tertiary_stem.node,
-                face=NodeFace[tertiary_stem.face],
+                face=tertiary_stem.face,
                 anchor_position=anchor,
                 name=tertiary_stem.stem_name,
                 parallel_segs={(self.Projecting_stem.Vine_end, self.Floating_stem.Vine_end)}

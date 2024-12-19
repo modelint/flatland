@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 from pyral.relation import Relation
 from tabletqt.graphics.polygon_se import PolygonSE
 from tabletqt.graphics.text_element import TextElement
+from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
 
 # Flatland
 from flatland.names import app
@@ -41,7 +42,7 @@ class BendingBinaryConnector(BinaryConnector):
         Constructor - see class description for meaning of the attributes
 
         :param diagram: Reference to the Diagram
-        :param connector_type: Name of connector type
+        :param ctype_name: Name of connector type
         :param anchored_stem_t: A user supplied specification of a stem with an anchored face cplace
         :param anchored_stem_p: A user supplied specification of the opposing stem with an anchored face cplace
         :param paths:
@@ -77,7 +78,7 @@ class BendingBinaryConnector(BinaryConnector):
             stem_position=anchored_stem_t.stem_position,
             semantic=anchored_stem_t.semantic,
             node=anchored_stem_t.node,
-            face=NodeFace[anchored_stem_t.face],
+            face=anchored_stem_t.face,
             anchor_position=anchored_stem_t.anchor if anchored_stem_t.anchor is not None else 0,
             name=anchored_stem_t.stem_name,
         )
@@ -86,7 +87,7 @@ class BendingBinaryConnector(BinaryConnector):
             stem_position=anchored_stem_p.stem_position,
             semantic=anchored_stem_p.semantic,
             node=anchored_stem_p.node,
-            face=NodeFace[anchored_stem_p.face],
+            face=anchored_stem_p.face,
             anchor_position=anchored_stem_p.anchor if anchored_stem_p.anchor is not None else 0,
             name=anchored_stem_p.stem_name,
         )
@@ -94,18 +95,21 @@ class BendingBinaryConnector(BinaryConnector):
 
         self.Tertiary_stem = None
         if tertiary_stem:
-            # Find all line segments in the bending connector parallel to the tertiary node face
-            # Where the tertiary stem is attached
+            # Find all line segments in the bending connector parallel to the ternary node face
+            # Where the ternary stem is attached
             points = [self.T_stem.Vine_end] + self.Corners + [self.P_stem.Vine_end]
             segs = set(zip(points, points[1:]))
             horizontal_segs = {s for s in segs if s[0].y == s[1].y}
             parallel_segs = horizontal_segs if tertiary_stem.face in HorizontalFace else segs - horizontal_segs
+            # for s in horizontal_segs:
+            #     for p in s:
+            #         DiagnosticMarker.add_cross_hair(layer=self.Diagram.Layer, location=p, color='red')
             self.Tertiary_stem = TertiaryStem(
                 connector=self,
                 stem_position=tertiary_stem.stem_position,
                 semantic=tertiary_stem.semantic,
                 node=tertiary_stem.node,
-                face=NodeFace[tertiary_stem.face],
+                face=tertiary_stem.face,
                 anchor_position=tertiary_stem.anchor if tertiary_stem.anchor is not None else 0,
                 name=tertiary_stem.stem_name,
                 parallel_segs=parallel_segs
