@@ -15,7 +15,7 @@ class BinaryConnector(Connector):
 
         Attributes
 
-        - Tertiary_stem -– Currently managed in each subclass, but should be promted eventually
+        - Ternary_stem -– Currently managed in each subclass, but should be promted eventually
     """
     # TODO: Promote tertiary stem
 

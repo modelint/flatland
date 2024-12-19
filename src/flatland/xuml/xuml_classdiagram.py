@@ -269,7 +269,7 @@ class XumlClassDiagram:
         tstem = binary_layout['tstem']
         pstem = binary_layout['pstem']
         _reversed = False  # Assume that layout sheet and model order matches
-        astem = binary_layout.get('tertiary_node', None)
+        astem = binary_layout.get('ternary_node', None)
 
         t_side = association['t_side']
         if tstem['node_ref'] != t_side['cname']:
@@ -356,7 +356,7 @@ class XumlClassDiagram:
                 ctype_name='binary association',
                 anchored_stem_p=p_stem,
                 anchored_stem_t=t_stem,
-                tertiary_stem=a_stem,
+                ternary_stem=a_stem,
                 paths=paths,
                 name=rnum_data)
 

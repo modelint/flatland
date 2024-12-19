@@ -19,7 +19,7 @@ from flatland.connector_subsystem.binary_connector import BinaryConnector
 from flatland.connector_subsystem.anchored_stem import AnchoredStem
 from flatland.datatypes.connection_types import HorizontalFace, ConnectorName, NodeFace
 from flatland.connector_subsystem.floating_binary_stem import FloatingBinaryStem
-from flatland.connector_subsystem.tertiary_stem import TertiaryStem
+from flatland.connector_subsystem.ternary_stem import TernaryStem
 from flatland.datatypes.command_interface import New_Stem
 
 if TYPE_CHECKING:
@@ -47,7 +47,7 @@ class StraightBinaryConnector(BinaryConnector):
         - Projecting_stem -– The Binary Stem that is anchored to a user specified position on one Node Face
         - Floating_stem -– The opposite Binary Stem that is placed on a direct line opposite the Projecting stem
           where it touches the opposing face of its attached Node
-        - Tertiary_stem -- A Stem that connects from a separate a Node (other than the one attached to the Projecting
+        - Ternary_stem -- A Stem that connects from a separate a Node (other than the one attached to the Projecting
           or Floating Stems) and extending until its Vine end attaches to the Binary Connector line
     """
 
@@ -134,7 +134,7 @@ class StraightBinaryConnector(BinaryConnector):
         self.Tertiary_stem = None
         if tertiary_stem:
             anchor = tertiary_stem.anchor if tertiary_stem.anchor is not None else 0
-            self.Tertiary_stem = TertiaryStem(
+            self.Tertiary_stem = TernaryStem(
                 connector=self,
                 stem_position=tertiary_stem.stem_position,
                 semantic=tertiary_stem.semantic,

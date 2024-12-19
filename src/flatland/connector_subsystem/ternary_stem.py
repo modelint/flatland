@@ -1,5 +1,5 @@
 """
-tertiary_stem.py
+ternary_stem.py
 """
 # System
 import logging
@@ -20,7 +20,7 @@ from flatland.datatypes.geometry_types import Position
 from flatland.geometry_domain.linear_geometry import nearest_parallel_segment
 
 
-class TertiaryStem(AnchoredStem):
+class TernaryStem(AnchoredStem):
     """
     An Anchored Stem that reaches from a Node face at its root end and attaches its vine end to the
     line segment drawn for a Binary Connector.
