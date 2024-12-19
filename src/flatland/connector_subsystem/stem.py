@@ -19,7 +19,7 @@ from pyral.relation import Relation
 from flatland.names import app
 from flatland.exceptions import InvalidNameSide, FlatlandDBException
 from flatland.datatypes.geometry_types import Position, HorizAlign
-from flatland.datatypes.connection_types import NodeFace, StemName, StemAngle
+from flatland.datatypes.connection_types import NodeFace, StemName, StemAngle, OppositeFace
 
 
 class Stem:
@@ -152,5 +152,25 @@ class Stem:
                                   text=self.Name.text.text, align=align)
 
         symbol_name = f"{self.Connector.Diagram.Notation} {self.Connector.Diagram.Diagram_type}"
+
+        # Look up icon placement for Symbol
+        R = (f"Stem_position:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
+             f"Notation:<{self.Connector.Diagram.Notation}>")
+        result = Relation.restrict(db=app, relation='Icon_Placement', restriction=R)
+        if not result.body:
+            self.logger.exception(f"No Icon Placement for stem: {self.Stem_position},"
+                                  f"Diagram type: {self.Connector.Diagram.Diagram_type},"
+                                  f"Notation: {self.Connector.Diagram.Notation}")
+            raise FlatlandDBException
+        orientation = result.body[0]['Orientation']
+        location = self.Root_end if orientation != 'vine' else self.Vine_end
+        if self.Stem_position_stretch == 'hanging':
+            # This is a vine end symbol, so it is being placed opposite the Stem's root node face
+            # So we need the angle associated with the opposing face
+            angle = StemAngle[OppositeFace[self.Node_face]]
+        else:
+            # The symbol is on the root end and angle is determined by the node face
+            angle = StemAngle[self.Node_face] if self.Root_end else None
+
         Symbol(app=app, layer=layer, group=symbol_name, name=self.Semantic,
-               pin=self.Root_end, angle=StemAngle[self.Node_face])
+               pin=location, angle=angle)
