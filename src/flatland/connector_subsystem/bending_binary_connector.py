@@ -74,7 +74,7 @@ class BendingBinaryConnector(BinaryConnector):
         # Create the two opposing Anchored Stems
         self.T_stem = AnchoredStem(
             connector=self,
-            stem_type=anchored_stem_t.stem_type,
+            stem_position=anchored_stem_t.stem_position,
             semantic=anchored_stem_t.semantic,
             node=anchored_stem_t.node,
             face=NodeFace[anchored_stem_t.face],
@@ -83,7 +83,7 @@ class BendingBinaryConnector(BinaryConnector):
         )
         self.P_stem = AnchoredStem(
             connector=self,
-            stem_type=anchored_stem_p.stem_type,
+            stem_position=anchored_stem_p.stem_position,
             semantic=anchored_stem_p.semantic,
             node=anchored_stem_p.node,
             face=NodeFace[anchored_stem_p.face],
@@ -102,10 +102,10 @@ class BendingBinaryConnector(BinaryConnector):
             parallel_segs = horizontal_segs if tertiary_stem.face in HorizontalFace else segs - horizontal_segs
             self.Tertiary_stem = TertiaryStem(
                 connector=self,
-                stem_type=tertiary_stem.stem_type,
+                stem_position=tertiary_stem.stem_position,
                 semantic=tertiary_stem.semantic,
                 node=tertiary_stem.node,
-                face=tertiary_stem.face,
+                face=NodeFace[tertiary_stem.face],
                 anchor_position=tertiary_stem.anchor if tertiary_stem.anchor is not None else 0,
                 name=tertiary_stem.stem_name,
                 parallel_segs=parallel_segs
