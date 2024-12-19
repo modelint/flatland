@@ -33,7 +33,7 @@ class Stem:
         Attributes
 
         - Connector -- Stem is on one end of this Connector
-        - Stem_type -- Specifies charactersitics and decoration, if any, of this Stem
+        - Stem_position -- Specifies charactersitics and decoration, if any, of this Stem
         - Node -- Stem is attached to this Node
         - Node_face -- On this face of the Node
         - Root_end -- Where the Stem attaches to the Node face
@@ -46,11 +46,11 @@ class Stem:
         - Stem_name -- R73/Stem Name
     """
 
-    def __init__(self, connector: 'Connector', stem_type: str, semantic: str, node: 'Node',
+    def __init__(self, connector: 'Connector', stem_position: str, semantic: str, node: 'Node',
                  face: NodeFace, root_position: Position, name: Optional[StemName]):
         self.logger = logging.getLogger(__name__)
         self.Connector = connector
-        self.Stem_type = stem_type
+        self.Stem_position = stem_position
         self.Node = node
         self.Node_face = face
         self.Semantic = semantic
@@ -59,14 +59,14 @@ class Stem:
         self.Name_size = None  # Computed below if name was specified
         self.Leading = None  # TODO: This and next attr needs to go into an add text block function in tablet
         self.Line_height = None
-        self.Stem_type_geometry = None
-        self.Stem_type_minimum_length = None
+        self.Stem_position_stretch = None
+        self.Stem_position_minimum_length = None
         if self.Name:
             if self.Name.side not in {1, -1}:
                 raise InvalidNameSide(self.Name.side)
             layer = self.Connector.Diagram.Layer
             # Get size of name bounding box
-            asset = f"{self.Stem_type} name"
+            asset = f"{self.Stem_position} name"
             self.Name_size = TextElement.text_block_size(layer=layer, asset=asset, text_block=self.Name.text.text)
 
         # There are at most two rendered symbols (one on each end) of a Stem and usually none or one
@@ -74,14 +74,14 @@ class Stem:
         self.Vine_rendered_symbol = None
 
         # Some stem subclasses will compute their vine end, but for a fixed geometry, we can do it right here
-        R = f"Name:<{self.Stem_type}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>"
-        result = Relation.restrict(db=app, relation='Stem_Type', restriction=R)
-        self.Stem_type_geometry = result.body[0]['Geometry']
-        self.Stem_type_minimum_length = int(result.body[0]['Minimum_length'])
+        R = f"Name:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Stem_Position', restriction=R)
+        self.Stem_position_stretch = result.body[0]['Stretch']
+        self.Stem_position_minimum_length = int(result.body[0]['Minimum_length'])
 
-        if self.Stem_type_geometry in {'fixed', 'free'}:
+        if self.Stem_position_stretch in {'fixed', 'free'}:
             # For a fixed geometry, the Vine end is a fixed distance from the Root End
-            stem_len = self.Stem_type_minimum_length
+            stem_len = self.Stem_position_minimum_length
             # Compute the coordinates based on the stem direction using the rooted node face
             x, y = self.Root_end
             if face == NodeFace.RIGHT:
@@ -102,11 +102,11 @@ class Stem:
 
         if self.Name:
             align = HorizAlign.LEFT  # Assume left alignment of text lines
-            R = (f"Name:<{self.Stem_type}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
+            R = (f"Name:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
                  f"Notation:<{self.Connector.Diagram.Notation}>")
             result = Relation.restrict(db=app, relation='Name_Placement_Specification', restriction=R)
             if not result.body:
-                self.logger.exception(f"No Name Placement Specification for stem: {self.Stem_type},"
+                self.logger.exception(f"No Name Placement Specification for stem: {self.Stem_position},"
                                       f"Diagram type: {self.Connector.Diagram.Diagram_type},"
                                       f"Notation: {self.Connector.Diagram.Notation}")
                 raise FlatlandDBException
@@ -147,7 +147,7 @@ class Stem:
                                   f"\n\tConsider wrapping name across more lines of text or move it to the other side of the stem")
                 sys.exit(1)
 
-            TextElement.add_block(layer=layer, asset=f"{self.Stem_type} name",
+            TextElement.add_block(layer=layer, asset=f"{self.Stem_position} name",
                                   lower_left=Position(name_x, name_y),
                                   text=self.Name.text.text, align=align)
 

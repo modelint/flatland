@@ -14,13 +14,13 @@ User specification of a compartment's text content and any vertical expansion
     - expansion -- (float > 1) Multiple the height of this compartment by this factor to increase its size
 """
 
-New_Stem = namedtuple('New_Stem', 'stem_type semantic node face anchor stem_name')
+New_Stem = namedtuple('New_Stem', 'stem_position semantic node face anchor stem_name')
 """
 User specification of a Stem in a Tree Connector
 
     Attributes
     
-    - stem_type -- (str) Name of stem type such as 'class mult' or 'generalization'
+    - stem_position -- (str) Name of stem position such as 'class mult' or 'generalization'
     - semantic -- (str) Name of semantic such as '1 mult' or 'superclass'
     - node -- (Node) Node object
     - face -- (NodeFace)

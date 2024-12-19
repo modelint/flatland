@@ -26,14 +26,14 @@ class TertiaryStem(AnchoredStem):
     line segment drawn for a Binary Connector.
     """
 
-    def __init__(self, connector: 'BinaryConnector', stem_type: str, semantic: str,
+    def __init__(self, connector: 'BinaryConnector', stem_position: str, semantic: str,
                  node: 'Node', face: NodeFace, anchor_position: AnchorPosition, parallel_segs: Set[tuple],
                  name: Optional[StemName] = None):
         """
         Constructor
 
         :param connector:  Part of this Binary Connector
-        :param stem_type: Specifies universal characteristics of this Stem
+        :param stem_position: Specifies universal characteristics of this Stem
         :param semantic: Meaning of this Stem
         :param node: Is rooted on this Node
         :param face: Is rooted from this Node face
@@ -42,7 +42,7 @@ class TertiaryStem(AnchoredStem):
         :param name: Optional name to be drawn next to stem vine end
         """
         self.logger = logging.getLogger(__name__)
-        super().__init__(connector=connector, stem_type=stem_type, semantic=semantic, node=node,
+        super().__init__(connector=connector, stem_position=stem_position, semantic=semantic, node=node,
                          face=face, anchor_position=anchor_position, name=name)
         # At this point the anchor_position has been resolved to an x,y coordinate on the node face
 
@@ -65,7 +65,7 @@ class TertiaryStem(AnchoredStem):
         """
         Create line from root end to the vine end attached to the Binary Connector line
         """
-        LineSegment.add(layer=self.Connector.Diagram.Layer, asset=f"{self.Stem_type} stem",
+        LineSegment.add(layer=self.Connector.Diagram.Layer, asset=f"{self.Stem_position} stem",
                         from_here=self.Root_end, to_there=self.Vine_end)
 
         super().render()

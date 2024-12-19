@@ -286,7 +286,7 @@ class XumlClassDiagram:
             side=tstem['stem_dir'], axis_offset=None, end_offset=None
         )
         node_ref = tstem['node_ref']
-        t_stem = New_Stem(stem_type='class mult', semantic=t_side['mult'] + ' mult',
+        t_stem = New_Stem(stem_position='class face', semantic=t_side['mult'] + ' mult',
                           node=cls.nodes[node_ref], face=tstem['face'],
                           anchor=tstem.get('anchor', None), stem_name=t_phrase)
 
@@ -303,7 +303,7 @@ class XumlClassDiagram:
             missing_side = "p-stem" if not _reversed else "t-stem"
             cls.logger.error(f"In layout sheet {missing_side} of {rnum} class [{node_ref}] is not defined in model")
             sys.exit(1)
-        p_stem = New_Stem(stem_type='class mult', semantic=p_side['mult'] + ' mult',
+        p_stem = New_Stem(stem_position='class face', semantic=p_side['mult'] + ' mult',
                           node=pnode, face=pstem['face'],
                           anchor=pstem.get('anchor', None), stem_name=p_phrase)
         # There is an optional stem for an association class
@@ -323,7 +323,7 @@ class XumlClassDiagram:
                     f"Association class [{node_ref}] is missing in relationship {rnum}"
                 )
                 sys.exit(1)
-            a_stem = New_Stem(stem_type='associative mult', semantic=semantic,
+            a_stem = New_Stem(stem_position='association', semantic=semantic,
                               node=cls.nodes[node_ref], face=astem['face'], anchor=astem.get('anchor', None),
                               stem_name=None)
         else:

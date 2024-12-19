@@ -34,8 +34,6 @@ class ConnectorSubsysDB:
         cls.pop_stem_position()
         cls.pop_stem_notation()
         cls.pop_name_placement_spec()
-        Relvar.printall('flatland')
-        pass
 
     @classmethod
     def pop_name_placement_spec(cls):

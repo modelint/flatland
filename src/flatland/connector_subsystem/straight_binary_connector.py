@@ -38,9 +38,9 @@ class StraightBinaryConnector(BinaryConnector):
     Because, if the user specified two separate anchor positions, they might not line up vertically or
     horizontally and we would end up with a diagonal line which we never want.
 
-    If a Tertiary Stem is supplied, it will anchor to some Node face and extend in a straight line to a position
+    If a Ternary Stem is supplied, it will anchor to some Node face and extend in a straight line to a position
     on the Binary Connector line between the two vine ends of the Binary Stems. Since it must be a straight line,
-    the Tertiary Stem may not be attached to a face on any Node attached to the Binary Stems.
+    the Ternary Stem may not be attached to a face on any Node attached to the Binary Stems.
 
         Attributes
 
@@ -87,33 +87,33 @@ class StraightBinaryConnector(BinaryConnector):
         projecting_stem = t_stem if t_stem.anchor != 'float' else p_stem
         floating_stem = p_stem if projecting_stem is t_stem else t_stem
 
-        # Validate the user requested stem types
+        # Validate the user requested Stem Positions
         # These should be correct unless there is an issue with the model parser, but
         # we'll validate them nonetheless
-        R = f"Name:<{projecting_stem.stem_type}>, Diagram_type:<{self.Diagram.Diagram_type}>"
-        result = Relation.restrict(db=app, relation='Stem_Type', restriction=R)
+        R = f"Name:<{projecting_stem.stem_position}>, Diagram_type:<{self.Diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Stem_Position', restriction=R)
         if not result.body:
-            self.logger.exception(f"Undefined stem type: [{projecting_stem.stem_type}]"
+            self.logger.exception(f"Undefined stem position: [{projecting_stem.stem_position}]"
                                   f"for diagram type: [{self.Diagram.Diagram_type}]")
             raise UnsupportedStemType
-        R = f"Name:<{floating_stem.stem_type}>, Diagram_type:<{self.Diagram.Diagram_type}>"
-        result = Relation.restrict(db=app, relation='Stem_Type', restriction=R)
+        R = f"Name:<{floating_stem.stem_position}>, Diagram_type:<{self.Diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Stem_Position', restriction=R)
         if not result.body:
-            self.logger.exception(f"Undefined stem type: [{projecting_stem.stem_type}]"
+            self.logger.exception(f"Undefined stem position: [{projecting_stem.stem_position}]"
                                   f"for diagram type: [{self.Diagram.Diagram_type}]")
             raise UnsupportedStemType
         if tertiary_stem:
-            R = f"Name:<{tertiary_stem.stem_type}>, Diagram_type:<{self.Diagram.Diagram_type}>"
-            result = Relation.restrict(db=app, relation='Stem_Type', restriction=R)
+            R = f"Name:<{tertiary_stem.stem_position}>, Diagram_type:<{self.Diagram.Diagram_type}>"
+            result = Relation.restrict(db=app, relation='Stem_Position', restriction=R)
             if not result.body:
-                self.logger.exception(f"Undefined stem type: [{projecting_stem.stem_type}]"
+                self.logger.exception(f"Undefined stem position: [{projecting_stem.stem_position}]"
                                       f"for diagram type: [{self.Diagram.Diagram_type}]")
                 raise UnsupportedStemType
 
         # Create the two opposing Stems, one Anchored and one Floating (lined up with Anchor)
         self.Projecting_stem = AnchoredStem(
             connector=self,
-            stem_type=projecting_stem.stem_type,
+            stem_position=projecting_stem.stem_position,
             semantic=projecting_stem.semantic,
             node=projecting_stem.node,
             face=NodeFace[projecting_stem.face],
@@ -122,7 +122,7 @@ class StraightBinaryConnector(BinaryConnector):
         )
         self.Floating_stem = FloatingBinaryStem(
             connector=self,
-            stem_type=floating_stem.stem_type,
+            stem_type=floating_stem.stem_position,
             semantic=floating_stem.semantic,
             node=floating_stem.node,
             face=NodeFace[floating_stem.face],
@@ -136,7 +136,7 @@ class StraightBinaryConnector(BinaryConnector):
             anchor = tertiary_stem.anchor if tertiary_stem.anchor is not None else 0
             self.Tertiary_stem = TertiaryStem(
                 connector=self,
-                stem_type=tertiary_stem.stem_type,
+                stem_position=tertiary_stem.stem_position,
                 semantic=tertiary_stem.semantic,
                 node=tertiary_stem.node,
                 face=NodeFace[tertiary_stem.face],

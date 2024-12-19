@@ -30,13 +30,13 @@ class AnchoredStem(Stem):
     """
     default_stem_positions = None
 
-    def __init__(self, connector: 'Connector', stem_type: str, semantic: str,
+    def __init__(self, connector: 'Connector', stem_position: str, semantic: str,
                  node: 'Node', face: NodeFace, anchor_position: AnchorPosition, name: Optional[StemName]):
         """
         Constructor
 
         :param connector: Reference to the Stem's Connector
-        :param stem_type: Name of the Stem Type
+        :param stem_position: Name of the Stem Position
         :param semantic: Name of the Stem's Semantic
         :param node: Reference to the Node where the Stem's root is attached
         :param face: Attached to this face of the Node
@@ -47,7 +47,7 @@ class AnchoredStem(Stem):
         anchor = AnchoredStem.anchor_to_position(node=node, face=face, anchor_position=anchor_position)
 
         # Anchored position is used to compute the root end position
-        super().__init__(connector=connector, stem_type=stem_type, semantic=semantic,
+        super().__init__(connector=connector, stem_position=stem_position, semantic=semantic,
                          node=node, face=face, root_position=anchor, name=name)
 
     @classmethod
