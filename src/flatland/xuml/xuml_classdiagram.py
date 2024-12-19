@@ -9,27 +9,28 @@ from pathlib import Path
 from xcm_parser.class_model_parser import ClassModelParser
 from mls_parser.layout_parser import LayoutParser
 from typing import List, Dict, Any
+from collections import namedtuple
 
 # Flatland
 from flatland.datatypes.connection_types import NodeFace
 from flatland.exceptions import ModelParseError, LayoutParseError
-# from flatland.exceptions import MultipleFloatsInSameBranch
+from flatland.exceptions import MultipleFloatsInSameBranch
 from flatland.node_subsystem.canvas import Canvas
 from flatland.sheet_subsystem.frame import Frame
 from flatland.node_subsystem.single_cell_node import SingleCellNode
 from flatland.node_subsystem.spanning_node import SpanningNode
-# from flatland.connector_subsystem.tree_connector import TreeConnector
+from flatland.connector_subsystem.tree_connector import TreeConnector
 from flatland.datatypes.geometry_types import Alignment, VertAlign, HorizAlign
 from flatland.datatypes.command_interface import New_Compartment
 from flatland.datatypes.command_interface import (New_Stem, New_Path)
-# from flatland.datatypes.command_interface import (New_Trunk_Branch, New_Offshoot_Branch,
-#                                                   New_Branch_Set)
+from flatland.datatypes.command_interface import (New_Trunk_Branch, New_Offshoot_Branch,
+                                                  New_Branch_Set)
 from flatland.connector_subsystem.straight_binary_connector import StraightBinaryConnector
 from flatland.connector_subsystem.bending_binary_connector import BendingBinaryConnector
 from flatland.datatypes.connection_types import ConnectorName, OppositeFace, StemName
 from flatland.text.text_block import TextBlock
 
-# BranchLeaves = namedtuple('BranchLeaves', 'leaf_stems local_graft next_graft floating_leaf_stem')
+BranchLeaves = namedtuple('BranchLeaves', 'leaf_stems local_graft next_graft floating_leaf_stem')
 
 class XumlClassDiagram:
     """
@@ -99,8 +100,7 @@ class XumlClassDiagram:
                     continue
 
                 if 'superclass' in r.keys():
-                    pass
-                    # cls.draw_generalization(rnum=rnum, generalization=r, tree_layout=rlayout)
+                    cls.draw_generalization(rnum=rnum, generalization=r, tree_layout=rlayout)
                 else:
                     cls.draw_association(rnum=rnum, association=r, binary_layout=rlayout)
 
@@ -360,3 +360,106 @@ class XumlClassDiagram:
                 paths=paths,
                 name=rnum_data)
 
+    @classmethod
+    def process_leaf_stems(cls, lfaces, preceeding_graft: Optional[New_Stem]) -> BranchLeaves:
+        """
+
+        :param lfaces:
+        :param preceeding_graft: The trunk stem if this is a trunk branch or some leaf stem from the preceeding branch
+        :return: branch_leaves
+        """
+        # A local graft is a stem that establishes the axis of our branch from which all the nodes hang
+        # A next branch graft is a stem that establishes that axis for the succeeding branch
+        # A floating leaf stem is one that aligns itself with the branch axis (rather than hanging from it)
+        # See the tech note tn.2 in the documentation for helpful illustrations of all this
+
+        leaf_stems = set()  # The set of leaf stems that we will create and return
+        next_branch_graft = None  # We'll look for at most one of these
+        floating_leaf_stem = None  # And at most one of these
+        graft = preceeding_graft  # If supplied, we have our one and only local graft
+
+        for name in lfaces.keys():
+
+            anchor = lfaces[name]['anchor']  # Assume that this is not a floating stem
+            if lfaces[name]['anchor'] == 'float':
+                if floating_leaf_stem:
+                    # At most one floating leaf stem permitted in a branch
+                    # The parser should have caught this error, but just in case
+                    raise MultipleFloatsInSameBranch(set(lfaces.keys()))
+                anchor = None
+
+            # Current leaf stem
+            try:
+                node = cls.nodes[name]
+            except KeyError:
+                cls.logger.error(f'Node name [{name}] missing placement in layout file.')
+                sys.exit(1)
+            lstem = New_Stem(stem_position='subclass', semantic='subclass', node=cls.nodes[name],
+                             face=lfaces[name]['face'], anchor=anchor, stem_name=None)
+            leaf_stems.add(lstem)
+
+            if lfaces[name]['anchor'] == 'float':
+                floating_leaf_stem = lstem  # Set the one and only anchorless stem for this branch
+
+            # Graft status
+            # If no graft has been set (trunk stem or leaf in preceeding branch as next_branch_graft)
+            if not graft and lfaces[name]['graft'] == 'local':
+                # A branch can have at most one graft
+                graft = lstem
+
+            # Check next branch graft status of this leaf stem
+            if not next_branch_graft and lfaces[name]['graft'] == 'next':
+                # There can only be one in a branch and the parser should ensure this, raising errors on duplicates
+                # Remember the first next branch found, if any
+                # We'll use it to graft the subsequent offshoot branch
+                next_branch_graft = lstem
+
+        return BranchLeaves(leaf_stems=leaf_stems, local_graft=graft, next_graft=next_branch_graft,
+                            floating_leaf_stem=floating_leaf_stem)
+
+    @classmethod
+    def draw_generalization(cls, rnum, generalization, tree_layout):
+        """
+        One of the rare times it is a good idea to draw one – LS
+        """
+        trunk_layout = tree_layout['trunk_face']
+        node_ref = trunk_layout['node_ref']
+        trunk_node = cls.nodes[node_ref]
+
+        # Process trunk branch
+        trunk_stem = New_Stem(stem_position='superclass face', semantic='superclass', node=trunk_node,
+                              face=trunk_layout['face'], anchor=trunk_layout['anchor'], stem_name=None)
+        tbranch = tree_layout['branches'][0]  # First branch is required and it is the trunk branch
+        path_fields = tbranch.get('path', None)
+        tbranch_path = None if not path_fields else New_Path(**path_fields)
+        leaves = cls.process_leaf_stems(
+            lfaces=tbranch['leaf_faces'],
+            preceeding_graft=trunk_stem if trunk_layout['graft'] else None
+        )
+        next_branch_graft = leaves.next_graft  # Has a value if some leaf is the graft for the next offshoot branch
+
+        # Create the trunk branch with all of its leaf stems
+        trunk_branch = New_Trunk_Branch(
+            trunk_stem=trunk_stem, leaf_stems=leaves.leaf_stems, graft=leaves.local_graft,
+            path=tbranch_path, floating_leaf_stem=leaves.floating_leaf_stem
+        )
+
+        # Process any other offshoot branches (branches other than the trunk branch)
+        obranches = []  # Sequence of offshoot branches (usually ends up empty or with only one or two offshoots)
+        for obranch in tree_layout['branches'][1:]:
+            path_fields = obranch.get('path', None)
+            obranch_path = None if not path_fields else New_Path(**path_fields)
+            leaves = cls.process_leaf_stems(
+                lfaces=obranch['leaf_faces'],
+                preceeding_graft=next_branch_graft
+            )
+            obranches.append(
+                New_Offshoot_Branch(leaf_stems=leaves.leaf_stems, graft=leaves.local_graft, path=obranch_path,
+                                    floating_leaf_stem=leaves.floating_leaf_stem)
+            )
+
+        # Now draw the generalization
+        branches = New_Branch_Set(trunk_branch=trunk_branch, offshoot_branches=obranches)
+        rnum_data = ConnectorName(text=rnum, side=tree_layout['dir'], bend=None, notch=tree_layout['notch'], wrap=1)
+        TreeConnector(diagram=cls.flatland_canvas.Diagram, connector_type='generalization',
+                      branches=branches, name=rnum_data)
