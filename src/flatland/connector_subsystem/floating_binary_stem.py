@@ -1,13 +1,17 @@
 """ floating_binary_stem.py """
 
-from flatland.connector_subsystem.stem import Stem
-from flatland.datatypes.connection_types import NodeFace, StemName
-from flatland.datatypes.geometry_types import Position
+# System
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from flatland.connector_subsystem.connector import Connector
     from flatland.connector_subsystem.anchored_stem import AnchoredStem
+    from flatland.node_subsystem.node import Node
+
+# Flatland
+from flatland.connector_subsystem.stem import Stem
+from flatland.datatypes.connection_types import NodeFace, StemName
+from flatland.datatypes.geometry_types import Position
 
 
 class FloatingBinaryStem(Stem):
@@ -19,7 +23,7 @@ class FloatingBinaryStem(Stem):
 
     """
 
-    def __init__(self, connector: 'Connector', stem_type: str, semantic: str,
+    def __init__(self, connector: 'Connector', stem_position: str, semantic: str,
                  node: 'Node', face: NodeFace, projecting_stem: 'AnchoredStem', name: Optional[StemName]):
         """
         Constructor
@@ -29,7 +33,7 @@ class FloatingBinaryStem(Stem):
         Connector
 
         :param connector:
-        :param stem_type:
+        :param stem_position:
         :param semantic:
         :param node:
         :param face:
@@ -52,4 +56,5 @@ class FloatingBinaryStem(Stem):
 
         # Stem initialized with our computed root end
         root = Position(x, y)
-        Stem.__init__(self, connector, stem_type, semantic, node, face, root_position=root, name=name)
+        super().__init__(connector=connector, stem_position=stem_position, semantic=semantic,
+                         node=node, face=face, root_position=root, name=name)

@@ -6,6 +6,10 @@ tree_connector.py
 from collections import namedtuple
 from typing import Set, Optional
 
+# Model Integration
+from tabletqt.graphics.text_element import TextElement
+from pyral.relation import Relation
+
 # Flatland
 from flatland.exceptions import UnsupportedConnectorType
 from flatland.datatypes.connection_types import ConnectorName
@@ -141,7 +145,7 @@ class TreeConnector(Connector):
         # Create Leaf Stems
         for leaf_stem in new_leaves:
             # Lookup the StemType object
-            leaf_stem_type = self.Connector_type.Stem_type[leaf_stem.stem_type]
+            leaf_stem_type = self.Connector_type.Stem_type[leaf_stem.stem_position]
             if leaf_stem.anchor is not None:
                 anchored_hanging_leaf = AnchoredLeafStem(
                     connector=self,
@@ -167,7 +171,7 @@ class TreeConnector(Connector):
         """
         return TrunkStem(
             connector=self,  # Connector object (our Tree Connector)
-            stem_type=self.Connector_type.Stem_type[new_trunk.stem_type],  # StemType object loaded from db
+            stem_type=self.Connector_type.Stem_type[new_trunk.stem_position],  # StemType object loaded from db
             semantic=new_trunk.semantic,  # str
             node=new_trunk.node,  # Node object
             face=new_trunk.face,  # NodeFace
@@ -210,7 +214,5 @@ class TreeConnector(Connector):
                     pt_y = max([s.Root_end.y for s in leaf_stems])
 
         name_position = self.compute_name_position(point_t=Position(pt_x, pt_y), point_p=self.Trunk_stem.Root_end)
-        layer.add_text_block(
-            asset=self.Connector_type.Name + ' name',
-            lower_left=name_position, text=self.Name.text
-        )
+        asset = f"{self.Connector_type_name}  name"
+        TextElement.add_block(layer=layer, asset=asset, lower_left=name_position, text=self.Name.text)
