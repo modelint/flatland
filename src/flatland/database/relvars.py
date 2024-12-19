@@ -47,10 +47,15 @@ class FlatlandSchema:
             'Connector_Type': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 Attribute(name='Diagram_type', type='string'),
-                Attribute(name='About', type='string'),
                 Attribute(name='Geometry', type='string'),
             ], ids={1: ['Name', 'Diagram_type']}),
-            'Label_Placement_Specification': Header(attrs=[
+            'Icon_Placement': Header(attrs=[
+                Attribute(name='Stem_position', type='string'),
+                Attribute(name='Notation', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='Orientation', type='string'),
+            ], ids={1: ['Stem_position', 'Diagram_type', 'Notation']}),
+            'Label_Placement': Header(attrs=[
                 Attribute(name='Stem_position', type='string'),
                 Attribute(name='Diagram_type', type='string'),
                 Attribute(name='Notation', type='string'),
@@ -61,6 +66,7 @@ class FlatlandSchema:
             'Line_Adjacent_Name': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 Attribute(name='Diagram_type', type='string'),
+                Attribute(name='About', type='string'),
             ], ids={1: ['Name', 'Diagram_type']}),
             'Name_Placement_Specification': Header(attrs=[
                 Attribute(name='Name', type='string'),
@@ -73,6 +79,12 @@ class FlatlandSchema:
                 Attribute(name='Default_name', type='string'),
                 Attribute(name='Optional', type='boolean'),
             ], ids={1: ['Name', 'Diagram_type', 'Notation']}),
+            'Semantic_Expression': Header(attrs=[
+                Attribute(name='Semantic', type='string'),
+                Attribute(name='Stem_position', type='string'),
+                Attribute(name='Diagram_type', type='string'),
+                Attribute(name='Notation', type='string'),
+            ], ids={1: ['Stem_position', 'Semantic', 'Diagram_type', 'Notation']}),
             'Stem_Notation': Header(attrs=[
                 Attribute(name='Stem_position', type='string'),
                 Attribute(name='Notation', type='string'),
@@ -82,16 +94,9 @@ class FlatlandSchema:
                 Attribute(name='Name', type='string'),
                 Attribute(name='Diagram_type', type='string'),
             ], ids={1: ['Name', 'Diagram_type']}),
-            'Stem_Expression': Header(attrs=[
-                Attribute(name='Semantic', type='string'),
-                Attribute(name='Stem_position', type='string'),
-                Attribute(name='Diagram_type', type='string'),
-                Attribute(name='Notation', type='string'),
-            ], ids={1: ['Stem_position', 'Semantic', 'Diagram_type', 'Notation']}),
             'Stem_Position': Header(attrs=[
                 Attribute(name='Name', type='string'),
                 Attribute(name='Diagram_type', type='string'),
-                Attribute(name='About', type='string'),
                 Attribute(name='Minimum_length', type='int'),
                 Attribute(name='Stretch', type='string'),
                 Attribute(name='Connector_type', type='string'),
@@ -312,13 +317,13 @@ class FlatlandSchema:
                         to_class='Stem_Notation', to_mult=mult_tclral['1'],
                         to_attrs=['Stem_position', 'Diagram_type', 'Notation'],
                         ),
-            AssocRel(name='R73', assoc_class='Semantic Expression',
+            AssocRel(name='R73', assoc_class='Semantic_Expression',
                      a_ref=Ref(to_class='Stem_Semantic', mult=mult_tclral['M'],
                                from_attrs=['Semantic', 'Diagram_type'],
                                to_attrs=['Name', 'Diagram_type']),
                      b_ref=Ref(to_class='Stem_Notation', mult=mult_tclral['M'],
-                               from_attrs=['Notation', 'Diagram_type'],
-                               to_attrs=['Notation', 'Diagram_type'])
+                               from_attrs=['Stem_position', 'Notation', 'Diagram_type'],
+                               to_attrs=['Stem_position', 'Notation', 'Diagram_type'])
                      ),
         ],
         'Node': [

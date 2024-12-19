@@ -5,65 +5,61 @@
 # TODO: clarify meaning of stem type geometry in comment below
 
 class:  # Diagram type
-    binary association: # Connector type
-      geometry: binary  # unary, binary, or tree
-      about: Connects an anchor point on one node to an anchor point on the same or another node
-      stem positions:
-        class mult:  # Name of stem type
-          about: How many instances may be associated
-          minimum length: 20
-          stretch: fixed  # fixed, hanging, or free
-          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
-        associative mult:
-          about: How many association class instances per pair of associated instances
-          minimum length: 24
-          stretch: hanging
-          stem semantics: [ 1 mult, M mult ]
-    generalization:
-      geometry: tree
-      about: A superset class compeletely split into disjoint subset classes
-      stem positions:
-        superclass:
-          about: The superset of all subclass instances
-          minimum length: 10
-          stretch: fixed
-          stem semantics: [superclass]
-        subclass:
-          about: A disjoint subset of the superclass set of instances
-          minimum length: 10
-          stretch: fixed
-          stem semantics: [subclass]
+    stem semantics: [ Mc mult, 1c mult, 1 mult, M mult, superclass ] # stem semantics
+    connector types:
+      binary association: # Connector type
+        geometry: binary  # unary, binary, or tree
+        about: Connects an anchor point on one node to an anchor point on the same or another node
+        stem positions:
+          class face:  # Name of stem position
+            about: How many instances may be associated
+            minimum length: 20
+            stretch: fixed  # fixed, hanging, or free
+          association:
+            about: How many association class instances per pair of associated instances
+            minimum length: 24
+            stretch: hanging
+      generalization:
+        geometry: tree
+        about: A superset class compeletely split into disjoint subset classes
+        stem positions:
+          superclass face:
+            about: The superset of all subclass instances
+            minimum length: 10
+            stretch: fixed
+          subclass face:
+            about: A disjoint subset of the superclass set of instances
+            minimum length: 10
+            stretch: fixed
 
 state machine:
-    initial transition:
-      geometry: unary
-      about: Designates an initial state
-      stem positions:
-        to initial state:
-          about: Points to a designated state as an initial state
-          minimum length: 60
-          stretch: free
-          stem semantics: [initial psuedo state]
-    deletion transition:
-      geometry: unary
-      about: Designates implicit instance deletion after a state executes its activity
-      stem positions:
-        from deletion state:
-          about: Points away from a final state to indicate deletion
-          minimum length: 50
-          stretch: free
-          stem semantics: [final psuedo state]
-    transition:
-      geometry: binary
-      about: Defines a path from one state to another
-      stem positions:
-        from state:
-          about: Points to the source state in a transition
-          minimum length: 10
-          stretch: fixed
-          stem semantics: [source state]
-        to state:
-          about: Points to the destination state in a transition
-          minimum length: 15
-          stretch: fixed
-          stem semantics: [target state]
+    stem semantics: [ target state, initial pseudo state, final pseudo state ] # stem semantics
+    connector types:
+      initial transition:
+        geometry: unary
+        about: Designates an initial state
+        stem positions:
+          to initial state:
+            about: Points to a designated state as an initial state
+            minimum length: 60
+            stretch: free
+      deletion transition:
+        geometry: unary
+        about: Designates implicit instance deletion after a state executes its activity
+        stem positions:
+          from final state:
+            about: Points away from a final state to indicate deletion
+            minimum length: 50
+            stretch: free
+      transition:
+        geometry: binary
+        about: Defines a path from one state to another
+        stem positions:
+          from state:
+            about: Points to the source state in a transition
+            minimum length: 10
+            stretch: fixed
+          to state:
+            about: Points to the destination state in a transition
+            minimum length: 15
+            stretch: fixed

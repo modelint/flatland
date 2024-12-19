@@ -10,12 +10,16 @@ Shlaer-Mellor:
     diagram types:
       class:
         class face:
+          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
           icon placement: root
           label:
             default stem side: +
             vertical stem offset: 9
             horizontal stem offset: 9
-        superclass:
+        association:
+          stem semantics: [ 1 mult, M mult ]
+        superclass face:
+          stem semantics: [ superclass ]
           icon placement: root
           label:
             default stem side: +
@@ -33,10 +37,13 @@ Starr:
     diagram types:
       class:
         class face:
+          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
           icon placement: root
-        associative mult:
+        association:
+          stem semantics: [ 1 mult, M mult ]
           icon placement: vine
         superclass face:
+          stem semantics: [ superclass ]
           icon placement: root
 
 xUML:
@@ -51,25 +58,32 @@ xUML:
     diagram types:
       class:
         class face:
+          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
           label placement:
             default stem side: +
             vertical stem offset: 9
             horizontal stem offset: 9
-        association face:
-          default stem side: +
-          vertical stem offset: 9
-          horizontal stem offset: 9
+        association:
+          stem semantics: [ 1 mult, M mult ]
+          label placement:
+            default stem side: +
+            vertical stem offset: 9
+            horizontal stem offset: 9
         superclass face:
+          stem semantics: [ superclass ]
           icon placement: root
-          label:
+          label placement:
             default stem side: +
             vertical stem offset: 15
             horizontal stem offset: 15
-      state:
+      state machine:
         to state:
+          stem semantics: [target state]
           icon placement: root
         to initial state:
+          stem semantics: [initial pseudo state]
           icon placement: both
         from final state:
+          stem semantics: [final pseudo state]
           icon placement: vine
 

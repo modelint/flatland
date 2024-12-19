@@ -15,12 +15,16 @@ class ConnectorLayoutSpecificationInstance(NamedTuple):
 class ConnectorTypeInstance(NamedTuple):
     Name: str
     Diagram_type: str
-    About: str
     Geometry: str
 
-class LabelPlacementSpecificationInstance(NamedTuple):
-    Stem_type: str
-    Semantic: str
+class IconPlacementInstance(NamedTuple):
+    Stem_position: str
+    Notation: str
+    Diagram_type: str
+    Orientation: str
+
+class LabelPlacementInstance(NamedTuple):
+    Stem_position: str
     Diagram_type: str
     Notation: str
     Default_stem_side: str
@@ -30,6 +34,7 @@ class LabelPlacementSpecificationInstance(NamedTuple):
 class LineAdjacentNameInstance(NamedTuple):
     Name: str
     Diagram_type: str
+    About: str
 
 class NamePlacementSpecInstance(NamedTuple):
     Name: str
@@ -42,26 +47,25 @@ class NamePlacementSpecInstance(NamedTuple):
     Default_name: str
     Optional: bool
 
-class StemNotationInstance(NamedTuple):
-    Stem_type: str
+class SemanticExpressionInstance(NamedTuple):
     Semantic: str
+    Stem_position: str
     Diagram_type: str
     Notation: str
-    Icon: bool
 
-class StemSemanticInstance(NamedTuple):
-    Name: str
-    Diagram_type: str
-
-class StemSignificationInstance(NamedTuple):
-    Stem_type: str
-    Semantic: str
+class StemNotationInstance(NamedTuple):
+    Stem_position: str
+    Notation: str
     Diagram_type: str
 
 class StemPositionInstance(NamedTuple):
     Name: str
     Diagram_type: str
-    About: str
     Minimum_length: int
     Stretch: str
     Connector_type: str
+
+class StemSemanticInstance(NamedTuple):
+    Name: str
+    Diagram_type: str
+
