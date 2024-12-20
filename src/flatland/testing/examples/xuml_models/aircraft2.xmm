@@ -1,0 +1,24 @@
+/// Hello world aircraft class model example
+metadata
+    Title : Hello World Example
+    Author : Leon Starr
+    Organization : Model Integration, LLC
+subsystem Test
+class Aircraft, AC
+attributes
+    Tail number : ACAO {I}
+    Altitude : Altitude MSL
+    Airspeed : Knots
+    Heading : Compass
+--
+class Pilot
+attributes
+    ID : Pilot ID {I}
+    Hours flown : Hours
+    Aircraft {R1}
+--
+relationships
+    R1
+    is flying, 1 Aircraft
+    is flown by, 1 Pilot
+--

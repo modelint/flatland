@@ -1,0 +1,26 @@
+// door.mls – Simplified elevator door state machine diagram
+diagram state machine
+notation xUML
+presentation default
+orientation portrait
+sheet C
+color blue steel
+padding l300 b500
+frame OS Engineer
+frame_presentation default
+nodes
+    OUT OF SERVICE 1,3
+    CLOSING 5,3
+    CLOSED 3,3
+    OPEN 7,3
+    OPENING 9,3
+    LOCKED 7,1
+connectors
+    b|OUT OF SERVICE
+    +Create : t|OPENING
+    +Door opened : b|OPENING : t*|OPEN
+    +Time to close : b|OPEN : t*|CLOSING
+    +Door closed : b|CLOSING : t*|CLOSED
+    -Lock.2 : l|CLOSED : b|LOCKED
+    +Unlock.2 : t|LOCKED : l|OPENING
+    +Cannot close : b|CLOSED : t*|OUT OF SERVICE
