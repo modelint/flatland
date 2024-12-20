@@ -40,7 +40,7 @@ class Branch:
     @property
     def Shoot(self) -> Line_Segment:
         branches = self.Connector.Branches
-        nprev_axis = None if self.Order == 0 else branches[self.Order - 1].Axis
+        prev_axis = None if self.Order == 0 else branches[self.Order - 1].Axis
         next_axis = None if self.Order == len(branches) - 1 else branches[self.Order + 1].Axis
         positions = {a for a in {prev_axis, next_axis} if a}
         if self.Axis_orientation == Orientation.Horizontal:

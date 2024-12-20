@@ -11,13 +11,14 @@ from tabletqt.graphics.text_element import TextElement
 from pyral.relation import Relation
 
 # Flatland
+from flatland.names import app
 from flatland.exceptions import UnsupportedConnectorType
-from flatland.datatypes.connection_types import ConnectorName
+from flatland.datatypes.connection_types import ConnectorName, NodeFace
 from flatland.connector_subsystem.connector import Connector
 from flatland.connector_subsystem.trunk_stem import TrunkStem
 from flatland.connector_subsystem.grafted_branch import GraftedBranch
 from flatland.connector_subsystem.interpolated_branch import InterpolatedBranch
-from flatland.connector_subsystem.rut_branch import RutBranch
+# from flatland.connector_subsystem.rut_branch import RutBranch
 from flatland.datatypes.connection_types import Orientation, NodeFace
 from flatland.datatypes.geometry_types import Position
 from flatland.datatypes.command_interface import New_Branch_Set, New_Stem
@@ -50,25 +51,26 @@ class TreeConnector(Connector):
         - Leaf_stems -- The Branch Stems organized as a sequence of sets. Each set connects to the same line segment.
     """
 
-    def __init__(self, diagram: Diagram, connector_type: str, branches: New_Branch_Set,
+    def __init__(self, diagram: Diagram, ctype_name: str, branches: New_Branch_Set,
                  name: Optional[ConnectorName] = None):
         """
         Constructor
 
         :param diagram: Reference to Diagram
-        :param connector_type: Name of Connector Type
+        :param ctype_name: Name of Connector Type
         :param branches:
         :param name: An name (optional depending on the Connector Type) for the Connector
         """
         # Verify that the specified connector type name corresponds to a supported connector type
         # found in our database
-        try:
-            ct = diagram.Diagram_type.ConnectorTypes[connector_type]
-        except IndexError:
-            raise UnsupportedConnectorType(
-                connector_type_name=connector_type, diagram_type_name=diagram.Diagram_type.Name)
+        R = f"Name:<{ctype_name}>, Diagram_type:<{diagram.Diagram_type}>"
+        result = Relation.restrict(db=app, relation='Connector_Type', restriction=R)
+        if not result.body:
+            self.logger.exception(f"Unsupported connector type: {ctype_name}"
+                                  f" for diagram type: {diagram.Diagram_type}")
+            raise UnsupportedConnectorType(connector_type_name=ctype_name, diagram_type_name=diagram.Diagram_type)
 
-        super().__init__(diagram=diagram, name=name, ctype_name=ct)
+        super().__init__(diagram=diagram, name=name, ctype_name=ctype_name)
 
         # Unpack new trunk spec and create its Anchored Trunk Stem
         new_tstem = branches.trunk_branch.trunk_stem  # Get the Trunk New Stem user specification
@@ -107,7 +109,7 @@ class TreeConnector(Connector):
         # Now go through any offshoot branches to complete the branches_to_make sequence
 
         for o in branches.offshoot_branches:
-            unpacked_hanging_stems = self.unpack_hanging_leaves(o.leaf_stems, o.graft)
+            unpacked_hanging_stems = self.unpack_hanging_leaves(new_leaves=o.leaf_stems, new_graft_leaf=o.graft)
             self.Leaf_stems = self.Leaf_stems.union(unpacked_hanging_stems.hleaves)
             trunk_branch_stem_group = StemGroup(
                 hanging_stems=unpacked_hanging_stems.hleaves,
@@ -124,10 +126,12 @@ class TreeConnector(Connector):
         for i, b in enumerate(branches_to_make):
             order = Index(i)  # Cast INT to Index type
             if b.path:
-                this_branch = RutBranch(order=order, connector=self, path=b.path, hanging_stems=b.hanging_stems)
+                pass
+                # this_branch = RutBranch(order=order, connector=self, path=b.path, hanging_stems=b.hanging_stems)
             elif b.grafting_stem:
-                this_branch = GraftedBranch(order=order, connector=self, hanging_stems=b.hanging_stems,
-                                            grafting_stem=b.grafting_stem, new_floating_stem=b.new_floating_stem)
+                pass
+                # this_branch = GraftedBranch(order=order, connector=self, hanging_stems=b.hanging_stems,
+                #                             grafting_stem=b.grafting_stem, new_floating_stem=b.new_floating_stem)
             else:
                 this_branch = InterpolatedBranch(order=order, connector=self, hanging_stems=b.hanging_stems)
             self.Branches.append(this_branch)
@@ -145,14 +149,13 @@ class TreeConnector(Connector):
         # Create Leaf Stems
         for leaf_stem in new_leaves:
             # Lookup the StemType object
-            leaf_stem_type = self.Connector_type.Stem_type[leaf_stem.stem_position]
             if leaf_stem.anchor is not None:
                 anchored_hanging_leaf = AnchoredLeafStem(
                     connector=self,
-                    stem_type=leaf_stem_type,
+                    stem_position=leaf_stem.stem_position,
                     semantic=leaf_stem.semantic,
                     node=leaf_stem.node,
-                    face=leaf_stem.face,
+                    face=NodeFace[leaf_stem.face],
                     anchor_position=leaf_stem.anchor
                 )
                 hanging_leaves.add(anchored_hanging_leaf)
@@ -171,10 +174,10 @@ class TreeConnector(Connector):
         """
         return TrunkStem(
             connector=self,  # Connector object (our Tree Connector)
-            stem_type=self.Connector_type.Stem_type[new_trunk.stem_position],  # StemType object loaded from db
+            stem_position=new_trunk.stem_position,  # StemType object loaded from db
             semantic=new_trunk.semantic,  # str
             node=new_trunk.node,  # Node object
-            face=new_trunk.face,  # NodeFace
+            face=NodeFace[new_trunk.face],  # NodeFace
             anchor_position=new_trunk.anchor  # AnchorPosition (int)
         )
 
@@ -214,5 +217,5 @@ class TreeConnector(Connector):
                     pt_y = max([s.Root_end.y for s in leaf_stems])
 
         name_position = self.compute_name_position(point_t=Position(pt_x, pt_y), point_p=self.Trunk_stem.Root_end)
-        asset = f"{self.Connector_type_name}  name"
+        asset = f"{self.Connector_type_name} name"
         TextElement.add_block(layer=layer, asset=asset, lower_left=name_position, text=self.Name.text)

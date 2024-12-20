@@ -8,7 +8,7 @@ import logging
 from pathlib import Path
 from xcm_parser.class_model_parser import ClassModelParser
 from mls_parser.layout_parser import LayoutParser
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from collections import namedtuple
 
 # Flatland
@@ -394,7 +394,7 @@ class XumlClassDiagram:
             except KeyError:
                 cls.logger.error(f'Node name [{name}] missing placement in layout file.')
                 sys.exit(1)
-            lstem = New_Stem(stem_position='subclass', semantic='subclass', node=cls.nodes[name],
+            lstem = New_Stem(stem_position='subclass face', semantic='subclass', node=cls.nodes[name],
                              face=lfaces[name]['face'], anchor=anchor, stem_name=None)
             leaf_stems.add(lstem)
 
@@ -461,5 +461,5 @@ class XumlClassDiagram:
         # Now draw the generalization
         branches = New_Branch_Set(trunk_branch=trunk_branch, offshoot_branches=obranches)
         rnum_data = ConnectorName(text=rnum, side=tree_layout['dir'], bend=None, notch=tree_layout['notch'], wrap=1)
-        TreeConnector(diagram=cls.flatland_canvas.Diagram, connector_type='generalization',
+        TreeConnector(diagram=cls.flatland_canvas.Diagram, ctype_name='generalization',
                       branches=branches, name=rnum_data)
