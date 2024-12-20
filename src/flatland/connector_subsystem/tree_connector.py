@@ -13,12 +13,12 @@ from pyral.relation import Relation
 # Flatland
 from flatland.names import app
 from flatland.exceptions import UnsupportedConnectorType
-from flatland.datatypes.connection_types import ConnectorName, NodeFace
+from flatland.datatypes.connection_types import ConnectorName
 from flatland.connector_subsystem.connector import Connector
 from flatland.connector_subsystem.trunk_stem import TrunkStem
 from flatland.connector_subsystem.grafted_branch import GraftedBranch
 from flatland.connector_subsystem.interpolated_branch import InterpolatedBranch
-# from flatland.connector_subsystem.rut_branch import RutBranch
+from flatland.connector_subsystem.rut_branch import RutBranch
 from flatland.datatypes.connection_types import Orientation, NodeFace
 from flatland.datatypes.geometry_types import Position
 from flatland.datatypes.command_interface import New_Branch_Set, New_Stem
@@ -126,8 +126,7 @@ class TreeConnector(Connector):
         for i, b in enumerate(branches_to_make):
             order = Index(i)  # Cast INT to Index type
             if b.path:
-                pass
-                # this_branch = RutBranch(order=order, connector=self, path=b.path, hanging_stems=b.hanging_stems)
+                this_branch = RutBranch(order=order, connector=self, path=b.path, hanging_stems=b.hanging_stems)
             elif b.grafting_stem:
                 pass
                 # this_branch = GraftedBranch(order=order, connector=self, hanging_stems=b.hanging_stems,

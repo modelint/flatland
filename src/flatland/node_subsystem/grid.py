@@ -19,11 +19,11 @@ from tabletqt.graphics.rectangle_se import RectangleSE
 # Flatland
 from flatland.names import app
 from flatland.exceptions import FlatlandDBException, CellOccupiedFE
-# from flatland.connector_subsystem.connector_layout_specification import ConnectorLayoutSpecification as connector_layout
 from flatland.geometry_domain.linear_geometry import expand_boundaries, span, step_edge_distance
 from flatland.datatypes.geometry_types import Padding, Alignment, VertAlign, HorizAlign, Position
 from flatland.node_subsystem.spanning_node import SpanningNode
 from flatland.node_subsystem.single_cell_node import SingleCellNode
+from flatland.datatypes.connection_types import Orientation
 
 # A grid is useful to help the user determine where to place drawing elements and
 # do diagnose any unexpected drawing results
@@ -115,27 +115,33 @@ class Grid:
         return f'Cells: {self.Cells}, Row boundaries: {self.Row_boundaries}, Col boundaries: {self.Col_boundaries}' \
                f'Cell padding: {self.Cell_padding}, Cell alignment: {self.Cell_alignment}'
 
-    # def get_rut(self, lane: int, rut: int, orientation: Orientation) -> int:
-    #     """
-    #     Compute a y coordinate above row boundary if lane_orientation is row
-    #     or an x coordinate right of column boundary if lane_orientation is column
-    #     :param: lane,
-    #     :param: orientation
-    #     :return: rut_position
-    #     """
-    #     if orientation == Orientation.Horizontal:
-    #         # TODO: Consider expressing row/column boundaries in Canvas coordinates so this offset is not needed
-    #         origin_offset = self.Diagram.Origin.y  # Boundaries are relative to the Diagram origin
-    #         low_boundary = self.Row_boundaries[lane - 1]
-    #         lane_width = self.Row_boundaries[lane] - low_boundary
-    #     else:
-    #         origin_offset = self.Diagram.Origin.x
-    #         low_boundary = self.Col_boundaries[lane - 1]
-    #         lane_width = self.Col_boundaries[lane] - low_boundary
-    #
-    #     return origin_offset + low_boundary + step_edge_distance(
-    #         num_of_steps=connector_layout.Default_rut_positions, extent=lane_width, step=rut)
-    #
+    def get_rut(self, lane: int, rut: int, orientation: Orientation) -> int:
+        """
+        Compute a y coordinate above row boundary if lane_orientation is row
+        or an x coordinate right of column boundary if lane_orientation is column
+        :param: lane,
+        :param: orientation
+        :return: rut_position
+        """
+        if orientation == Orientation.Horizontal:
+            # TODO: Consider expressing row/column boundaries in Canvas coordinates so this offset is not needed
+            origin_offset = self.Diagram.Origin.y  # Boundaries are relative to the Diagram origin
+            low_boundary = self.Row_boundaries[lane - 1]
+            lane_width = self.Row_boundaries[lane] - low_boundary
+        else:
+            origin_offset = self.Diagram.Origin.x
+            low_boundary = self.Col_boundaries[lane - 1]
+            lane_width = self.Col_boundaries[lane] - low_boundary
+
+        R = f"Name:<standard>"
+        result = Relation.restrict(db=app, relation='Connector_Layout_Specification', restriction=R)
+        if not result:
+            self.logger.exception("Cannot load Connector Layout Specification from Flatland DB")
+            raise FlatlandDBException
+        default_rut_positions=int(result.body[0]['Default_rut_positions'])
+        return origin_offset + low_boundary + step_edge_distance(
+            num_of_steps=default_rut_positions, extent=lane_width, step=rut)
+
     def render(self):
         """
         Draw Grid on Tablet for diagnostic purposes
