@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 
 # Model Integration
 from tabletqt.graphics.text_element import TextElement
+from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
 from pyral.relation import Relation
 
 # Flatland
