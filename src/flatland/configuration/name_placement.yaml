@@ -26,9 +26,9 @@ class:  # Diagram type
         optional: False
     generalization:
       Starr:
-        vertical axis buffer: 13
-        horizontal axis buffer: 16
-        vertical face buffer: 11
+        vertical axis buffer: 6
+        horizontal axis buffer: :6
+        vertical face buffer: 20
         horizontal face buffer: 20
         default name: Rxx
         optional: False

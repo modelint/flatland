@@ -13,14 +13,14 @@ from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
 
 # Flatland
 from flatland.names import app
-from flatland.exceptions import UnsupportedConnectorType
+from flatland.exceptions import UnsupportedConnectorType, FlatlandDBException
 from flatland.datatypes.connection_types import ConnectorName
 from flatland.connector_subsystem.connector import Connector
 from flatland.connector_subsystem.trunk_stem import TrunkStem
 from flatland.connector_subsystem.grafted_branch import GraftedBranch
 from flatland.connector_subsystem.interpolated_branch import InterpolatedBranch
 from flatland.connector_subsystem.rut_branch import RutBranch
-from flatland.datatypes.connection_types import Orientation, NodeFace
+from flatland.datatypes.connection_types import (Orientation, NodeFace, BufferDistance, HorizontalFace)
 from flatland.datatypes.geometry_types import Position
 from flatland.datatypes.command_interface import New_Branch_Set, New_Stem
 from flatland.connector_subsystem.anchored_leaf_stem import AnchoredLeafStem
@@ -180,6 +180,58 @@ class TreeConnector(Connector):
             anchor_position=new_trunk.anchor  # AnchorPosition (int)
         )
 
+    # TODO: Refactor wrt superclass compute_name_position, so we can just override it in the subclasses
+    def compute_tree_name_position(self) -> Position:
+        """
+
+        :return:
+        """
+        layer = self.Diagram.Layer
+        asset = f"{self.Connector_type_name} name"
+        namebox = TextElement.text_block_size(layer=layer, asset=asset, text_block=self.Name.text)
+        tbranch = self.Branches[0]  # The first branch is always the one met by the trunk stem
+        # Get the Name Placement Specification
+        R = (f"Name:<{self.Connector_type_name}>, Diagram_type:<{self.Diagram.Diagram_type}>, "
+             f"Notation:<{self.Diagram.Notation}>")
+        result = Relation.restrict(db=app, relation='Name_Placement_Specification', restriction=R)
+        if not result.body:
+            self.logger.exception(f"No Name Placement Specification for stem: {self.Stem_position},"
+                                  f"Diagram type: {self.Diagram.Diagram_type},"
+                                  f"Notation: {self.Diagram.Notation}")
+            raise FlatlandDBException
+        np_spec = result.body[0]
+        axis_buffer = BufferDistance(h=int(np_spec['Horizontal_axis_buffer']),
+                                     v=int(np_spec['Horizontal_axis_buffer']))
+        face_buffer = BufferDistance(h=int(np_spec['Horizontal_face_buffer']),
+                                     v=int(np_spec['Vertical_face_buffer']))
+        name_x = None
+        name_y = None
+        if self.Trunk_stem.Node_face in HorizontalFace:
+            # Horizontal position of name left and right of the axis
+            if self.Name.side == 1:  # above
+                name_x = self.Trunk_stem.Root_end.x + axis_buffer.h
+            else:  # below
+                name_x = self.Trunk_stem.Root_end.x - namebox.width - axis_buffer.h
+            # Vertical position of name below or above the node face
+            if self.Trunk_stem.Node_face == NodeFace.TOP:
+                name_y = self.Trunk_stem.Root_end.y + face_buffer.v
+            else:
+                name_y = self.Trunk_stem.Root_end.y - namebox.height - face_buffer.v
+        else:
+            # Vertical position of name above and below the axis
+            if self.Name.side == 1:  # above
+                name_y = self.Trunk_stem.Root_end.y + axis_buffer.v
+            else:  # below
+                name_y = self.Trunk_stem.Root_end.y - namebox.height - axis_buffer.v
+            # Horizontal position of name on right or left node face
+            if self.Trunk_stem.Node_face == NodeFace.RIGHT:
+                name_x = self.Trunk_stem.Root_end.x + face_buffer.v
+            else:
+                name_x = self.Trunk_stem.Root_end.x - namebox.width - face_buffer.v
+        assert name_x
+        assert name_y
+        return Position(name_x, name_y)
+
     def render(self):
         """
         Draw the Branch line segment for a single-branch Tree Connector
@@ -190,33 +242,6 @@ class TreeConnector(Connector):
         self.Trunk_stem.render()
 
         # Draw the connector name if any
-        tbranch = self.Branches[0]  # The first branch is always the one met by the trunk stem
-        DiagnosticMarker.add_cross_hair(layer, self.Trunk_stem.Root_end, color="purple")
-        pt_x, pt_y = self.Trunk_stem.Root_end  # Default assumption
-        trunk_stem_is_grafting = isinstance(tbranch, GraftedBranch) and (tbranch.Grafting_stem == tbranch.Connector.Trunk_stem)
-        if tbranch.Axis_orientation == Orientation.Horizontal:
-            if trunk_stem_is_grafting:
-                # In rare cases, the trunk stem is horizontal and grafts a horizontal branch with vertical leaf stems
-                # So we find the closest leaf stem to the trunk stem root end
-                leaf_stems = {s for s in tbranch.Hanging_stems if isinstance(s,AnchoredLeafStem)}
-                if self.Trunk_stem.Node_face == NodeFace.RIGHT:
-                    # If the trunk stem projects to the right, the lowest leaf root end x value is closest
-                    pt_x = min([s.Root_end.x for s in leaf_stems])
-                else:  # The trunk stem projects to the left
-                    pt_x = max([s.Root_end.x for s in leaf_stems])
-            else:
-                # This is the normal case where both trunk and leaf stems are vertical and branch is horizontal
-                pt_y = tbranch.Axis
-        else:  # Vertical branch
-            if trunk_stem_is_grafting:
-                leaf_stems = {s for s in tbranch.Hanging_stems if isinstance(s,AnchoredLeafStem)}
-                if self.Trunk_stem.Node_face == NodeFace.TOP:
-                    pt_y = min([s.Root_end.y for s in leaf_stems])
-                else:  # The trunk stem projects to the left
-                    pt_y = max([s.Root_end.y for s in leaf_stems])
-            else:
-                pt_x = tbranch.Axis
-
-        name_position = self.compute_name_position(point_t=Position(pt_x, pt_y), point_p=self.Trunk_stem.Root_end)
+        name_position = self.compute_tree_name_position()
         asset = f"{self.Connector_type_name} name"
         TextElement.add_block(layer=layer, asset=asset, lower_left=name_position, text=self.Name.text)

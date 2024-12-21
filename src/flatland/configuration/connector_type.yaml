@@ -25,7 +25,7 @@ class:  # Diagram type
         stem positions:
           superclass face:
             about: The superset of all subclass instances
-            minimum length: 10
+            minimum length: 15
             stretch: fixed
           subclass face:
             about: A disjoint subset of the superclass set of instances
