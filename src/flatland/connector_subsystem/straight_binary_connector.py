@@ -122,7 +122,7 @@ class StraightBinaryConnector(BinaryConnector):
         )
         self.Floating_stem = FloatingBinaryStem(
             connector=self,
-            stem_type=floating_stem.stem_position,
+            stem_position=floating_stem.stem_position,
             semantic=floating_stem.semantic,
             node=floating_stem.node,
             face=floating_stem.face,
