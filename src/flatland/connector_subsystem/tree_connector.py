@@ -191,34 +191,32 @@ class TreeConnector(Connector):
 
         # Draw the connector name if any
         tbranch = self.Branches[0]  # The first branch is always the one met by the trunk stem
+        DiagnosticMarker.add_cross_hair(layer, self.Trunk_stem.Root_end, color="purple")
         pt_x, pt_y = self.Trunk_stem.Root_end  # Default assumption
+        trunk_stem_is_grafting = isinstance(tbranch, GraftedBranch) and (tbranch.Grafting_stem == tbranch.Connector.Trunk_stem)
         if tbranch.Axis_orientation == Orientation.Horizontal:
-            pt_y = tbranch.Axis
-            # TODO: Not sure why this logic is required, but keeping it until we explore more complex graft cases
-            # if not isinstance(tbranch, GraftedBranch):
-            #     # This is the normal case where both trunk and leaf stems are vertical and branch is horizontal
-            #     pt_y = tbranch.Axis
-            # else:
-            #     # In rare cases, the trunk stem is horizontal and grafts a horizontal branch with vertical leaf stems
-            #     # So we find the closest leaf stem to the trunk stem root end
-            #     leaf_stems = {s for s in tbranch.Hanging_stems if isinstance(s,AnchoredLeafStem)}
-            #     if self.Trunk_stem.Node_face == NodeFace.RIGHT:
-            #         # If the trunk stem projects to the right, the lowest leaf root end x value is closest
-            #         pt_x = min([s.Root_end.x for s in leaf_stems])
-            #     else:  # The trunk stem projects to the left
-            #         pt_x = max([s.Root_end.x for s in leaf_stems])
+            if trunk_stem_is_grafting:
+                # In rare cases, the trunk stem is horizontal and grafts a horizontal branch with vertical leaf stems
+                # So we find the closest leaf stem to the trunk stem root end
+                leaf_stems = {s for s in tbranch.Hanging_stems if isinstance(s,AnchoredLeafStem)}
+                if self.Trunk_stem.Node_face == NodeFace.RIGHT:
+                    # If the trunk stem projects to the right, the lowest leaf root end x value is closest
+                    pt_x = min([s.Root_end.x for s in leaf_stems])
+                else:  # The trunk stem projects to the left
+                    pt_x = max([s.Root_end.x for s in leaf_stems])
+            else:
+                # This is the normal case where both trunk and leaf stems are vertical and branch is horizontal
+                pt_y = tbranch.Axis
         else:  # Vertical branch
-            pt_x = tbranch.Axis
-            # if not isinstance(tbranch, GraftedBranch):
-            #     pt_x = tbranch.Axis
-            # else:
-            #     leaf_stems = {s for s in tbranch.Hanging_stems if isinstance(s,AnchoredLeafStem)}
-            #     if self.Trunk_stem.Node_face == NodeFace.TOP:
-            #         pt_y = min([s.Root_end.y for s in leaf_stems])
-            #     else:  # The trunk stem projects to the left
-            #         pt_y = max([s.Root_end.y for s in leaf_stems])
+            if trunk_stem_is_grafting:
+                leaf_stems = {s for s in tbranch.Hanging_stems if isinstance(s,AnchoredLeafStem)}
+                if self.Trunk_stem.Node_face == NodeFace.TOP:
+                    pt_y = min([s.Root_end.y for s in leaf_stems])
+                else:  # The trunk stem projects to the left
+                    pt_y = max([s.Root_end.y for s in leaf_stems])
+            else:
+                pt_x = tbranch.Axis
 
         name_position = self.compute_name_position(point_t=Position(pt_x, pt_y), point_p=self.Trunk_stem.Root_end)
-        # DiagnosticMarker.add_cross_hair(layer, self.Trunk_stem.Root_end, color="purple")
         asset = f"{self.Connector_type_name} name"
         TextElement.add_block(layer=layer, asset=asset, lower_left=name_position, text=self.Name.text)
