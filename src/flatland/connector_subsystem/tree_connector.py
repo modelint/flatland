@@ -154,7 +154,7 @@ class TreeConnector(Connector):
                     stem_position=leaf_stem.stem_position,
                     semantic=leaf_stem.semantic,
                     node=leaf_stem.node,
-                    face=NodeFace[leaf_stem.face],
+                    face=leaf_stem.face,
                     anchor_position=leaf_stem.anchor
                 )
                 hanging_leaves.add(anchored_hanging_leaf)
@@ -176,7 +176,7 @@ class TreeConnector(Connector):
             stem_position=new_trunk.stem_position,  # StemType object loaded from db
             semantic=new_trunk.semantic,  # str
             node=new_trunk.node,  # Node object
-            face=NodeFace[new_trunk.face],  # NodeFace
+            face=new_trunk.face,  # NodeFace
             anchor_position=new_trunk.anchor  # AnchorPosition (int)
         )
 

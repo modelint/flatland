@@ -10,8 +10,8 @@ if TYPE_CHECKING:
 # Flatland
 from flatland.connector_subsystem.branch import Branch
 from flatland.connector_subsystem.anchored_tree_stem import AnchoredTreeStem
-from flatland.datatypes.connection_types import Orientation, HorizontalFace
-# from flatland.connector_subsystem.floating_leaf_stem import FloatingLeafStem
+from flatland.datatypes.connection_types import Orientation, HorizontalFace, NodeFace
+from flatland.connector_subsystem.floating_leaf_stem import FloatingLeafStem
 from flatland.datatypes.geometry_types import Line_Segment, Position
 from flatland.datatypes.general_types import Index
 from flatland.datatypes.command_interface import New_Stem
@@ -64,40 +64,40 @@ class GraftedBranch(Branch):
             new_floating_leaf=new_floating_stem, grafting_stem=grafting_stem,
             axis_orientation=axis_orientation, axis=axis)
 
-        Branch.__init__(self, order=order, axis=axis, connector=connector, hanging_stems=hanging_stems,
-                        axis_orientation=axis_orientation)
+        super().__init__(order=order, axis=axis, connector=connector,
+                         hanging_stems=hanging_stems, axis_orientation=axis_orientation)
 
-    # def unpack_floating_leaf(self, new_floating_leaf, grafting_stem,
-    #                          axis_orientation, axis) -> FloatingLeafStem:
-    #     """
-    #     Extract data in user supplied New_Stem named tuple and use it to create a FloatingLeafStem object.
-    #
-    #     :param new_floating_leaf:
-    #     :param grafting_stem:
-    #     :param axis_orientation:
-    #     :param axis:
-    #     :return:
-    #     """
-    #     if axis_orientation == Orientation.Horizontal:
-    #         x = new_floating_leaf.node.Face_position(new_floating_leaf.face)
-    #         y = axis
-    #     else:
-    #         x = axis
-    #         y = new_floating_leaf.node.Face_position(new_floating_leaf.face)
-    #     root_position = Position(x, y)
-    #
-    #     # Lookup the StemType object
-    #     leaf_stem_type = self.Connector.Connector_type.Stem_type[new_floating_leaf.stem_type]
-    #     return FloatingLeafStem(
-    #         connector=self.Connector,
-    #         stem_type=leaf_stem_type,
-    #         semantic=new_floating_leaf.semantic,
-    #         node=new_floating_leaf.node,
-    #         face=new_floating_leaf.face,
-    #         grafted_branch=grafting_stem,
-    #         root_position=root_position,
-    #         name=None
-    #     )
+    def unpack_floating_leaf(self, new_floating_leaf, grafting_stem,
+                             axis_orientation, axis) -> FloatingLeafStem:
+        """
+        Extract data in user supplied New_Stem named tuple and use it to create a FloatingLeafStem object.
+
+        :param new_floating_leaf:
+        :param grafting_stem:
+        :param axis_orientation:
+        :param axis:
+        :return:
+        """
+        if axis_orientation == Orientation.Horizontal:
+            x = new_floating_leaf.node.Face_position(new_floating_leaf.face)
+            y = axis
+        else:
+            x = axis
+            y = new_floating_leaf.node.Face_position(new_floating_leaf.face)
+        root_position = Position(x, y)
+
+        # leaf_stem_type = self.Connector.Connector_type.Stem_type[new_floating_leaf.stem_position]
+        # TODO: Ensure that above line no longer needed
+        return FloatingLeafStem(
+            connector=self.Connector,
+            stem_position=new_floating_leaf.stem_position,
+            semantic=new_floating_leaf.semantic,
+            node=new_floating_leaf.node,
+            face=new_floating_leaf.face,
+            grafted_branch=grafting_stem,
+            root_position=root_position,
+            name=None
+        )
 
     @property
     def Shoot(self) -> Line_Segment:

@@ -27,7 +27,7 @@ from flatland.datatypes.command_interface import (New_Trunk_Branch, New_Offshoot
                                                   New_Branch_Set)
 from flatland.connector_subsystem.straight_binary_connector import StraightBinaryConnector
 from flatland.connector_subsystem.bending_binary_connector import BendingBinaryConnector
-from flatland.datatypes.connection_types import ConnectorName, OppositeFace, StemName
+from flatland.datatypes.connection_types import ConnectorName, OppositeFace, StemName, NodeFace
 from flatland.text.text_block import TextBlock
 
 BranchLeaves = namedtuple('BranchLeaves', 'leaf_stems local_graft next_graft floating_leaf_stem')
@@ -395,7 +395,7 @@ class XumlClassDiagram:
                 cls.logger.error(f'Node name [{name}] missing placement in layout file.')
                 sys.exit(1)
             lstem = New_Stem(stem_position='subclass face', semantic='subclass', node=cls.nodes[name],
-                             face=lfaces[name]['face'], anchor=anchor, stem_name=None)
+                             face=NodeFace[lfaces[name]['face']], anchor=anchor, stem_name=None)
             leaf_stems.add(lstem)
 
             if lfaces[name]['anchor'] == 'float':
@@ -428,7 +428,7 @@ class XumlClassDiagram:
 
         # Process trunk branch
         trunk_stem = New_Stem(stem_position='superclass face', semantic='superclass', node=trunk_node,
-                              face=trunk_layout['face'], anchor=trunk_layout['anchor'], stem_name=None)
+                              face=NodeFace[trunk_layout['face']], anchor=trunk_layout['anchor'], stem_name=None)
         tbranch = tree_layout['branches'][0]  # First branch is required and it is the trunk branch
         path_fields = tbranch.get('path', None)
         tbranch_path = None if not path_fields else New_Path(**path_fields)
