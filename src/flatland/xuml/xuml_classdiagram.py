@@ -101,8 +101,12 @@ class XumlClassDiagram:
 
                 if 'superclass' in r.keys():
                     cls.draw_generalization(rnum=rnum, generalization=r, tree_layout=rlayout)
-                else:
+                elif r['rnum'][0] == 'R':
+                    # Typical association named R<n>
                     cls.draw_association(rnum=rnum, association=r, binary_layout=rlayout)
+                elif r['rnum'][:2] == 'OR':
+                    # Ordinal relationships always named OR<n>
+                    cls.draw_ordinal(rnum=rnum, association=r, binary_layout=rlayout)
 
             # Check to see if any connector placements were specified for non-existent relationships
             rnum_placements = {r for r in cp.keys()}
@@ -261,6 +265,10 @@ class XumlClassDiagram:
                         expansion=w_expand,
                     )
         return nodes
+
+    @classmethod
+    def draw_ordinal(cls, rnum, association, binary_layout):
+        pass
 
     @classmethod
     def draw_association(cls, rnum, association, binary_layout):
