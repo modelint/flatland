@@ -342,24 +342,34 @@ class Grid:
                 )
         # ---
 
-    # def add_lane(self, lane, orientation: Orientation):
-    #     """
-    #     If necessary, expand grid to include Lane at the designated row or column number
-    #     The model defines a Lane as "either a Row or Column"
-    #     :param lane:
-    #     :param orientation:
-    #     """
-    #     # Add enough columns or rows for the desired Lane
-    #     # TODO: Refactor grid to at least include addrows addcols methods
-    #     if orientation == Orientation.Horizontal:
-    #         rows_to_add = max(0, lane - len(self.Row_boundaries[1:]))
-    #         for r in range(rows_to_add):
-    #             self.add_row(connector_layout.Default_new_path_row_height)
-    #     else:
-    #         columns_to_add = max(0, lane - len(self.Col_boundaries[1:]))
-    #         for c in range(columns_to_add):
-    #             self.add_column(connector_layout.Default_new_path_col_width)
-    #
+    def add_lane(self, lane, orientation: Orientation):
+        """
+        If necessary, expand grid to include Lane at the designated row or column number
+        The model defines a Lane as "either a Row or Column"
+        :param lane:
+        :param orientation:
+        """
+        # Add enough columns or rows for the desired Lane
+        # TODO: Refactor grid to at least include addrows addcols methods
+
+        R = f"Name:<standard>"
+        result = Relation.restrict(db=app, relation='Connector_Layout_Specification', restriction=R)
+        if not result:
+            self.logger.exception("Cannot load Connector Layout Specification from Flatland DB")
+            raise FlatlandDBException
+
+        default_new_path_col_width = int(result.body[0]['Default_new_path_col_width'])
+        default_new_path_row_height = int(result.body[0]['Default_new_path_row_height'])
+
+        if orientation == Orientation.Horizontal:
+            rows_to_add = max(0, lane - len(self.Row_boundaries[1:]))
+            for r in range(rows_to_add):
+                self.add_row(default_new_path_row_height)
+        else:
+            columns_to_add = max(0, lane - len(self.Col_boundaries[1:]))
+            for c in range(columns_to_add):
+                self.add_column(default_new_path_col_width)
+
     def place_single_cell_node(self, node: SingleCellNode):
         """Places the node adding any required rows or columns"""
 

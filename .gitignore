@@ -14,3 +14,4 @@ src/mi_tabletqt.egg-info
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/workspace.xml
+*.swp
