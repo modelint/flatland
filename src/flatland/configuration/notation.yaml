@@ -37,7 +37,7 @@ Starr:
     diagram types:
       class:
         class face:
-          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
+          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult, ordinal ] # stem semantics
           icon placement: root
         association:
           stem semantics: [ 1 mult, M mult ]
@@ -58,7 +58,7 @@ xUML:
     diagram types:
       class:
         class face:
-          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
+          stem semantics: [ Mc mult, 1c mult, 1 mult, M mult, ordinal ] # stem semantics
           label placement:
             default stem side: +
             vertical stem offset: 9

@@ -13,8 +13,7 @@ from collections import namedtuple
 
 # Flatland
 from flatland.datatypes.connection_types import NodeFace
-from flatland.exceptions import ModelParseError, LayoutParseError
-from flatland.exceptions import MultipleFloatsInSameBranch
+from flatland.exceptions import (ModelParseError, LayoutParseError, MultipleFloatsInSameBranch, FlatlandModelException)
 from flatland.node_subsystem.canvas import Canvas
 from flatland.sheet_subsystem.frame import Frame
 from flatland.node_subsystem.single_cell_node import SingleCellNode
@@ -100,13 +99,18 @@ class XumlClassDiagram:
                     continue
 
                 if 'superclass' in r.keys():
+                    # Generalization
                     cls.draw_generalization(rnum=rnum, generalization=r, tree_layout=rlayout)
                 elif r['rnum'][0] == 'R':
-                    # Typical association named R<n>
+                    # Association named R<n>
                     cls.draw_association(rnum=rnum, association=r, binary_layout=rlayout)
                 elif r['rnum'][:2] == 'OR':
-                    # Ordinal relationships always named OR<n>
+                    # Ordinal relationship named OR<n>
                     cls.draw_ordinal(rnum=rnum, association=r, binary_layout=rlayout)
+                else:
+                    # Undefined relationship type
+                    cls.logger.exception(f"Encountered undefined relationship type in model input: [{r['rnum']}]")
+                    raise FlatlandModelException
 
             # Check to see if any connector placements were specified for non-existent relationships
             rnum_placements = {r for r in cp.keys()}
@@ -268,6 +272,45 @@ class XumlClassDiagram:
 
     @classmethod
     def draw_ordinal(cls, rnum, association, binary_layout):
+        """Draw the ordinal relationship"""
+        tstem = binary_layout['tstem']
+        pstem = binary_layout['pstem']
+
+        high_text = association['ascend']['highval']
+        low_text = association['ascend']['lowval']
+        h_phrase = StemName(
+            text=TextBlock(line=high_text, wrap=tstem['wrap']),
+            side=tstem['stem_dir'], axis_offset=None, end_offset=None
+        )
+        node_ref = tstem['node_ref']
+        hstem_face = NodeFace[tstem['face']]
+        h_stem = New_Stem(stem_position='class face', semantic='ordinal',
+                          node=cls.nodes[node_ref], face=hstem_face,
+                          anchor=tstem.get('anchor', None), stem_name=h_phrase)
+        l_phrase = StemName(
+            text=TextBlock(line=low_text, wrap=pstem['wrap']),
+            side=pstem['stem_dir'], axis_offset=None, end_offset=None
+        )
+        node_ref = pstem['node_ref']
+        lstem_face = NodeFace[pstem['face']]
+        l_stem = New_Stem(stem_position='class face', semantic='ordinal',
+                          node=cls.nodes[node_ref], face=lstem_face,
+                          anchor=pstem.get('anchor', None), stem_name=l_phrase)
+        rnum_data = ConnectorName(
+            text=rnum, side=binary_layout['dir'], bend=binary_layout['bend'], notch=binary_layout['notch'],
+            wrap=1
+        )
+        paths = None if not binary_layout.get('paths', None) else \
+            [New_Path(lane=p['lane'], rut=p['rut']) for p in binary_layout['paths']]
+
+        BendingBinaryConnector(
+            diagram=cls.flatland_canvas.Diagram,
+            ctype_name='binary association',
+            anchored_stem_p=h_stem,
+            anchored_stem_t=l_stem,
+            ternary_stem=None,
+            paths=paths,
+            name=rnum_data)
         pass
 
     @classmethod

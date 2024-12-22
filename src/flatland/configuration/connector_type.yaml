@@ -5,7 +5,7 @@
 # TODO: clarify meaning of stem type geometry in comment below
 
 class:  # Diagram type
-    stem semantics: [ Mc mult, 1c mult, 1 mult, M mult, superclass ] # stem semantics
+    stem semantics: [ Mc mult, 1c mult, 1 mult, M mult, superclass, ordinal ] # stem semantics
     connector types:
       binary association: # Connector type
         geometry: binary  # unary, binary, or tree

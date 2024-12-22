@@ -11,6 +11,9 @@ post = "]"
 class FlatlandException(Exception):
     pass
 
+class FlatlandModelException(FlatlandException):
+    pass
+
 class FlatlandIOException(FlatlandException):
     pass
 
