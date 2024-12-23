@@ -55,6 +55,8 @@ def parse(cl_input):
                         help='Print the current version of flatland')
     parser.add_argument('-G', '--grid', action='store_true',
                         help='Print the grid so you can diagnose output with row and column boundaries visible')
+    parser.add_argument('-RT', '--show_ref_types', action='store_true',
+                        help='Display referential attribute types on class diagrams')
     parser.add_argument('-RUL', '--rulers', action='store_true',
                         help='Print the ruler grid so you check canvas positions')
     parser.add_argument('-R', '--rebuild', action='store_true',
@@ -138,7 +140,8 @@ def main():
                 show_grid=args.grid,
                 nodes_only=args.nodes_only,
                 no_color=args.no_color,
-                show_rulers=args.rulers
+                show_rulers=args.rulers,
+                show_ref_types=args.show_ref_types
             )
         elif mtype == '.xsm':
             pass

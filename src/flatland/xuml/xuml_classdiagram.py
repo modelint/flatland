@@ -38,7 +38,7 @@ class XumlClassDiagram:
 
     @classmethod
     def __init__(cls, xuml_model_path: Path, flatland_layout_path: Path, diagram_file_path: Path,
-                 show_grid: bool, show_rulers: bool, nodes_only: bool, no_color: bool):
+                 show_grid: bool, show_rulers: bool, nodes_only: bool, no_color: bool, show_ref_types: bool):
         """
         :param xuml_model_path: Path to the model (.xcm) file
         :param flatland_layout_path: Path to the layotu (.mls) file
@@ -46,6 +46,7 @@ class XumlClassDiagram:
         :param show_grid: If true, a grid is drawn showing node rows and columns
         :param nodes_only: If true, only nodes are drawn, no connectors
         :param no_color: If true, the canvas background will be white, overriding any specified background color
+        :param ref_attr_types: If true, display attribute types for referential attributes also
 
         """
         cls.logger = logging.getLogger(__name__)
@@ -55,6 +56,7 @@ class XumlClassDiagram:
         cls.show_grid = show_grid
         cls.show_rulers = show_rulers
         cls.no_color = no_color
+        cls.show_ref_types = show_ref_types
 
         # First we parse both the model and layout files
 
@@ -145,11 +147,17 @@ class XumlClassDiagram:
         attr_content = []
         for a in attrs:
             name = a['name']
-            itags = a.get('I')
-            rtags = a.get('R')
-            ortags = a.get('OR')
-            type_name = a.get('type')
-            type_name = f": {type_name} " if type_name else ""
+            # Collect optional attribute tags
+            itags = a.get('I')  # Participates in one or more identifiers
+            rtags = a.get('R')  # Formalizes one or more association or generalization relationships
+            ortags = a.get('OR')  # Formalizes an ordinal relationship
+            type_name = a.get('type')  # The data type
+            if not type_name or rtags and not cls.show_ref_types:
+                # Either there is no type name specified, or it is a referential attribute
+                type_name = ""
+            else:
+                # User wants to display types for all attributes, including referentials
+                type_name = f": {type_name} "
             tag_text = "{" if itags or rtags else ""
             if itags:
                 sorted_itags = sorted(itags, key=lambda x: x.number, reverse=False)
