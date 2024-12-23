@@ -159,12 +159,12 @@ class XumlClassDiagram:
             if rtags:
                 for r in rtags:
                     c = "c" if r[1] else ""
-                    rtext = f"R{r[0]}{c}"
+                    rtext = f"R{r[0]}{c}, "
                     tag_text = tag_text + rtext
             if ortags:
                 for o in ortags:
                     c = "c" if o[1] else ""
-                    ortext = f"OR{o[0]}{c}"
+                    ortext = f"OR{o[0]}{c}, "
                     tag_text = tag_text + ortext
             tag_text = tag_text.removesuffix(", ")
             tag_text = tag_text + "}" if tag_text else ""
