@@ -147,6 +147,7 @@ class XumlClassDiagram:
             name = a['name']
             itags = a.get('I')
             rtags = a.get('R')
+            ortags = a.get('OR')
             type_name = a.get('type')
             type_name = f": {type_name} " if type_name else ""
             tag_text = "{" if itags or rtags else ""
@@ -160,6 +161,11 @@ class XumlClassDiagram:
                     c = "c" if r[1] else ""
                     rtext = f"R{r[0]}{c}"
                     tag_text = tag_text + rtext
+            if ortags:
+                for o in ortags:
+                    c = "c" if o[1] else ""
+                    ortext = f"OR{o[0]}{c}"
+                    tag_text = tag_text + ortext
             tag_text = tag_text.removesuffix(", ")
             tag_text = tag_text + "}" if tag_text else ""
             a_text = f"{name} {type_name}{tag_text}".rstrip()
