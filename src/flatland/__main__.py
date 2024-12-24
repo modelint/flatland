@@ -12,7 +12,7 @@ from pathlib import Path
 
 # Flatland
 from flatland.xuml.xuml_classdiagram import XumlClassDiagram
-# from flatland.xuml.xuml_statemachine_diagram import XumlStateMachineDiagram
+from flatland.xuml.xuml_statemachine_diagram import XumlStateMachineDiagram
 from flatland.database.flatland_db import FlatlandDB
 from flatland import version
 
@@ -145,14 +145,14 @@ def main():
             )
         elif mtype == '.xsm':
             pass
-    #         statemodel_diagram = XumlStateMachineDiagram(
-    #             xuml_model_path=model_path,
-    #             flatland_layout_path=layout_path,
-    #             diagram_file_path=diagram_path,
-    #             show_grid=args.grid,
-    #             nodes_only=args.nodes_only,
-    #             no_color=args.no_color,
-    #         )
+            statemodel_diagram = XumlStateMachineDiagram(
+                xuml_model_path=model_path,
+                flatland_layout_path=layout_path,
+                diagram_file_path=diagram_path,
+                show_grid=args.grid,
+                nodes_only=args.nodes_only,
+                no_color=args.no_color,
+            )
 
     logger.info("No problemo")  # We didn't die on an exception, basically
     print("No problemo")

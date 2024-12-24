@@ -61,7 +61,7 @@ class XumlClassDiagram:
         # First we parse both the model and layout files
 
         # Model
-        cls.logger.info("Parsing the model")
+        cls.logger.info("Parsing the class model")
         try:
             cls.model = ClassModelParser.parse_file(file_input=cls.xuml_model_path, debug=False)
         except ModelParseError as e:
