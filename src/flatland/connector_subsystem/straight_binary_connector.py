@@ -6,6 +6,9 @@ straight_binary_connector.py
 import logging
 from typing import TYPE_CHECKING, Optional
 
+if TYPE_CHECKING:
+    from flatland.node_subsystem.diagram import Diagram
+
 # Model Integration
 from pyral.relation import Relation
 from tabletqt.graphics.line_segment import LineSegment
@@ -21,9 +24,6 @@ from flatland.datatypes.connection_types import HorizontalFace, ConnectorName, N
 from flatland.connector_subsystem.floating_binary_stem import FloatingBinaryStem
 from flatland.connector_subsystem.ternary_stem import TernaryStem
 from flatland.datatypes.command_interface import New_Stem
-
-if TYPE_CHECKING:
-    from flatland.node_subsystem.diagram import Diagram
 
 
 class StraightBinaryConnector(BinaryConnector):
@@ -179,5 +179,4 @@ class StraightBinaryConnector(BinaryConnector):
         name_position = self.compute_name_position(
             point_t=self.Projecting_stem.Root_end, point_p=self.Floating_stem.Root_end
         )
-        TextElement.add_block(layer=layer, asset=f"{self.Connector_type_name} name",
-                              lower_left=name_position, text=self.Name.text)
+        TextElement.add_block(layer=layer, asset=asset, lower_left=name_position, text=self.Name.text)
