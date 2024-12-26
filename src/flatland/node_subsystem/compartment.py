@@ -63,7 +63,8 @@ class Compartment:
     def Text_block_size(self) -> Rect_Size:
         """Compute the size of the text block with required internal compartment padding"""
         dlayer = self.Node.Grid.Diagram.Layer
-        asset = ' '.join([self.Node.Node_type_name, self.Type.name])
+        asset = f"{self.Node.Node_type_name} {self.Type.name}"
+        # asset = ' '.join([self.Node.Node_type_name, self.Type.name])
         unpadded_text_size = TextElement.text_block_size(layer=dlayer, asset=asset, text_block=self.Content)
 
         # Now add the padding specified for this compartment type

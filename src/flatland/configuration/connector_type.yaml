@@ -49,7 +49,7 @@ state machine:
         stem positions:
           from final state:
             about: Points away from a final state to indicate deletion
-            minimum length: 50
+            minimum length: 10
             stretch: free
       transition:
         geometry: binary

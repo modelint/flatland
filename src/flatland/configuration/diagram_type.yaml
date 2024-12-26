@@ -90,7 +90,7 @@ state machine:
   notations:
     - xUML
   node types:
-    name only:
+    state name only:
       about: >
         A state with no activity, distinct node type since it is drawn with different padding for the state name
       default size:
@@ -100,7 +100,7 @@ state machine:
         height: 100
         width: 300
       compartment types:
-        name only:
+        name:
           alignment:
             horizontal: center
             vertical: center

@@ -20,7 +20,7 @@ from flatland.exceptions import (UnsupportedConnectorType, MultipleFloatsInSameS
                                  NoFloatInStraightConnector, UnsupportedStemType)
 from flatland.connector_subsystem.binary_connector import BinaryConnector
 from flatland.connector_subsystem.anchored_stem import AnchoredStem
-from flatland.datatypes.connection_types import HorizontalFace, ConnectorName, NodeFace
+from flatland.datatypes.connection_types import HorizontalFace, ConnectorName
 from flatland.connector_subsystem.floating_binary_stem import FloatingBinaryStem
 from flatland.connector_subsystem.ternary_stem import TernaryStem
 from flatland.datatypes.command_interface import New_Stem

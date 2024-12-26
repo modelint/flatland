@@ -143,7 +143,7 @@ class XumlStateMachineDiagram:
         ustem = cplace['ustem']
         node_ref = ustem['node_ref']
         u_stem = New_Stem(stem_position='from final state', semantic='final pseudo state',
-                          node=cls.nodes[node_ref], face=ustem['face'],
+                          node=cls.nodes[node_ref], face=NodeFace[ustem['face']],
                           anchor=ustem.get('anchor', None), stem_name=None)
         UnaryConnector(
             diagram=cls.flatland_canvas.Diagram,
@@ -158,7 +158,7 @@ class XumlStateMachineDiagram:
         ustem = cplace['ustem']
         node_ref = ustem['node_ref']
         u_stem = New_Stem(stem_position='to initial state', semantic='initial pseudo state',
-                          node=cls.nodes[node_ref], face=ustem['face'],
+                          node=cls.nodes[node_ref], face=NodeFace[ustem['face']],
                           anchor=ustem.get('anchor', None), stem_name=None)
         try:
             evname_data = None if not creation_event else ConnectorName(
@@ -245,6 +245,9 @@ class XumlStateMachineDiagram:
             # Get the state name from the model
             cls.logger.info(f'Processing state: {state_block.state.name}')
 
+            # Determine node type name (state or name only)
+            ntype_name = 'state' if state_block.activity else 'state name only'
+
             # Get the layout data for this state
             nlayout = np.get(state_block.state.name)
             if not nlayout:
@@ -281,7 +284,7 @@ class XumlStateMachineDiagram:
                 node_name = state_block.state.name if i == 0 else f'{state_block.state.name}_{i + 1}'
                 if len(row_span) == 1 and len(col_span) == 1:
                     nodes[node_name] = SingleCellNode(
-                        node_type_name='state',
+                        node_type_name=ntype_name,
                         content=text_content,
                         grid=cls.flatland_canvas.Diagram.Grid,
                         row=row_span[0], column=col_span[0],
@@ -296,7 +299,7 @@ class XumlStateMachineDiagram:
                     left_col = col_span[0]
                     right_col = left_col if len(col_span) == 1 else col_span[1]
                     nodes[node_name] = SpanningNode(
-                        node_type_name='state',
+                        node_type_name=ntype_name,
                         content=text_content,
                         grid=cls.flatland_canvas.Diagram.Grid,
                         low_row=low_row, high_row=high_row,
