@@ -103,7 +103,12 @@ class Canvas:
         # Create the one and only Tablet instance and initialize it with the Presentation on the diagram
         # Layer
         background_color = 'white' if no_color else color
-        dtype = f"{notation.title()} {diagram_type.title()} Diagram"
+        # Notation title is normally title case, but in weird cases like 'xUML', we don't change the case
+        # In an effort to make the rule general, if the first letter is lower case and the second uppercase, then
+        # we don't change it to title case
+        ntitle = notation.title() if len(notation) > 1 and not(
+                notation[0].islower() and notation[1].isupper()) else notation
+        dtype = f"{ntitle} {diagram_type.title()} Diagram"
         try:
             self.Tablet = Tablet(
                 app=app,

@@ -22,7 +22,7 @@ from flatland.datatypes.command_interface import New_Stem, New_Path, New_Compart
 from flatland.connector_subsystem.unary_connector import UnaryConnector
 from flatland.connector_subsystem.straight_binary_connector import StraightBinaryConnector
 from flatland.connector_subsystem.bending_binary_connector import BendingBinaryConnector
-from flatland.datatypes.connection_types import ConnectorName, OppositeFace
+from flatland.datatypes.connection_types import ConnectorName, OppositeFace, NodeFace
 from flatland.text.text_block import TextBlock
 
 
@@ -97,27 +97,26 @@ class XumlStateMachineDiagram:
         # If there are any transitions, draw them
         if not nodes_only:
             cls.logger.info("Drawing the transitions")
-            for s in cls.model.states:
+            for itrans in cls.model.initial_transitions:
+                pass
+                # it_place = [tp for tp in state_place if tp.get('ustem')][0]
+                # cname = make_event_cname(cls.model.events[state_block.creation_event])
+                # cls.draw_initial_transition(creation_event=cname, cplace=it_place)
+            for state_block in cls.model.states:
                 try:
                     # See if this state has any connector placement information in the layout
-                    state_place = cp_dict[s.name]  # State placement (layout) info
+                    state_place = cp_dict[state_block.state.name]  # State placement (layout) info
                 except KeyError:
                     continue  # Must be a final, non-deletion state with no transitions to draw
-                if s.type == 'deletion':
+                if state_block.state.deletion:
                     it_place = [tp for tp in state_place if tp.get('ustem')][0]
                     cls.draw_deletion_transition(cplace=it_place)
-                if s.type == 'creation':
-                    # It must have a unary creation transition
-                    it_place = [tp for tp in state_place if tp.get('ustem')][0]
-                    cname = make_event_cname(cls.model.events[s.creation_event])
-                    cls.draw_initial_transition(creation_event=cname, cplace=it_place)
-                if s.transitions:
-                    for t in s.transitions:
+                # TODO: No creation states anymore, need to handle initial transitions
+                if state_block.transitions:
+                    for t in state_block.transitions:
                         if len(t) == 2:  # Not CH or IG
                             evname = t[0]
-                            try:
-                                cname = make_event_cname(cls.model.events[evname])
-                            except KeyError:
+                            if evname not in cls.model.events:
                                 # An event is being referenced in some state of the model file that does not correspond
                                 # to any event defined in the event specification list near the top of the file
                                 cls.logger.error(
@@ -130,10 +129,10 @@ class XumlStateMachineDiagram:
                                 # before comparing. Initial transitions may not have an associated event
                                 t_place = [tp for tp in state_place if tp.get('cname') and tp['cname'] == evname][0]
                             except IndexError:
-                                cls.logger.error(f'Model event [{cname}] does not name any connector in layout.')
+                                cls.logger.error(f'Model event [{evname}] does not name any connector in layout.')
                                 sys.exit(1)
                             if t_place:
-                                cls.draw_transition(evname=cname, tlayout=t_place)
+                                cls.draw_transition(evname=evname, tlayout=t_place)
 
         cls.logger.info("Rendering the Canvas")
         cls.flatland_canvas.render()
@@ -182,7 +181,7 @@ class XumlStateMachineDiagram:
         pstem = tlayout['pstem']
         node_ref = tstem['node_ref']
         t_stem = New_Stem(stem_position='from state', semantic='source state',
-                          node=cls.nodes[node_ref], face=tstem['face'],
+                          node=cls.nodes[node_ref], face=NodeFace[tstem['face']],
                           anchor=tstem.get('anchor', None), stem_name=None)
         node_ref = pstem['node_ref']
         try:
@@ -191,7 +190,7 @@ class XumlStateMachineDiagram:
             cls.logger.error(f'Transition connector [{evname}] refers to undeclared state node [{node_ref}]')
             sys.exit(1)
         p_stem = New_Stem(stem_position='to state', semantic='target state',
-                          node=node, face=pstem['face'],
+                          node=node, face=NodeFace[pstem['face']],
                           anchor=pstem.get('anchor', None), stem_name=None)
 
         paths = None if not tlayout.get('paths', None) else \
@@ -199,7 +198,7 @@ class XumlStateMachineDiagram:
 
         evname_data = ConnectorName(text=evname, side=tlayout['dir'], bend=tlayout['bend'], notch=tlayout['notch'],
                                     wrap=tlayout['wrap'])
-        if not paths and OppositeFace[tstem['face']] == pstem['face']:
+        if not paths and OppositeFace[t_stem.face] == p_stem.face:
             StraightBinaryConnector(
                 diagram=cls.flatland_canvas.Diagram,
                 ctype_name='transition',
@@ -241,21 +240,21 @@ class XumlStateMachineDiagram:
         nodes = {}
         np = cls.layout.node_placement  # Layout data for all states
 
-        for state in cls.model.states:
+        for state_block in cls.model.states:
 
             # Get the state name from the model
-            cls.logger.info(f'Processing state: {state.name}')
+            cls.logger.info(f'Processing state: {state_block.state.name}')
 
             # Get the layout data for this state
-            nlayout = np.get(state.name)
+            nlayout = np.get(state_block.state.name)
             if not nlayout:
-                cls.logger.warning(f"Skipping state [{state.name}] -- No placement specified in layout sheet")
+                cls.logger.warning(f"Skipping state [{state_block.state.name}] -- No placement specified in layout sheet")
                 continue
 
             # Layout data for all placements
             # By default the state name is all on one line, but it may be wrapped across multiple
             nlayout['wrap'] = nlayout.get('wrap', 1)
-            name_block = TextBlock(line=state.name, wrap=nlayout['wrap'])
+            name_block = TextBlock(line=state_block.state.name, wrap=nlayout['wrap'])
 
             # Now assemble all the text content for each compartment
             # A state has two compartments, name and activity (compartments 1 and 2, respectively)
@@ -264,8 +263,8 @@ class XumlStateMachineDiagram:
             text_content = [
                 New_Compartment(content=name_block.text, expansion=h_expand.get(1, 0)),
             ]
-            if state.activity:
-                text_content.append(New_Compartment(content=state.activity, expansion=h_expand.get(2, 0)))
+            if state_block.activity:
+                text_content.append(New_Compartment(content=state_block.activity, expansion=h_expand.get(2, 0)))
 
             for i, p in enumerate(nlayout['placements']):
                 h = HorizAlign[p.get('halign', 'CENTER')]
@@ -279,7 +278,7 @@ class XumlStateMachineDiagram:
                 # In most cases, this will just be the one and only indicated by the node name
                 # But if a node is duplicated, i will not be 0 and we add a suffix to the node
                 # name for the additional cplace
-                node_name = state.name if i == 0 else f'{state.name}_{i + 1}'
+                node_name = state_block.state.name if i == 0 else f'{state_block.state.name}_{i + 1}'
                 if len(row_span) == 1 and len(col_span) == 1:
                     nodes[node_name] = SingleCellNode(
                         node_type_name='state',

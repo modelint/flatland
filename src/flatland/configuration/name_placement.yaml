@@ -57,8 +57,8 @@ class:  # Diagram type
         optional: False
 
 state machine:
-  stem positions:
-    to initial state:
+  connector types:
+    transition:
       xUML:
         vertical axis buffer: 6
         horizontal axis buffer: 6
@@ -66,11 +66,11 @@ state machine:
         horizontal face buffer: 20
         default name: Event XX
         optional: False
-    to state:
+    initial transition:
       xUML:
         vertical axis buffer: 6
         horizontal axis buffer: 6
         vertical face buffer: 11
         horizontal face buffer: 20
-        default name: Event xx
+        default name: Event XX
         optional: False

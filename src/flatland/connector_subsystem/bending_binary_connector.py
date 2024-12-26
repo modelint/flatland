@@ -183,5 +183,6 @@ class BendingBinaryConnector(BinaryConnector):
         # If there are two corners and the bend is 2, use the Corner at index 1 (2nd corner)
         point_p = self.P_stem.Root_end if bend == len(self.Corners)+1 else self.Corners[bend-1]
         name_position = self.compute_name_position(point_t, point_p)
-        TextElement.add_block(layer=self.Diagram.Layer, asset=f"{self.Connector_type_name} name",
-                              lower_left=name_position, text=self.Name.text)
+        if name_position:
+            TextElement.add_block(layer=self.Diagram.Layer, asset=self.Connector_type_name,
+                                  lower_left=name_position, text=self.Name.text)

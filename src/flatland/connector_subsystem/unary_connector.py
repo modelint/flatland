@@ -83,5 +83,5 @@ class UnaryConnector(Connector):
             name_position = self.compute_name_position(
                 point_t=self.Unary_stem.Root_end, point_p=self.Unary_stem.Vine_end
             )
-            TextElement.add_block(layer=layer, asset=asset, lower_left=name_position, text=self.Name.text)
+            TextElement.add_block(layer=layer, asset=self.Connector_type_name, lower_left=name_position, text=self.Name.text)
 

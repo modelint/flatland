@@ -158,10 +158,16 @@ class Stem:
              f"Notation:<{self.Connector.Diagram.Notation}>")
         result = Relation.restrict(db=app, relation='Icon_Placement', restriction=R)
         if not result.body:
-            self.logger.exception(f"No Icon Placement for stem: {self.Stem_position},"
+            # No icon specified for this stem position and notation on this diagram type
+            # Not necessarily an error since a Stem Position like 'from state' has no notation at all
+            # With xUML notation, a 'class-face' Stem Position has no Icon Placement,
+            # though there is a Label Placement
+
+            # So we just log it as info, and return without rendering any Icon
+            self.logger.info(f"No Icon Placement for stem: {self.Stem_position},"
                                   f"Diagram type: {self.Connector.Diagram.Diagram_type},"
                                   f"Notation: {self.Connector.Diagram.Notation}")
-            raise FlatlandDBException
+            return
         orientation = result.body[0]['Orientation']
         location = self.Root_end if orientation != 'vine' else self.Vine_end
         if self.Stem_position_stretch == 'hanging':

@@ -59,14 +59,13 @@ class Connector:
             self.Name = ConnectorName(side=self.Name.side, bend=self.Name.bend, notch=self.Name.notch,
                                       text=name_block.text, wrap=self.Name.wrap)
             # Get size of bounding box
-            asset = f"{self.Connector_type_name} name"
             self.Name_size = TextElement.text_block_size(
-                layer=self.Diagram.Layer, asset=asset, text_block=self.Name.text
+                layer=self.Diagram.Layer, asset=self.Connector_type_name, text_block=self.Name.text
             )
 
         self.Diagram.Grid.Connectors.append(self)
 
-    def compute_name_position(self, point_t: Position, point_p: Position) -> Position:
+    def compute_name_position(self, point_t: Position, point_p: Position) -> Optional[Position]:
         """
         Determine the lower left corner position of this Connector's name taking into account
         the specified notch position along the bend (+/-) relative to the center of the bend
@@ -81,10 +80,15 @@ class Connector:
              f"Notation:<{self.Diagram.Notation}>")
         result = Relation.restrict(db=app, relation='Name_Placement_Specification', restriction=R)
         if not result.body:
-            self.logger.exception(f"No Name Placement Specification for stem: {self.Stem_type},"
+            # Not nececessarily an error since many Connector Types do not specify any name
+            # While a class diagram association might have a name like 'R35',
+            # a state 'transition' simply has a Stem Position name
+            # So we log it and return a null value
+            self.logger.info(f"No Name Placement Specification for Connector Type: {self.Connector_type_name},"
                                   f"Diagram type: {self.Diagram.Diagram_type},"
                                   f"Notation: {self.Diagram.Notation}")
-            raise FlatlandDBException
+            return None
+
         np_spec = result.body[0]
         axis_buffer = BufferDistance(h=int(np_spec['Horizontal_axis_buffer']),
                                      v=int(np_spec['Horizontal_axis_buffer']))

@@ -144,13 +144,13 @@ def main():
                 show_ref_types=args.show_ref_types
             )
         elif mtype == '.xsm':
-            pass
             statemodel_diagram = XumlStateMachineDiagram(
                 xuml_model_path=model_path,
                 flatland_layout_path=layout_path,
                 diagram_file_path=diagram_path,
                 show_grid=args.grid,
                 nodes_only=args.nodes_only,
+                show_rulers=args.rulers,
                 no_color=args.no_color,
             )
 
