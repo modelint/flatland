@@ -94,20 +94,27 @@ class XumlStateMachineDiagram:
             else:
                 cp_dict[k] = [c]
 
+        # Create a dictionary of initial states (by looking at the initial transitions)
+        initial_states = {t.to_state: t.event for t in cls.model.initial_transitions}
+
         # If there are any transitions, draw them
         if not nodes_only:
             cls.logger.info("Drawing the transitions")
-            for itrans in cls.model.initial_transitions:
-                pass
-                # it_place = [tp for tp in state_place if tp.get('ustem')][0]
-                # cname = make_event_cname(cls.model.events[state_block.creation_event])
-                # cls.draw_initial_transition(creation_event=cname, cplace=it_place)
             for state_block in cls.model.states:
                 try:
                     # See if this state has any connector placement information in the layout
                     state_place = cp_dict[state_block.state.name]  # State placement (layout) info
                 except KeyError:
                     continue  # Must be a final, non-deletion state with no transitions to draw
+                if state_block.state.name in initial_states.keys():
+                    # This is an initial state
+                    # So we draw the one and only initial transition into this state
+                    # cname = make_event_cname(cls.model.events[itrans.event])
+                    # TODO: Add signatures to event names
+                    cname = initial_states[state_block.state.name]
+                    # Find the initial transition specification in the state's tranistions
+                    it_place = [t for t in cp_dict[state_block.state.name] if t['cname'] == cname][0]
+                    cls.draw_initial_transition(event_name=cname, cplace=it_place)
                 if state_block.state.deletion:
                     it_place = [tp for tp in state_place if tp.get('ustem')][0]
                     cls.draw_deletion_transition(cplace=it_place)
@@ -120,7 +127,7 @@ class XumlStateMachineDiagram:
                                 # An event is being referenced in some state of the model file that does not correspond
                                 # to any event defined in the event specification list near the top of the file
                                 cls.logger.error(
-                                    f'Undefined event [{evname}] used on transition from state [{s.name}]. '
+                                    f'Undefined event [{evname}] used on transition from state [{state_block.state.name}]. '
                                     f'Check event list in model file.'
                                 )
                                 sys.exit(1)
@@ -153,7 +160,7 @@ class XumlStateMachineDiagram:
         )
 
     @classmethod
-    def draw_initial_transition(cls, creation_event, cplace):
+    def draw_initial_transition(cls, event_name, cplace):
         """Draw an initial transition (with or without a creation event)"""
         ustem = cplace['ustem']
         node_ref = ustem['node_ref']
@@ -161,11 +168,11 @@ class XumlStateMachineDiagram:
                           node=cls.nodes[node_ref], face=NodeFace[ustem['face']],
                           anchor=ustem.get('anchor', None), stem_name=None)
         try:
-            evname_data = None if not creation_event else ConnectorName(
-                text=creation_event, side=cplace['dir'], bend=cplace['bend'],
+            evname_data = None if not event_name else ConnectorName(
+                text=event_name, side=cplace['dir'], bend=cplace['bend'],
                 notch=cplace['notch'], wrap=cplace['wrap'])
         except KeyError:
-            cls.logger.error(f'No placement defined for creation event [{creation_event}] entering state [{node_ref}]')
+            cls.logger.error(f'No placement defined for creation event [{event_name}] entering state [{node_ref}]')
             sys.exit(1)
         UnaryConnector(
             diagram=cls.flatland_canvas.Diagram,
