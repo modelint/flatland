@@ -5,10 +5,11 @@ xuml_statemachine_diagram.py – Generates a state machine diagram for an xuml m
 import sys
 import logging
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List, Tuple
 
 # Model Integration
 from xsm_parser.state_model_parser import StateModelParser
+from xsm_parser.state_model_visitor import Parameter_a
 from mls_parser.layout_parser import LayoutParser
 
 # Flatland
@@ -26,12 +27,10 @@ from flatland.datatypes.connection_types import ConnectorName, OppositeFace, Nod
 from flatland.text.text_block import TextBlock
 
 
-def make_event_cname(ev_spec) -> str:
-    """Create a transition connector name based on an event name and an optional signature"""
-    if not ev_spec.signature:
-        return ev_spec.name
-    else:
-        return ev_spec.name + '( ' + ', '.join( [f'{p.name}:{p.type}' for p in ev_spec.signature]) + ' )'
+def make_event_cname(evname : str, signature: List[Parameter_a]) -> str:
+    """Create a transition connector name based on an event name and an ]optional signature"""
+    sig_part = ', '.join( [f'{p.name}:{p.type}' for p in signature])
+    return f"{evname}( {sig_part} )"
 
 
 class XumlStateMachineDiagram:
@@ -80,6 +79,9 @@ class XumlStateMachineDiagram:
         cls.logger.info("Drawing the states")
         cls.nodes = cls.draw_states()
 
+        # Index all (if any) event signatures by state
+        state_sigs = {s.state.name: s.state.signature for s in cls.model.states if s.state.signature}
+
         # Index all transitions by state
         cp = cls.layout.connector_placement
         cp_dict = {}
@@ -110,10 +112,13 @@ class XumlStateMachineDiagram:
                     # This is an initial state
                     # So we draw the one and only initial transition into this state
                     # cname = make_event_cname(cls.model.events[itrans.event])
-                    # TODO: Add signatures to event names
-                    cname = initial_states[state_block.state.name]
-                    # Find the initial transition specification in the state's tranistions
-                    it_place = [t for t in cp_dict[state_block.state.name] if t['cname'] == cname][0]
+                    evname = initial_states[state_block.state.name]
+                    if state_block.state.name in state_sigs:
+                        cname = make_event_cname(evname=evname, signature=state_sigs[state_block.state.name])
+                    else:
+                        cname = evname
+                    # Find the initial transition specification in the state's transitions
+                    it_place = [t for t in cp_dict[state_block.state.name] if t['cname'] == evname][0]
                     cls.draw_initial_transition(event_name=cname, cplace=it_place)
                 if state_block.state.deletion:
                     it_place = [tp for tp in state_place if tp.get('ustem')][0]
@@ -123,6 +128,10 @@ class XumlStateMachineDiagram:
                     for t in state_block.transitions:
                         if len(t) == 2:  # Not CH or IG
                             evname = t[0]
+                            if state_block.state.name in state_sigs:
+                                cname = make_event_cname(evname=evname, signature=state_sigs[state_block.state.name])
+                            else:
+                                cname = evname
                             if evname not in cls.model.events:
                                 # An event is being referenced in some state of the model file that does not correspond
                                 # to any event defined in the event specification list near the top of the file
@@ -139,7 +148,7 @@ class XumlStateMachineDiagram:
                                 cls.logger.error(f'Model event [{evname}] does not name any connector in layout.')
                                 sys.exit(1)
                             if t_place:
-                                cls.draw_transition(evname=evname, tlayout=t_place)
+                                cls.draw_transition(evname=cname, tlayout=t_place)
 
         cls.logger.info("Rendering the Canvas")
         cls.flatland_canvas.render()
@@ -161,7 +170,7 @@ class XumlStateMachineDiagram:
 
     @classmethod
     def draw_initial_transition(cls, event_name, cplace):
-        """Draw an initial transition (with or without a creation event)"""
+        """Draw an initial transition with or without an event"""
         ustem = cplace['ustem']
         node_ref = ustem['node_ref']
         u_stem = New_Stem(stem_position='to initial state', semantic='initial pseudo state',
