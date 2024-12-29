@@ -55,6 +55,13 @@ class:  # Diagram type
         horizontal face buffer: 10
         default name: xx
         optional: False
+      xUML:
+        vertical axis buffer: 8
+        horizontal axis buffer: 8
+        vertical face buffer: 10
+        horizontal face buffer: 10
+        default name: xx
+        optional: False
 
 state machine:
   connector types:
