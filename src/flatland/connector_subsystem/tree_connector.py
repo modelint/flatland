@@ -187,7 +187,8 @@ class TreeConnector(Connector):
         :return:
         """
         layer = self.Diagram.Layer
-        asset = f"{self.Connector_type_name} name"
+        asset = self.Connector_type_name
+        # asset = f"{self.Connector_type_name} name"
         namebox = TextElement.text_block_size(layer=layer, asset=asset, text_block=self.Name.text)
         tbranch = self.Branches[0]  # The first branch is always the one met by the trunk stem
         # Get the Name Placement Specification
@@ -243,5 +244,6 @@ class TreeConnector(Connector):
 
         # Draw the connector name if any
         name_position = self.compute_tree_name_position()
-        asset = f"{self.Connector_type_name} name"
+        asset = self.Connector_type_name
+        # asset = f"{self.Connector_type_name} name"
         TextElement.add_block(layer=layer, asset=asset, lower_left=name_position, text=self.Name.text)
