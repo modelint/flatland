@@ -4,7 +4,10 @@ stem.py
 # System
 import sys
 import logging
+from collections import namedtuple
+from enum import Enum
 from typing import TYPE_CHECKING, Optional
+
 if TYPE_CHECKING:
     from flatland.connector_subsystem.connector import Connector
     from flatland.node_subsystem.node import Node
@@ -12,7 +15,9 @@ if TYPE_CHECKING:
 # Model Integration
 from tabletqt.graphics.text_element import TextElement
 from tabletqt.graphics.symbol import Symbol
+from tabletqt.geometry_types import HorizAlign as TextAlign  # to avoid shadowing flatland HorizAlign enum
 from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
+from tabletqt.graphics.text_element import TextBlockCorner
 from pyral.relation import Relation
 
 # Flatland
@@ -67,7 +72,8 @@ class Stem:
             layer = self.Connector.Diagram.Layer
             # Get size of name bounding box
             asset = f"{self.Stem_position} name"
-            self.Name_size = TextElement.text_block_size(layer=layer, asset=asset, text_block=self.Name.text.text)
+            self.Name_size = TextElement.text_block_size(presentation=layer.Presentation, asset=asset,
+                                                         text_block=self.Name.text.text)
 
         # There are at most two rendered symbols (one on each end) of a Stem and usually none or one
         self.Root_rendered_symbol = None  # Default assumption until lookup a bit later
@@ -96,12 +102,29 @@ class Stem:
 
     def render(self):
         """
-        Draw a symbol at the root, vine, both or neither end of this Stem
+        Consult the Label and Icon Placement, if either or both exist, associated with the Diagram Type,
+        Diagram Notation, and Stem Position to determine how to render this Stem.
         """
         layer = self.Connector.Diagram.Layer
+        alignment = HorizAlign.LEFT  # Default alignment of both Name and Label based on Node face orientation
+
+        # Assign Label Placement Spec if one is defined
+        R = (f"Stem_position:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
+             f"Notation:<{self.Connector.Diagram.Notation}>")
+        result = Relation.restrict(db=app, relation='Label_Placement', restriction=R)
+
+        lp_spec = result.body[0] if result.body else None
+
+        # Set default label side if there is a Label Placement
+        label_side = int(lp_spec['Default_stem_side']) if lp_spec else None
 
         if self.Name:
-            align = HorizAlign.LEFT  # Assume left alignment of text lines
+            label_side = self.Name.side * -1  # Set side opposite the stem name, if any
+
+        # Is this Stem named?
+        name_spec = None
+        if self.Name:
+            # Get the Name Placement Specification
             R = (f"Name:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
                  f"Notation:<{self.Connector.Diagram.Notation}>")
             result = Relation.restrict(db=app, relation='Name_Placement_Specification', restriction=R)
@@ -110,50 +133,70 @@ class Stem:
                                       f"Diagram type: {self.Connector.Diagram.Diagram_type},"
                                       f"Notation: {self.Connector.Diagram.Notation}")
                 raise FlatlandDBException
-
             name_spec = result.body[0]
-            if self.Vine_end.y == self.Root_end.y:
-                # Horizontal stem
-                horizontal_face_buffer = int(name_spec['Horizontal_face_buffer'])
-                vertical_axis_buffer = int(name_spec['Vertical_axis_buffer'])
-                if self.Node_face == NodeFace.LEFT:
-                    align = HorizAlign.RIGHT  # Text is to the left of node face, so right align it
-                    width_offset = -(self.Name_size.width + horizontal_face_buffer)
-                else:
-                    width_offset = horizontal_face_buffer
-                name_x = self.Root_end.x + width_offset
-                height_offset = self.Name_size.height if self.Name.side == -1 else 0
-                name_y = self.Root_end.y + (vertical_axis_buffer + height_offset) * self.Name.side
+
+        # Determine the Canvas position of the stem name and any specified label
+        if self.Vine_end.y == self.Root_end.y:
+            # Horizontal stem
+            horizontal_face_buffer = int(name_spec['Horizontal_face_buffer'])
+            vertical_axis_buffer = int(name_spec['Vertical_axis_buffer'])
+            if self.Name:
+                name_y = self.Root_end.y + self.Name.side * vertical_axis_buffer
+            if lp_spec:
+                label_y = self.Root_end.y + label_side * vertical_axis_buffer
+            if self.Node_face == NodeFace.LEFT:
+                if self.Name:
+                    name_corner = TextBlockCorner.LR if self.Name.side == 1 else TextBlockCorner.UR
+                    name_x = self.Root_end.x - horizontal_face_buffer
+                    alignment = HorizAlign.RIGHT  # Text is to the left of node face, so right align it
+                if lp_spec:
+                    label_corner = TextBlockCorner.LR if label_side == 1 else TextBlockCorner.UR
+                    label_x = self.Root_end.x - horizontal_face_buffer
             else:
-                # Vertical stem
-                vertical_face_buffer = int(name_spec['Vertical_face_buffer'])
-                horizontal_axis_buffer = int(name_spec['Horizontal_axis_buffer'])
-                if self.Name.side == -1:  # Text is to the left of vertical stem, so right align it
-                    align = HorizAlign.RIGHT
-                if self.Node_face == NodeFace.BOTTOM:
-                    height_offset = -(self.Name_size.height + vertical_face_buffer)
+                if self.Name:
+                    name_corner = TextBlockCorner.LL if self.Name.side == 1 else TextBlockCorner.UL
+                    name_x = self.Root_end.x + horizontal_face_buffer
+                    alignment = HorizAlign.LEFT
+                if lp_spec:
+                    label_corner = TextBlockCorner.LL if label_side == 1 else TextBlockCorner.UL
+                    label_x = self.Root_end.x + horizontal_face_buffer
+        else:
+            # Vertical stem
+            vertical_face_buffer = int(name_spec['Vertical_face_buffer'])
+            horizontal_axis_buffer = int(name_spec['Horizontal_axis_buffer'])
+            if self.Name:
+                name_x = self.Root_end.x + self.Name.side * horizontal_axis_buffer
+                if self.Name.side == 1:  # Text is to the right of vertical stem, so left align it
+                    alignment = HorizAlign.LEFT
                 else:
-                    height_offset = vertical_face_buffer
-                name_y = self.Root_end.y + height_offset
-                width_offset = self.Name_size.width if self.Name.side == -1 else 0
-                name_x = self.Root_end.x + (horizontal_axis_buffer + width_offset) * self.Name.side
+                    alignment = HorizAlign.RIGHT
+            if lp_spec:
+                label_x = self.Root_end.x + label_side * horizontal_axis_buffer
+            if self.Node_face == NodeFace.BOTTOM:
+                if self.Name:
+                    name_corner = TextBlockCorner.UL if self.Name.side == 1 else TextBlockCorner.UR
+                    name_y = self.Root_end.y - vertical_face_buffer
+                if lp_spec:
+                    label_corner = TextBlockCorner.UL if label_side == 1 else TextBlockCorner.UR
+                    name_y = self.Root_end.y - vertical_face_buffer
+            else:
+                if self.Name:
+                    name_corner = TextBlockCorner.LL if self.Name.side == 1 else TextBlockCorner.LR
+                    name_y = self.Root_end.y + vertical_face_buffer
+                if lp_spec:
+                    label_corner = TextBlockCorner.LL if label_side == 1 else TextBlockCorner.LR
+                    label_y = self.Root_end.y + vertical_face_buffer
 
-            diagram = self.Connector.Diagram
-            if name_x < diagram.Origin.x or \
-                    name_x > diagram.Origin.x + diagram.Size.width or \
-                    name_y < diagram.Origin.y or \
-                    name_y > diagram.Origin.y + diagram.Size.height:
-                self.logger.error(f"Stem text {self.Name.text.text} out of bounds on connector [{self.Connector.Name.text}]"
-                                  f"\n\tConsider wrapping name across more lines of text or move it to the other side of the stem")
-                sys.exit(1)
-
-            TextElement.add_block(layer=layer, asset=f"{self.Stem_position} name",
-                                  lower_left=Position(name_x, name_y),
-                                  text=self.Name.text.text, align=align)
+        if self.Name:
+            TextElement.pin_block(layer=layer, asset=f"{self.Stem_position} name", pin=Position(name_x, name_y),
+                                  text=self.Name.text.text, corner=name_corner, align=alignment)
+        if lp_spec:
+            TextElement.add_sticker(layer=layer, asset=f"{self.Stem_position} name", name=self.Semantic,
+                                    pin=Position(label_x, label_y), corner=label_corner)
 
         symbol_name = f"{self.Connector.Diagram.Notation} {self.Connector.Diagram.Diagram_type}"
 
-        # Look up icon placement for Symbol
+        # Lookup icon placement for Symbol
         R = (f"Stem_position:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
              f"Notation:<{self.Connector.Diagram.Notation}>")
         result = Relation.restrict(db=app, relation='Icon_Placement', restriction=R)
@@ -165,8 +208,8 @@ class Stem:
 
             # So we just log it as info, and return without rendering any Icon
             self.logger.info(f"No Icon Placement for stem: {self.Stem_position},"
-                                  f"Diagram type: {self.Connector.Diagram.Diagram_type},"
-                                  f"Notation: {self.Connector.Diagram.Notation}")
+                             f"Diagram type: {self.Connector.Diagram.Diagram_type},"
+                             f"Notation: {self.Connector.Diagram.Notation}")
             return
         orientation = result.body[0]['Orientation']
         location = self.Root_end if orientation != 'vine' else self.Vine_end

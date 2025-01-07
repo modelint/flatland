@@ -65,7 +65,8 @@ class Compartment:
         dlayer = self.Node.Grid.Diagram.Layer
         asset = f"{self.Node.Node_type_name} {self.Type.name}"
         # asset = ' '.join([self.Node.Node_type_name, self.Type.name])
-        unpadded_text_size = TextElement.text_block_size(layer=dlayer, asset=asset, text_block=self.Content)
+        unpadded_text_size = TextElement.text_block_size(presentation=dlayer.Presentation, asset=asset,
+                                                         text_block=self.Content)
 
         # Now add the padding specified for this compartment type
         padded_text_width = unpadded_text_size.width + self.Type.padding.left + self.Type.padding.right

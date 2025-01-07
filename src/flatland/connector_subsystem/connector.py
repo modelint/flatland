@@ -60,7 +60,7 @@ class Connector:
                                       text=name_block.text, wrap=self.Name.wrap)
             # Get size of bounding box
             self.Name_size = TextElement.text_block_size(
-                layer=self.Diagram.Layer, asset=self.Connector_type_name, text_block=self.Name.text
+                presentation=self.Diagram.Layer.Presentation, asset=self.Connector_type_name, text_block=self.Name.text
             )
 
         self.Diagram.Grid.Connectors.append(self)

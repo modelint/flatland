@@ -13,7 +13,7 @@ Shlaer-Mellor:
           stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
           icon placement: root
           label:
-            default stem side: +
+            default stem side: 1  # 1 to the right/above, -1 to the left/below
             vertical stem offset: 9
             horizontal stem offset: 9
         association:
@@ -22,7 +22,7 @@ Shlaer-Mellor:
           stem semantics: [ superclass ]
           icon placement: root
           label:
-            default stem side: +
+            default stem side: 1
             vertical stem offset: 9
             horizontal stem offset: 9
 
@@ -60,20 +60,20 @@ xUML:
         class face:
           stem semantics: [ Mc mult, 1c mult, 1 mult, M mult, ordinal ] # stem semantics
           label placement:
-            default stem side: +
+            default stem side: 1
             vertical stem offset: 9
             horizontal stem offset: 9
         association:
           stem semantics: [ 1 mult, M mult ]
           label placement:
-            default stem side: +
+            default stem side: 1
             vertical stem offset: 9
             horizontal stem offset: 9
         superclass face:
           stem semantics: [ superclass ]
           icon placement: root
           label placement:
-            default stem side: +
+            default stem side: 1
             vertical stem offset: 15
             horizontal stem offset: 15
       state machine:
