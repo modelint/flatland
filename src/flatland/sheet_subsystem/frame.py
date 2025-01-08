@@ -137,7 +137,8 @@ class Frame:
                 box_size = Rect_Size(height=float(place['Height']), width=float(place['Width']))
                 text = metadata[place['Metadata']][0]  # Metadata Item to display
                 # Determine rectangular area required by the text
-                block_size = TextElement.text_block_size(layer=self.Layer, asset=place['Name'], text_block=[text])
+                block_size = TextElement.text_block_size(presentation=self.Layer.Presentation, asset=place['Name'],
+                                                         text_block=[text])
 
                 stack_order = int(place['Stack_order'])
                 stack_height = (stack_order - 1) * (region_line_spacing + block_size.height)

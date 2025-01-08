@@ -28,8 +28,10 @@ class LabelPlacementInstance(NamedTuple):
     Diagram_type: str
     Notation: str
     Default_stem_side: str
+    Stem_end_offset: int
     Vertical_stem_offset: int
     Horizontal_stem_offset: int
+    Orientation: str
 
 class LineAdjacentNameInstance(NamedTuple):
     Name: str

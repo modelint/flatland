@@ -11,20 +11,24 @@ Shlaer-Mellor:
       class:
         class face:
           stem semantics: [ Mc mult, 1c mult, 1 mult, M mult ] # stem semantics
-          icon placement: root
+          orientation: root
           label:
             default stem side: 1  # 1 to the right/above, -1 to the left/below
+            stem end offset: 9
             vertical stem offset: 9
             horizontal stem offset: 9
+            orientation: root
         association:
           stem semantics: [ 1 mult, M mult ]
         superclass face:
           stem semantics: [ superclass ]
-          icon placement: root
+          orientation: root
           label:
             default stem side: 1
+            stem end offset: 9
             vertical stem offset: 9
             horizontal stem offset: 9
+            orientation: root
 
 Starr:
     about: >
@@ -38,13 +42,13 @@ Starr:
       class:
         class face:
           stem semantics: [ Mc mult, 1c mult, 1 mult, M mult, ordinal ] # stem semantics
-          icon placement: root
+          orientation: root
         association:
           stem semantics: [ 1 mult, M mult ]
-          icon placement: vine
+          orientation: vine
         superclass face:
           stem semantics: [ superclass ]
-          icon placement: root
+          orientation: root
 
 xUML:
     about: >
@@ -61,29 +65,35 @@ xUML:
           stem semantics: [ Mc mult, 1c mult, 1 mult, M mult, ordinal ] # stem semantics
           label placement:
             default stem side: 1
-            vertical stem offset: 9
-            horizontal stem offset: 9
+            stem end offset: 6
+            vertical stem offset: 6
+            horizontal stem offset: 6
+            orientation: root
         association:
-          stem semantics: [ 1 mult, M mult ]
+          stem semantics: [ M mult ]
           label placement:
             default stem side: 1
-            vertical stem offset: 9
-            horizontal stem offset: 9
+            stem end offset: 8
+            vertical stem offset: 6
+            horizontal stem offset: 6
+            orientation: vine
         superclass face:
           stem semantics: [ superclass ]
-          icon placement: root
+          orientation: root
           label placement:
             default stem side: 1
-            vertical stem offset: 15
+            stem end offset: 8
+            vertical stem offset: 8
             horizontal stem offset: 15
+            orientation: root
       state machine:
         to state:
           stem semantics: [target state]
-          icon placement: root
+          orientation: root
         to initial state:
           stem semantics: [initial pseudo state]
-          icon placement: both
+          orientation: both
         from final state:
           stem semantics: [final pseudo state]
-          icon placement: vine
+          orientation: vine
 

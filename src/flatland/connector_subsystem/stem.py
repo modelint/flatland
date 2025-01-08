@@ -100,100 +100,138 @@ class Stem:
                 y = y - stem_len
             self.Vine_end = Position(x, y)
 
-    def render(self):
+    def render_name(self):
         """
-        Consult the Label and Icon Placement, if either or both exist, associated with the Diagram Type,
-        Diagram Notation, and Stem Position to determine how to render this Stem.
+        Render the user supplied stem name if one is specified for this Stem Position
         """
-        layer = self.Connector.Diagram.Layer
-        alignment = HorizAlign.LEFT  # Default alignment of both Name and Label based on Node face orientation
+        if not self.Name:
+            # The user hasn't specified any stem name for this Stem Position
+            return
 
-        # Assign Label Placement Spec if one is defined
-        R = (f"Stem_position:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
+        # Get the Name Placement Specification
+        R = (f"Name:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
              f"Notation:<{self.Connector.Diagram.Notation}>")
-        result = Relation.restrict(db=app, relation='Label_Placement', restriction=R)
-
-        lp_spec = result.body[0] if result.body else None
-
-        # Set default label side if there is a Label Placement
-        label_side = int(lp_spec['Default_stem_side']) if lp_spec else None
-
-        if self.Name:
-            label_side = self.Name.side * -1  # Set side opposite the stem name, if any
-
-        # Is this Stem named?
-        name_spec = None
-        if self.Name:
-            # Get the Name Placement Specification
-            R = (f"Name:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
-                 f"Notation:<{self.Connector.Diagram.Notation}>")
-            result = Relation.restrict(db=app, relation='Name_Placement_Specification', restriction=R)
-            if not result.body:
-                self.logger.exception(f"No Name Placement Specification for stem: {self.Stem_position},"
-                                      f"Diagram type: {self.Connector.Diagram.Diagram_type},"
-                                      f"Notation: {self.Connector.Diagram.Notation}")
-                raise FlatlandDBException
-            name_spec = result.body[0]
+        result = Relation.restrict(db=app, relation='Name_Placement_Specification', restriction=R)
+        if not result.body:
+            self.logger.exception(f"No Name Placement Specification for stem: {self.Stem_position},"
+                                  f"Diagram type: {self.Connector.Diagram.Diagram_type},"
+                                  f"Notation: {self.Connector.Diagram.Notation}")
+            raise FlatlandDBException
+        name_spec = result.body[0]
 
         # Determine the Canvas position of the stem name and any specified label
         if self.Vine_end.y == self.Root_end.y:
             # Horizontal stem
             horizontal_face_buffer = int(name_spec['Horizontal_face_buffer'])
             vertical_axis_buffer = int(name_spec['Vertical_axis_buffer'])
-            if self.Name:
-                name_y = self.Root_end.y + self.Name.side * vertical_axis_buffer
-            if lp_spec:
-                label_y = self.Root_end.y + label_side * vertical_axis_buffer
+            name_y = self.Root_end.y + self.Name.side * vertical_axis_buffer
             if self.Node_face == NodeFace.LEFT:
-                if self.Name:
-                    name_corner = TextBlockCorner.LR if self.Name.side == 1 else TextBlockCorner.UR
-                    name_x = self.Root_end.x - horizontal_face_buffer
-                    alignment = HorizAlign.RIGHT  # Text is to the left of node face, so right align it
-                if lp_spec:
-                    label_corner = TextBlockCorner.LR if label_side == 1 else TextBlockCorner.UR
-                    label_x = self.Root_end.x - horizontal_face_buffer
+                name_corner = TextBlockCorner.LR if self.Name.side == 1 else TextBlockCorner.UR
+                name_x = self.Root_end.x - horizontal_face_buffer
+                alignment = HorizAlign.RIGHT  # Text is to the left of node face, so right align it
             else:
-                if self.Name:
-                    name_corner = TextBlockCorner.LL if self.Name.side == 1 else TextBlockCorner.UL
-                    name_x = self.Root_end.x + horizontal_face_buffer
-                    alignment = HorizAlign.LEFT
-                if lp_spec:
-                    label_corner = TextBlockCorner.LL if label_side == 1 else TextBlockCorner.UL
-                    label_x = self.Root_end.x + horizontal_face_buffer
+                name_corner = TextBlockCorner.LL if self.Name.side == 1 else TextBlockCorner.UL
+                name_x = self.Root_end.x + horizontal_face_buffer
+                alignment = HorizAlign.LEFT
         else:
             # Vertical stem
             vertical_face_buffer = int(name_spec['Vertical_face_buffer'])
             horizontal_axis_buffer = int(name_spec['Horizontal_axis_buffer'])
-            if self.Name:
-                name_x = self.Root_end.x + self.Name.side * horizontal_axis_buffer
-                if self.Name.side == 1:  # Text is to the right of vertical stem, so left align it
-                    alignment = HorizAlign.LEFT
-                else:
-                    alignment = HorizAlign.RIGHT
-            if lp_spec:
-                label_x = self.Root_end.x + label_side * horizontal_axis_buffer
-            if self.Node_face == NodeFace.BOTTOM:
-                if self.Name:
-                    name_corner = TextBlockCorner.UL if self.Name.side == 1 else TextBlockCorner.UR
-                    name_y = self.Root_end.y - vertical_face_buffer
-                if lp_spec:
-                    label_corner = TextBlockCorner.UL if label_side == 1 else TextBlockCorner.UR
-                    name_y = self.Root_end.y - vertical_face_buffer
+            name_x = self.Root_end.x + self.Name.side * horizontal_axis_buffer
+            if self.Name.side == 1:  # Text is to the right of vertical stem, so left align it
+                alignment = HorizAlign.LEFT
             else:
-                if self.Name:
-                    name_corner = TextBlockCorner.LL if self.Name.side == 1 else TextBlockCorner.LR
-                    name_y = self.Root_end.y + vertical_face_buffer
-                if lp_spec:
+                alignment = HorizAlign.RIGHT
+            if self.Node_face == NodeFace.BOTTOM:
+                name_corner = TextBlockCorner.UL if self.Name.side == 1 else TextBlockCorner.UR
+                name_y = self.Root_end.y - vertical_face_buffer
+            else:
+                name_corner = TextBlockCorner.LL if self.Name.side == 1 else TextBlockCorner.LR
+                name_y = self.Root_end.y + vertical_face_buffer
+
+        TextElement.pin_block(layer=self.Connector.Diagram.Layer, asset=f"{self.Stem_position} name",
+                              pin=Position(name_x, name_y), text=self.Name.text.text,
+                              corner=name_corner, align=alignment)
+
+    def render_label(self):
+        """
+        Render a pre-defined label if one is specified for this Stem Position by the Diagram Notation
+        """
+        # Is there a Label Placement Specication for this Stem Position and Diagram Notation?
+        R = (f"Stem_position:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
+             f"Notation:<{self.Connector.Diagram.Notation}>")
+        result = Relation.restrict(db=app, relation='Label_Placement', restriction=R)
+        if not result:
+            # No Label is defined for this Diagram Notation
+            return
+
+        # We have a Label Placement Specification
+        lp_spec = result.body[0]
+
+        # Position of the label is relative to the root or the vine end
+        orientation = result.body[0]['Orientation']
+        location = self.Root_end if orientation != 'vine' else self.Vine_end
+        # To avoid overlapping text, the label is rendered on the side of the Stem opposite the stem name
+        # So if the name is something like 'is queued for takeoff on', and it appears above the Stem,
+        # a label like '0..1' should be rendered underneath the Stem
+        # We do this by flipping the polarity of the side from 1 to -1 or vice versa
+        # And if there is no user specified name, we can just use the default side defined by the Diagram Notation
+        label_side = self.Name.side * -1 if self.Name else int(lp_spec['Default_stem_side'])
+        alignment = HorizAlign.LEFT  # Default alignment
+
+        # Determine the Canvas position of the stem name and any specified label
+        stem_end_offset = int(lp_spec['Stem_end_offset'])
+        horizontal_stem_offset = int(lp_spec['Horizontal_stem_offset'])
+        vertical_stem_offset = int(lp_spec['Vertical_stem_offset'])
+        if self.Vine_end.y == self.Root_end.y:
+            # Horizontal stem
+            label_y = location.y + label_side * vertical_stem_offset
+            if self.Node_face == NodeFace.LEFT:
+                if orientation == 'root':
+                    label_corner = TextBlockCorner.LR if label_side == 1 else TextBlockCorner.UR
+                    label_x = location.x - horizontal_stem_offset
+                else:
+                    label_corner = TextBlockCorner.LL if label_side == 1 else TextBlockCorner.UL
+                    label_x = location.x + stem_end_offset
+            else:
+                if orientation == 'root':
+                    label_corner = TextBlockCorner.LL if label_side == 1 else TextBlockCorner.UL
+                    label_x = location.x + horizontal_stem_offset
+                else:
+                    label_corner = TextBlockCorner.LR if label_side == 1 else TextBlockCorner.UR
+                    label_x = location.x - stem_end_offset
+        else:
+            # Vertical stem
+            label_x = location.x + label_side * horizontal_stem_offset
+            if self.Node_face == NodeFace.BOTTOM:
+                if orientation == 'root':
+                    label_corner = TextBlockCorner.UL if label_side == 1 else TextBlockCorner.UR
+                    label_y = location.y - vertical_stem_offset
+                else:
                     label_corner = TextBlockCorner.LL if label_side == 1 else TextBlockCorner.LR
-                    label_y = self.Root_end.y + vertical_face_buffer
+                    label_y = location.y + stem_end_offset
+            else:
+                if orientation == 'root':
+                    label_corner = TextBlockCorner.LL if label_side == 1 else TextBlockCorner.LR
+                    label_y = location.y + vertical_stem_offset
+                else:
+                    label_corner = TextBlockCorner.UL if label_side == 1 else TextBlockCorner.UR
+                    label_y = location.y - stem_end_offset
 
-        if self.Name:
-            TextElement.pin_block(layer=layer, asset=f"{self.Stem_position} name", pin=Position(name_x, name_y),
-                                  text=self.Name.text.text, corner=name_corner, align=alignment)
-        if lp_spec:
-            TextElement.add_sticker(layer=layer, asset=f"{self.Stem_position} name", name=self.Semantic,
-                                    pin=Position(label_x, label_y), corner=label_corner)
+        TextElement.add_sticker(layer=self.Connector.Diagram.Layer, asset=f"{self.Stem_position} name",
+                                name=self.Semantic, pin=Position(label_x, label_y), corner=label_corner)
 
+    def render(self):
+        """
+        Consult the Label and Icon Placement, if either or both exist, associated with the Diagram Type,
+        Diagram Notation, and Stem Position to determine how to render this Stem.
+        """
+        # Render user specified stem name if any
+        self.render_name()
+        # Render notation label if any
+        self.render_label()
+
+        # Render notation symbol
         symbol_name = f"{self.Connector.Diagram.Notation} {self.Connector.Diagram.Diagram_type}"
 
         # Lookup icon placement for Symbol
@@ -221,5 +259,5 @@ class Stem:
             # The symbol is on the root end and angle is determined by the node face
             angle = StemAngle[self.Node_face] if self.Root_end else None
 
-        Symbol(app=app, layer=layer, group=symbol_name, name=self.Semantic,
+        Symbol(app=app, layer=self.Connector.Diagram.Layer, group=symbol_name, name=self.Semantic,
                pin=location, angle=angle)

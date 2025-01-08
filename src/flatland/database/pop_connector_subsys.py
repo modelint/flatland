@@ -197,13 +197,13 @@ class ConnectorSubsysDB:
                                              Diagram_type=dtype_name)
                     )
                     # Icon placement (optional)
-                    if stem_position_data.get('icon placement'):
+                    if stem_position_data.get('orientation'):
                         icon_placement_instances.append(
                             IconPlacementInstance(
                                 Stem_position=stem_position,
                                 Notation=notation,
                                 Diagram_type=dtype_name,
-                                Orientation=stem_position_data['icon placement']
+                                Orientation=stem_position_data['orientation']
                             )
                         )
                     # Label placement (optional)
@@ -214,8 +214,10 @@ class ConnectorSubsysDB:
                                 Notation=notation,
                                 Diagram_type=dtype_name,
                                 Default_stem_side=stem_position_data['label placement']['default stem side'],
+                                Stem_end_offset=stem_position_data['label placement']['stem end offset'],
                                 Vertical_stem_offset=stem_position_data['label placement']['vertical stem offset'],
                                 Horizontal_stem_offset=stem_position_data['label placement']['horizontal stem offset'],
+                                Orientation=stem_position_data['label placement']['orientation'],
                             )
                         )
 

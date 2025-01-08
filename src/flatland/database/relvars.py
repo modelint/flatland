@@ -60,8 +60,10 @@ class FlatlandSchema:
                 Attribute(name='Diagram_type', type='string'),
                 Attribute(name='Notation', type='string'),
                 Attribute(name='Default_stem_side', type='string'),
+                Attribute(name='Stem_end_offset', type='int'),
                 Attribute(name='Vertical_stem_offset', type='int'),
                 Attribute(name='Horizontal_stem_offset', type='int'),
+                Attribute(name='Orientation', type='string'),
             ], ids={1: ['Stem_position', 'Diagram_type', 'Notation']}),
             'Line_Adjacent_Name': Header(attrs=[
                 Attribute(name='Name', type='string'),

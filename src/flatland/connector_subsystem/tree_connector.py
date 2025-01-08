@@ -189,7 +189,7 @@ class TreeConnector(Connector):
         layer = self.Diagram.Layer
         asset = self.Connector_type_name
         # asset = f"{self.Connector_type_name} name"
-        namebox = TextElement.text_block_size(layer=layer, asset=asset, text_block=self.Name.text)
+        namebox = TextElement.text_block_size(presentation=layer.Presentation, asset=asset, text_block=self.Name.text)
         tbranch = self.Branches[0]  # The first branch is always the one met by the trunk stem
         # Get the Name Placement Specification
         R = (f"Name:<{self.Connector_type_name}>, Diagram_type:<{self.Diagram.Diagram_type}>, "
