@@ -15,3 +15,4 @@ src/mi_tabletqt.egg-info
 .idea/**/shelf
 .idea/workspace.xml
 *.swp
+/tests/output/
