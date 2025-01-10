@@ -161,7 +161,7 @@ class Stem:
         R = (f"Stem_position:<{self.Stem_position}>, Diagram_type:<{self.Connector.Diagram.Diagram_type}>, "
              f"Notation:<{self.Connector.Diagram.Notation}>")
         result = Relation.restrict(db=app, relation='Label_Placement', restriction=R)
-        if not result:
+        if not result.body:
             # No Label is defined for this Diagram Notation
             return
 
