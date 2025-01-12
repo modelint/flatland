@@ -1,6 +1,5 @@
-// t034_2bend_tertiary_top.mss – Tertiary is above a multiple bend connector
 diagram class
-notation Starr
+notation xUML
 presentation default
 orientation landscape
 sheet letter

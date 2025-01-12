@@ -28,7 +28,7 @@ tests = {
     # "t021": ("aircraft2", "t021_bending_binary_vert"),
     # "t022": ("aircraft2", "t022_bending_binary_horizontal_d1"),
     # "t023": ("aircraft2", "t023_bending_binary_twice"),
-    "t025": ("waypoint", "t025_reflexive_upper_right"),
+    # "t025": ("waypoint", "t025_reflexive_upper_right"),
     "t026": ("aircraft2", "t026_single_bend_binary"),
     "t030": ("aircraft3", "t030_straight_binary_tertiary"),
     "t031": ("aircraft3", "t031_straight_binary_tertiary_horizontal"),
@@ -55,27 +55,35 @@ tests = {
 }
 
 diagrams = [
-    ("aircraft2", "t001_straight_binary_horiz", "t001"),
-    ("aircraft2", "t003_straight_binary_vert", "t003"),
-    ("aircraft_tree1", "t050_rbranch_horiz", "t050"),
-    ("tall_class", "t004_single_cell_node_tall", "t004"),
-    ("aircraft2", "t005_bending_binary_one", "t005"),
-    ("aircraft2", "t006_reverse_straight_binary_horiz", "t006"),
-    ("aircraft2", "t007_straight_binary_horiz_offset", "t007"),
-    # ("method_wide", "t008_wide_method", "t008"),
-    ("thin_node", "t009_expand", "t009"),
-    ("fat_class", "t010_spanning_node_ll_corner", "t010"),
-    ("tall_class", "t011_spanning_node_middle_tall", "t011"),
-    ("fat_class", "t012_spanning_node_middle_wide", "t012"),
-    ("tall_class", "t013_spanning_node_middle_tall_wide", "t013"),
-    ("tall_class", "t014_spanning_node_middle_align", "t014"),
-    ("many_associative", "t015_compound_adjacent_deckstack", "t015"),
-    ("aircraft2", "t016_imports", "t016"),
-    ("aircraft2", "t020_bending_binary_horiz", "t020"),
-    ("aircraft2", "t021_bending_binary_vert", "t021"),
-    ("aircraft2", "t022_bending_binary_horizontal_d1", "t022"),
-    ("aircraft2", "t023_bending_binary_twice", "t023"),
-    ("waypoint", "t025_reflexive_upper_right", "t025"),
+    ("aircraft2", "t001_straight_binary_horiz"),
+    ("aircraft2", "t003_straight_binary_vert"),
+    ("aircraft_tree1", "t050_rbranch_horiz"),
+    ("tall_class", "t004_single_cell_node_tall"),
+    ("aircraft2", "t005_bending_binary_one"),
+    ("aircraft2", "t006_reverse_straight_binary_horiz"),
+    ("aircraft2", "t007_straight_binary_horiz_offset"),
+    # ("method_wide", "t008_wide_method"),
+    ("thin_node", "t009_expand"),
+    ("fat_class", "t010_spanning_node_ll_corner"),
+    ("tall_class", "t011_spanning_node_middle_tall"),
+    ("fat_class", "t012_spanning_node_middle_wide"),
+    ("tall_class", "t013_spanning_node_middle_tall_wide"),
+    ("tall_class", "t014_spanning_node_middle_align"),
+    ("many_associative", "t015_compound_adjacent_deckstack"),
+    ("aircraft2", "t016_imports"),
+    ("aircraft2", "t020_bending_binary_horiz"),
+    ("aircraft2", "t021_bending_binary_vert"),
+    ("aircraft2", "t022_bending_binary_horizontal_d1"),
+    ("aircraft2", "t023_bending_binary_twice"),
+    ("waypoint", "t025_reflexive_upper_right"),
+    ("aircraft2", "t026_single_bend_binary"),
+    ("aircraft3", "t030_straight_binary_tertiary"),
+    ("aircraft3", "t031_straight_binary_tertiary_horizontal"),
+    ("aircraft3", "t032_1bend_tertiary_left"),
+    ("aircraft3", "t033_2bend_tertiary_below"),
+    ("aircraft3", "t034_2bend_tertiary_above"),
+    ("aircraft3", "t035_2bend_tertiary_right"),
+    ("aircraft3", "t036_2bend_tertiary_left"),
 
 ]
 
@@ -85,13 +93,13 @@ def flatland_db():
     os.chdir(test_dir)
     FlatlandDB.create_db(rebuild=True)
 
-@pytest.mark.parametrize("model, layout, pdf", diagrams)
-def test_pdf(flatland_db, model, layout, pdf):
+@pytest.mark.parametrize("model, layout", diagrams)
+def test_pdf(flatland_db, model, layout):
 
     XumlClassDiagram(
         xuml_model_path=Path(f"class_diagrams/{model}.xcm"),
         flatland_layout_path=Path(f"model_style_sheets/xUML_cd/{layout}.mls"),
-        diagram_file_path=Path(f"output/xUML_cd/{pdf}.pdf"),
+        diagram_file_path=Path(f"output/xUML_cd/{layout.split('_')[0]}.pdf"),
         show_grid=True,
         nodes_only=False,
         no_color=False,

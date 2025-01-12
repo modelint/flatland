@@ -1,0 +1,33 @@
+metadata
+    Title : Hello World Example
+    Author : Leon Starr
+    Organization : Model Integration, LLC
+domain Test, TEST
+subsystem Main, MAIN 1-99
+class Aircraft, AC
+attributes
+    Tail number : ACAO {I}
+    Altitude : Altitude MSL
+    Airspeed : Knots
+    Heading : Compass
+--
+class Pilot
+attributes
+    ID : Pilot ID {I}
+    Hours flown : Hours
+    Aircraft : ACAO {R1}
+--
+class Flight, F
+attributes
+    Aircraft : ACAO {I, R1}
+    Pilot : Pilot ID {I2, R1}
+    Flight time : Duration
+--
+relationships
+    R1
+    is flying, M Aircraft
+    is flown by, Mc Pilot
+    1 Flight
+    Flight.Aircraft -> Aircraft.Tail number
+    Flight.Pilot -> Pilot.ID
+--
