@@ -2,7 +2,7 @@
 // Model layout sheet
 
 diagram class
-notation Starr
+notation xUML
 presentation default
 orientation landscape
 sheet D

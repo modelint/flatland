@@ -17,13 +17,13 @@ tests = {
     # "t007": ("aircraft2", "t007_straight_binary_horiz_offset"),
     # "t008": ("widenode2", "t008_wide_node_stack"),
     # "t009": ("thin_node", "t009_expand"),
-    "t010": ("fat_class", "t010_spanning_node_ll_corner"),
-    "t011": ("tall_class", "t011_spanning_node_middle_tall"),
-    "t012": ("fat_class", "t012_spanning_node_middle_wide"),
-    "t013": ("tall_class", "t013_spanning_node_middle_tall_wide"),
-    "t014": ("tall_class", "t014_spanning_node_middle_align"),
-    "t015": ("many_associative", "t015_compound_adjacent_deckstack"),
-    "t016": ("aircraft2", "t016_imports"),
+    # "t010": ("fat_class", "t010_spanning_node_ll_corner"),
+    # "t011": ("tall_class", "t011_spanning_node_middle_tall"),
+    # "t012": ("fat_class", "t012_spanning_node_middle_wide"),
+    # "t013": ("tall_class", "t013_spanning_node_middle_tall_wide"),
+    # "t014": ("tall_class", "t014_spanning_node_middle_align"),
+    # "t015": ("many_associative", "t015_compound_adjacent_deckstack"),
+    # "t016": ("aircraft2", "t016_imports"),
     "t020": ("aircraft2", "t020_bending_binary_horiz"),
     "t021": ("aircraft2", "t021_bending_binary_vert"),
     "t022": ("aircraft2", "t022_bending_binary_horizontal_d1"),
@@ -69,6 +69,9 @@ diagrams = [
     ("fat_class", "t012_spanning_node_middle_wide", "t012"),
     ("tall_class", "t013_spanning_node_middle_tall_wide", "t013"),
     ("tall_class", "t014_spanning_node_middle_align", "t014"),
+    ("many_associative", "t015_compound_adjacent_deckstack", "t015"),
+    ("aircraft2", "t016_imports", "t016"),
+
 ]
 
 @pytest.fixture(scope='session')

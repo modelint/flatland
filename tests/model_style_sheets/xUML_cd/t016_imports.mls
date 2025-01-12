@@ -1,6 +1,5 @@
-// t016_imports.mss – The same node placed twice on the same diagram
 diagram class
-notation Starr
+notation xUML
 presentation default
 orientation landscape
 sheet letter
