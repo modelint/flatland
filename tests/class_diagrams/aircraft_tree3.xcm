@@ -1,0 +1,49 @@
+metadata
+    Title : Aicraft Test
+    Author : Leon Starr
+    Document ID : test1
+    Version : 0.2.0
+    Creation date : June 21, 2018
+    Modification date : December 20, 2024
+    Organization : Model Integration, LLC / www.modelint.com
+    Copyright notice > MIT
+    Organization logo > mint
+domain Test, TEST
+subsystem Main, MAIN 1-99
+class Aircraft, AC
+attributes
+    Tail number : ACAO {I}
+    Altitude : Altitude MSL
+    Airspeed : Knots
+    Heading : Compass
+--
+class Helicopter, H
+attributes
+    Tail number {I, R1}
+    Landing gear : Gear
+    Landing pad {R4}
+--
+class Fixed Wing, FW
+attributes
+    Tail number {I, R1}
+    Weight : Category
+    Runway {R5}
+--
+class Hybrid Wing, HYW
+attributes
+    Tail number {I, R1}
+--
+class X Wing, XW
+attributes
+    Tail number {I, R1}
+    R2 unit status : Boolean
+--
+relationships
+    R1
+    Aircraft +
+        Helicopter
+        Fixed Wing
+        Hybrid Wing
+        X Wing
+    <subclass>.Tail number -> Aircraft.Tail number
+--

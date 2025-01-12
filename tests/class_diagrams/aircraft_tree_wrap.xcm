@@ -1,0 +1,29 @@
+metadata
+    Title : Hello World Example
+    Author : Leon Starr
+    Organization : Model Integration, LLC
+domain Test, TEST
+subsystem Main, MAIN 1-99
+class Drone
+attributes
+    ID : Remote ID {I}
+    Altitude : Altitude MSL
+    Airspeed : Knots
+    Heading : Compass
+--
+class Remote Controlled Fixed Wing Drone, RCFD
+attributes
+    ID : Remote ID {I, R103}
+--
+class Remote Controlled Rotary Wing Drone, RCRD
+attributes
+    ID : Remote ID {I, R103}
+    Rotary configuration : Rotor Style
+--
+relationships
+    R103
+    Drone +
+        Remote Controlled Fixed Wing Drone
+        Remote Controlled Rotary Wing Drone
+    <subclass>.ID -> Drone.ID
+--

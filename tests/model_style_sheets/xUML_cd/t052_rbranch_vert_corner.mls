@@ -1,6 +1,5 @@
-// t052_rbranch_vert_corner.mss – Vertical rut branch with a corner and two bends
 diagram class
-notation Starr
+notation xUML
 presentation default
 orientation landscape
 sheet letter

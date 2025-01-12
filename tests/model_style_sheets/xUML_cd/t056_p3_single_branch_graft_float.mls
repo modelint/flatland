@@ -1,6 +1,5 @@
-// t056_p3_single_branch_graft_float.mss – Pattern 3
 diagram class
-notation Starr
+notation xUML
 presentation default
 orientation landscape
 sheet letter
