@@ -1,0 +1,11 @@
+/// Thin node - to test node resizing via expansion
+metadata
+    Title : Grid Resize Test
+    Author : Leon Starr
+    Organization : Model Integration, LLC
+domain Test, TEST
+subsystem Main, MAIN 1-99
+class Thin Node
+attributes
+    ID {I}
+--

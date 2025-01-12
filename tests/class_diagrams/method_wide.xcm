@@ -1,0 +1,17 @@
+metadata
+    Title : Grid Resize Test
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.1
+domain Test, TEST
+subsystem Main, MAIN 1-99
+class Traveling Ego Vehicle, EVTRAV
+attributes
+    Ego : Ego ID {I, R156}
+    LCS : LCS ID {R158}
+    LCS road segment : RS ID {R158c}
+--
+methods
+    This is a really long method that just keeps
+    on going
+    And here is one that is even longer and it stretches out to here
+--

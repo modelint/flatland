@@ -1,0 +1,18 @@
+metadata
+    Title : Hello World Example
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.1
+domain Test, TEST
+subsystem Main, MAIN 1-99
+class Diagram
+attributes
+    ID : Nominal {I}
+    Grid : Grid ID {R10}
+    Type : Type Name {R11, R30}
+    Notation : Notation Name {R30}
+    Canvas : Canvas ID {R14}
+    Some really long attribute : Long Data Type
+    Size : Rect Size
+    Origin : Position
+    Presentation style : Presentation Style Name {R26}
+--

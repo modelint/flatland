@@ -1,6 +1,6 @@
 // t007_straight_binary_horiz_offset.mss – Two nodes and a single horizontal binary connector offset anchor
 diagram class
-notation Starr
+notation xUML
 presentation default
 orientation landscape
 sheet letter

@@ -1,0 +1,17 @@
+metadata
+    Title : Hello World Example
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.1
+domain Test, TEST
+subsystem Main, MAIN 1-99
+class Diagram
+attributes
+    ID : Nominal {I}
+    Grid {R10}
+    Type : Type Name {R11, R30}
+    Notation : Notation {R30}
+    Canvas : Canvas ID {R14}
+    Size : Rect Size
+    Origin : Position
+    Presentation style : Extremely Extra Wide Style {R26}
+--
