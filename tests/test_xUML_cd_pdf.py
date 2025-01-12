@@ -24,10 +24,10 @@ tests = {
     # "t014": ("tall_class", "t014_spanning_node_middle_align"),
     # "t015": ("many_associative", "t015_compound_adjacent_deckstack"),
     # "t016": ("aircraft2", "t016_imports"),
-    "t020": ("aircraft2", "t020_bending_binary_horiz"),
-    "t021": ("aircraft2", "t021_bending_binary_vert"),
-    "t022": ("aircraft2", "t022_bending_binary_horizontal_d1"),
-    "t023": ("aircraft2", "t023_bending_binary_twice"),
+    # "t020": ("aircraft2", "t020_bending_binary_horiz"),
+    # "t021": ("aircraft2", "t021_bending_binary_vert"),
+    # "t022": ("aircraft2", "t022_bending_binary_horizontal_d1"),
+    # "t023": ("aircraft2", "t023_bending_binary_twice"),
     "t025": ("waypoint", "t025_reflexive_upper_right"),
     "t026": ("aircraft2", "t026_single_bend_binary"),
     "t030": ("aircraft3", "t030_straight_binary_tertiary"),
@@ -71,6 +71,11 @@ diagrams = [
     ("tall_class", "t014_spanning_node_middle_align", "t014"),
     ("many_associative", "t015_compound_adjacent_deckstack", "t015"),
     ("aircraft2", "t016_imports", "t016"),
+    ("aircraft2", "t020_bending_binary_horiz", "t020"),
+    ("aircraft2", "t021_bending_binary_vert", "t021"),
+    ("aircraft2", "t022_bending_binary_horizontal_d1", "t022"),
+    ("aircraft2", "t023_bending_binary_twice", "t023"),
+    ("waypoint", "t025_reflexive_upper_right", "t025"),
 
 ]
 

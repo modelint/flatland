@@ -1,0 +1,20 @@
+metadata
+    Title : Hello World Example
+    Author : Leon Starr
+    Organization : Model Integration, LLC
+domain Test, TEST
+subsystem Main, MAIN 1-99
+class Waypoint
+attributes
+    ID : Nominal {I, OR1}
+    Latitude : Lat
+    Longitude : Long
+    Action : Action ID {R27}
+    Next waypoint : Waypoint ID {R1}
+--
+relationships
+    R1
+    after, 1c Waypoint
+    before, 1 Waypoint
+    Waypoint.Next waypoint -> Waypoint.ID
+--
