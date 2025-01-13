@@ -1,0 +1,2 @@
+include src/flatland/log.conf
+include src/flatland/configuration/*.yaml

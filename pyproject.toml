@@ -1,0 +1,31 @@
+[build-system]
+requires      = ["setuptools>=75.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mi-flatland"
+version = "2.0.0"
+description = "Model text file + layout text file -> beautiful diagram"
+readme = "README.md"
+authors = [{ name = "Leon Starr", email = "leon_starr@modelint.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["2D", "draw", "graphics", "canvas", "mbse", "xuml", "xtuml", "sysml"]
+dependencies = ['mi-configurator', 'mi-pyral', 'mi-tabletqt', 'mls-parser', 'numpy',
+    'xcm-parser', 'xsm-parser', 'tomli; python_version < "3.12"']
+requires-python = ">=3.12"
+
+[project.optional-dependencies]
+build = ["build", "twine"]
+dev = ["bump2version", "pytest"]
+
+[project.scripts]
+tablet = "flatland.__main__:main"
+
+[project.urls]
+repository    = "https://github.com/modelint/flatland"
+documentation = "https://github.com/modelint/flatland"
