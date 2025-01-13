@@ -1,0 +1,179 @@
+metadata
+    Title : Elevator Management Class Model
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.1
+    Version : 3.4.0
+    Creation date : June 21, 2018
+    Modification date : December 8, 2022
+    Organization : Model Integration, LLC / www.modelint.com
+    Copyright notice > MIT
+    Organization logo > mint
+domain Elevator Management, EVMAN
+subsystem Elevator, ELEV 1-99
+class Accessible Shaft Level
+attributes
+    Floor : Level Name {I, R3}
+    Shaft : Shaft ID {I, R3}
+    Bank : Bank Name {R3c}
+    Stop requested : Boolean
+--
+class Bank
+attributes
+    Name : Bank Name {I}
+    Passenger load time : Duration
+    Block clear time : Duration
+    Max close attempts : Count
+    Average cabin speed : Speed
+    Average stop duration : Duration
+--
+class Bank Level
+attributes
+    Bank : Bank Name {I, R29}
+    Floor : Level Name {I, R29}
+--
+class Bottom Bank Level
+attributes
+    Bank : Bank Name {I, R38, R6}
+    Floor : Level Name {I, R38}
+    Calling up : Boolean
+--
+class Building
+attributes
+    Name : Building Name {I}
+    Average floor gap : Distance
+--
+class Cabin
+ee CABIN
+attributes
+    Shaft : Shaft ID {I, R2, R43}
+    Travel direction : Direction
+    Current floor : Level Name {R43}
+--
+class Door
+attributes
+    Shaft : Shaft ID {I, R4}
+    Close attempts : Count
+    Lock requested : Boolean
+    Held : Boolean
+    Blocked : Boolean
+    Emergency hold : Boolean
+--
+class Floor
+attributes
+    Name : Level Name {I}
+    Height : Distance {I2, OR7}
+--
+class Floor Service
+attributes
+    Floor : Level Name {I, I2, R49}
+    Shaft : Shaft ID {I, R49}
+    Direction : Direction {I, I2}
+    Bank : Bank Name {I2, R49}
+--
+class Middle Bank Level
+attributes
+    Bank : Bank Name {I, R38}
+    Floor : Level Name {I, R38}
+    Calling up : Boolean
+    Calling down : Boolean
+--
+class Shaft
+attributes
+    ID : Shaft ID {I}
+    Number : Ordinal {I2, OR57}
+    Bank : Bank Name {R1}
+    In service : Boolean
+--
+class Shaft Level
+attributes
+    Floor : Level Name {I, R28}
+    Shaft : Shaft ID {I, R28}
+--
+class Top Bank Level
+attributes
+    Bank : Bank Name {I, R38, R5}
+    Floor : Level Name {I, R38}
+    Calling down : Boolean
+--
+class Transfer
+attributes
+    Shaft : Shaft ID {I, R53}
+    Destination floor : Level Name {R53}
+--
+relationships
+    R1
+    has service features define by, 1 Bank
+    defines service features of, M Shaft
+    Shaft.Bank -> Bank.Name
+--
+    R2
+    travels through, 1 Shaft
+    is conduit for, 1 Cabin
+    Cabin.Shaft -> Shaft.ID
+--
+    R3
+    enables access to, M Shaft Level
+    is accessible in, 1c Bank Level
+    1 Accessible Shaft Level
+    Accessible Shaft Level.(Floor, Shaft) -> Shaft Level.(Floor, Shaft)
+    Accessible Shaft Level.(Floor, Bank) -> Bank Level.(Floor, Bank)
+--
+    R4
+    is passenger entry for, 1 Cabin
+    passengers enter via, 1 Door
+    Door.Shaft -> Cabin.Shaft
+--
+    R5
+    is the highest floor serviceable by, 1 Bank
+    provides service up to, 1 Top Bank Level
+    Top Bank Level.Bank -> Bank.Name
+--
+    R6
+    is the lowest floor serviceable by, 1 Bank
+    provides service down to, 1 Bottom Bank Level
+    Bottom Bank Level.Bank -> Bank.Name
+--
+    OR7
+    higher / lower, Floor
+    Height : I2
+--
+    R28
+    intersects and opens onto, M Floor
+    is intersected and accessed by, M Shaft
+    1 Shaft Level
+    Shaft Level.Floor -> Floor.Name
+    Shaft Level.Shaft -> Shaft.ID
+--
+    R29
+    services, M Floor
+    is serviced by, Mc Bank
+    1 Bank Level
+    Bank Level.Bank -> Bank.Name
+    Bank Level.Floor -> Floor.Name
+--
+    R38
+    Bank Level +
+        Top Bank Level
+        Middle Bank Level
+        Bottom Bank Level
+    <subclass>.(Bank, Floor) -> Bank Level.(Bank, Floor)
+--
+    R43
+    is location of, 1c Cabin
+    is at, 1 Shaft Level
+    Cabin.(Shaft, Current floor) -> Shaft Level.(Shaft, Floor)
+--
+    R49
+    call has chosen for service, 1c Accessible Shaft Level
+    will service call from, 1c Bank Level
+    M Floor Service
+    Floor Service.(Floor, Bank) -> Bank Level.(Floor, Bank)
+    Floor Service.(Floor, Shaft) -> Accessible Shaft Level.(Floor, Shaft)
+--
+    R53
+    is current destination of, 1c Cabin
+    is going to, 1c Accessible Shaft Level
+    1 Transfer
+    Transfer.Shaft -> Cabin.Shaft
+    Transfer.Destination floor -> Accessible Shaft Level.Floor
+--

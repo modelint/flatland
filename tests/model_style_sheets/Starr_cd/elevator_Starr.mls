@@ -1,0 +1,40 @@
+diagram class
+notation Starr
+presentation default
+orientation landscape
+color blue steel
+sheet D
+padding l150 b300
+frame Model Integration Diagram
+frame_presentation default
+nodes
+    Shaft Level 3,3
+    Accessible Shaft Level/2 4,5
+    Transfer 5,7
+    Cabin 3,8
+    Shaft 2,10
+    Door 6,8 >right
+    Bank Level 8,5
+    Top Bank Level 9,6-7
+    Middle Bank Level 8,6-7
+    Bottom Bank Level 7,6-7
+    Floor Service 6,4
+    Floor 9-10,2
+    Bank 9-10,10
+    Building 11,8
+connectors
+    +R1 : +/3 b+1|Bank : +/3 t*|Shaft
+    +R2 : +/1 r|Cabin : -/2 t-1|Shaft
+    -R3 : -/2 t|Shaft Level : +/1 l|Bank Level, l|Accessible Shaft Level
+    -R4 : +/2 t+1|Cabin : +/2 b*|Door
+    -R5 : -/1 r+2|Top Bank Level : -/2 l*|Bank
+    -R6.2 : +/1 r|Bottom Bank Level : -/2 b-1|Bank
+    -R28.2 : -/2 b|Floor : -/2 l|Shaft, b|Shaft Level
+    +R29 : +/1 r+1|Floor : +/1 l*|Bank, t|Bank Level
+    -R38 : r|Bank Level { l|Top Bank Level, l|Middle Bank Level, l|Bottom Bank Level }
+    +R43 : +/1 r|Shaft Level : +/1 l*|Cabin
+    +R49 : -/2 b*|Bank Level : -/3 t|Accessible Shaft Level, r|Floor Service
+    -R53.2 : -/1 r|Accessible Shaft Level : -/2 t-1|Cabin, b|Transfer
+    +OR7.2-1 : +/1 t-2|Floor : -/1 l+2|Floor : L10 L1R+2
+//    +R55.2-1 : +/1 t-2|Floor : -/1 l+2|Floor : L10 L1R+2
+

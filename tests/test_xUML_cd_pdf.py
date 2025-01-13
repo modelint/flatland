@@ -1,9 +1,7 @@
 """ text_xUML_cd_pdf.py - test xUML notation class diagram pdf output"""
 
 import pytest
-import os
 from pathlib import Path
-from flatland.database.flatland_db import FlatlandDB
 from flatland.xuml.xuml_classdiagram import XumlClassDiagram
 
 diagrams = [
@@ -51,12 +49,6 @@ diagrams = [
     ("aircraft_tree4", "t058_p5_single_branch_grafted_from_trunk_left"),
     # ("flatland_node_subsystem", "t100_flatland_node_subsystem"),
 ]
-
-@pytest.fixture(scope='session')
-def flatland_db():
-    test_dir = Path(__file__).parent
-    os.chdir(test_dir)
-    FlatlandDB.create_db(rebuild=True)
 
 @pytest.mark.parametrize("model, layout", diagrams)
 def test_pdf(flatland_db, model, layout):
