@@ -1,4 +1,4 @@
 include src/flatland/log.conf
 include src/flatland/configuration/*.yaml
-include src/flatland/examples *
+include src/flatland/examples/*
 recursive-include src/flatland/documentation *

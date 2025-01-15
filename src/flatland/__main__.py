@@ -88,7 +88,7 @@ def main():
     if args.examples:
         # Copy the entire example directory into the users local dir if it does not already exist
         import shutil
-        ex_path = Path(__file__).parent.parent.parent / 'examples'
+        ex_path = Path(__file__).parent / 'examples'
         local_ex_path = Path.cwd() / 'examples'
         if local_ex_path.exists():
             logger.warning("Examples already exist in the current directory. Delete or move it if you want the latest.")
@@ -99,7 +99,7 @@ def main():
     if args.docs:
         # Copy the entire docs directory into the users local dir if it does not already exist
         import shutil
-        docs_path = Path(__file__).parent.parent.parent / 'documentation'
+        docs_path = Path(__file__).parent / 'documentation'
         local_docs_path = Path.cwd() / 'documentation'
         if local_docs_path.exists():
             logger.warning("Documentation already exists in the current directory.\
