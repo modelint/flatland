@@ -134,7 +134,7 @@ To get those example files, you can request them like so:
 ```
 (flatland) [918] flatland -E
 ```
-This copies the flatland examples diretory into your current working directory. In there
+This copies the flatland examples directory into your current working directory. In there
 you will find a variety of example models and layouts. Note that a given layout file
 references model content, so you can only use it with a specific model file.
 
