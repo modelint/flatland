@@ -15,7 +15,6 @@ from mls_parser.exceptions import LayoutInputFileOpen as MLS_LayoutInputFileOpen
 from mls_parser.layout_parser import LayoutParser
 
 # Flatland
-from flatland.exceptions import (LayoutParseError, ModelParseError)
 from flatland.node_subsystem.canvas import Canvas
 from flatland.sheet_subsystem.frame import Frame
 from flatland.node_subsystem.single_cell_node import SingleCellNode

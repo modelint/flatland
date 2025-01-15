@@ -1,0 +1,30 @@
+diagram state machine
+notation xUML
+presentation default
+orientation landscape
+sheet C
+color blue steel
+padding l270 b220
+frame Model Integration Diagram
+frame_presentation default
+nodes
+    NOT REQUESTED 150% 10,2-3
+    Registering stop 70% 8,2 >left
+    Registering floor call 8,3-4 >right
+    Requesting service 6,2-3
+    REQUESTED 70% 4,2-3
+    Clear stop request 2,2-3
+    Clear floor request 4,5
+connectors
+    +Stop request : b*|NOT REQUESTED : t|Registering stop
+    +Floor calling : b*|NOT REQUESTED : t-2|Registering floor call
+    +Stop registered : b-1|Registering stop : l|Requesting service
+    -Floor call registered.2-2 : b|Registering floor call : r|Requesting service
+    -Stop request.2+2 : l|REQUESTED : b-2|Registering stop
+    +Floor calling.2+2 : r+1|REQUESTED : b+2|Registering floor call
+    +Wait for service-1 : b|Requesting service : t*|REQUESTED
+    -Opposite floor call pending : t-1|Clear stop request : b*|REQUESTED
+    +Stop serviced-1 : b*|REQUESTED : t+1|Clear stop request
+    +All requests cleared.3-4 : l|Clear stop request : l|NOT REQUESTED : L1
+    +Check stop request.2-2 : b|Clear floor request : r|Clear stop request
+    -Serviced floor request-2 : r-1|REQUESTED : l*|Clear floor request

@@ -1,0 +1,85 @@
+metadata
+    Title : Accessible Shaft Level State Machine Diagram
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.2
+    Modification date : May 12, 2019
+    Version : 3.1.3
+    Organization : Model Integration, LLC
+    Copyright notice > MIT
+    Organization logo > mint
+domain Elevator Management
+class Accessible Shaft Level
+events
+    All requests cleared
+    Stop request
+    Floor calling
+    Floor call registered
+    Stop registered
+    Wait for service
+    Opposite floor call pending
+    Stop serviced
+    Serviced floor request
+    Check stop request
+--
+state NOT REQUESTED
+activity
+    // Not a desired dest for the Cabin
+transitions
+    Stop request > Registering stop
+    Floor calling > Registering floor call
+--
+state Registering stop
+activity
+    Stop requested.set
+    Stop registered -> me
+transitions
+    Stop registered > Requesting service
+--
+state Registering floor call( dir: Direction )
+activity
+    *Floor Service( Direction: in.dir ) me, /R3/Bank Level
+    Floor call registered -> me
+transitions
+    Floor call registered > Requesting service
+--
+state Requesting service
+activity
+    Service requested -> R53( /R3/R28/Shaft )
+    Wait for service -> me
+transitions
+    Wait for service > REQUESTED
+--
+state REQUESTED
+activity
+    // Desired dest for cabin
+transitions
+    Stop request > Registering stop
+    Floor calling > Regsitering floor call
+    Stop serviced > Clear stop request
+    Serviced floor request > Clear floor request
+--
+state Clear stop request
+activity
+    // Clear the stop request if registered
+
+    Stop requested? {
+        UI.Clear stop request( Floor, Shaft )
+        Stop requested.unset
+    }
+
+    /R49/Floor Service? Opposite floor call pending -> :
+        All requests cleared -> me
+
+    Requests cleared -> /R53/Transfer
+transitions
+    Opposite floor call pending > REQUESTED
+    All requests cleared > NOT REQUESTED
+--
+state Clear floor request( dir: Direction )
+activity
+    Clear floor request( in.dir ) -> /R49/Bank Level
+    !* /R49/Floor Service( Direction: in.dir )
+    Check stop request -> me
+transitions
+    Check stop request > Clear stop request
+--

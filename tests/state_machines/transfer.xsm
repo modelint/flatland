@@ -1,0 +1,144 @@
+metadata
+    Title : Transfer State Machine Diagram
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.5
+    Modification date : May 12, 2019
+    Version : 3.3.2
+    Organization : Model Integration, LLC
+    Copyright notice > MIT
+    Organization logo > mint
+domain Elevator Management
+class Transfer
+events
+    initial
+    Execute
+    Wait for cabin
+    Dest change request
+    Ready to go
+    Cabin dispatched
+    Stationary update
+    Redirect requested
+    Cabin redirected
+    Update in motion
+    Cabin at destination
+    Reversal checked
+    Call in progress
+    Wait to clear
+    Requests cleared
+    Door closed
+--
+initial transitions
+    initial > CREATED
+--
+state CREATED
+activity
+    // Created in this state
+transitions
+    Execute > Creating or updating transfer
+--
+state Creating or updating transfer
+activity
+    UI.Set destination( Shaft, floor: Destination floor )
+    New transfer -> /R53/Cabin
+    Wait for cabin -> me
+transitions
+    Wait for cabin > WAITING FOR CABIN
+--
+state WAITING FOR CABIN
+activity
+    // Cabin enroute
+transitions
+    Ready to go > Dispatching cabin
+    Dest change request > Changing destination before cabin moves
+--
+state Changing destination before cabin moves( new dest: Level Name )
+activity
+    // The cabin isn’t moving, so we can safely
+    // relink to the new destination
+    Destination floor = ^new dest
+    Stationary update -> me
+transitions
+    Stationary update > WAITING FOR CABIN
+--
+state Dispatching cabin
+activity
+    Go -> /R53/Cabin
+    Cabin dispatched -> me
+transitions
+    Cabin dispatched > CABIN IN MOTION
+--
+state CABIN IN MOTION
+activity
+    // Cabin in transit
+transitions
+    Dest change request > Request redirect
+    Cabin redirected > Match new destination of cabin
+    Cabin at destination > Check for cabin reversal
+--
+state Request redirect( new dest: Level Name )
+activity
+    Try redirect( ^new dest ) -> /R53/Cabin
+    Redirect requested -> me
+transitions
+    Redirect requested > CABIN IN MOTION
+--
+state Match new destination of cabin( updated dest: Level Name )
+activity
+    Destination floor = ^updated dest
+    Update in motion -> me
+transitions
+    Update in motion > CABIN IN MOTION
+--
+state Check for cabin reversal
+activity
+    // If the Cabin arrives and there is a floor request in the opposite direction
+    // and no stop request or call in the Cabin’s current travel direction,
+    // we must reverse the cabin’s travel direction
+
+    call behind .= /R53/R49/Floor Service( Direction: /R53/Cabin.Travel direction.opposite )
+    call fwd .= /R53/R49/Floor Service( Direction: /R53/Cabin.Travel direction )
+    switch dir = (call behind and !call fwd and !/R53/Accessible Shaft Level.Stop requested)
+    switch dir? /R53/Cabin.Travel direction.toggle
+
+    Reversal checked -> me
+transitions
+    Reversal checked > Check for active floor service
+--
+state Check for active floor service
+activity
+    UI.Cabin arrived( Shaft, direction: /R53/Cabin.Travel direction )
+    pending floor service .= /R53/R49/Floor Service( Direction: /R53/Cabin.Travel direction )
+
+    pending floor service? {
+        Call in progress -> meCabin
+        Cabin arrived -> pending floor service
+    } : {
+        Serviced stop -> /R53/Accessible Shaft Level
+        Wait to clear -> me
+    }
+transitions
+    Call in progress > CALL IN PROGRESS
+    Wait to clear > WAITING FOR REQUESTS TO CLEAR
+--
+state CALL IN PROGRESS
+activity
+transitions
+    Door closed > Canceling floor service
+--
+state Canceling floor service
+activity
+    Cancel -> /R53/R49/Floor Service( Direction: /R53/Cabin.Travel direction )
+    Wait to clear -> me
+transitions
+    Wait to clear > WAITING FOR REQUESTS TO CLEAR
+--
+state WAITING FOR REQUESTS TO CLEAR
+activity
+    // Requests still pending
+transitions
+    Requests cleared > Delete
+--
+state Delete !*
+activity
+    Transfer completed -> R53( Shaft )
+--

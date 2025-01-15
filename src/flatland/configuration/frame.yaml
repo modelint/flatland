@@ -26,7 +26,7 @@ Model Integration Snippet: # Frame name
       Version: { x: 170, y: 10, max width: 20, max height: 5 }
 
 Model Integration Diagram:
-# Frame for medium ot large diagrams with a Title Block in the lower right corner
+# Frame for medium to large diagrams with a Title Block in the lower right corner
 
   # All Fitted Frames below will use this Title Block Pattern
   title-block-pattern:
@@ -63,7 +63,7 @@ Model Integration Diagram:
     title block placement: { x: 1190, y: 35 }
     fields:
       Title: { x: 72, y: 1240, max width: 254, max height: 25 }
-      Copyright notice: { x: 72, y: 270, max width: 254, max height: 57 }
+      Copyright notice: { x: 605, y: 90, max width: 254, max height: 57 }
       Organization logo: { x: 72, y: 70, max width: 191, max height: 25 }
 
   C-portrait:
@@ -77,7 +77,7 @@ Model Integration Diagram:
     title block placement: { x: 2050, y: 100 }
     fields:
       Title: { x: 72, y: 1650, max width: 254, max height: 25 }
-      Copyright notice: { x: 850, y: 220, max width: 254, max height: 57 }
+      Copyright notice: { x: 990, y: 170, max width: 254, max height: 57 }
       Organization logo: { x: 70, y: 150, max width: 191, max height: 25 }
 
   D-portrait:

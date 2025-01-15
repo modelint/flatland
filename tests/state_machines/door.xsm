@@ -1,0 +1,108 @@
+metadata
+    Title : Door State Machine
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.7
+    Modification date : May 12, 2019
+    Version : 3.2.1
+    Organization : Model Integration, LLC
+    Copyright notice > MIT
+    Organization logo > mint
+domain Elevator Managment
+class Door
+events
+    Door opened
+    Passenger open
+    Passenger close
+    Open delay canceled
+    Time to close
+    Hold released
+    Door closed
+    Lock
+    Unlock
+    Door blocked
+    Keep trying
+    Emergency hold
+    Cannot close door
+--
+state OPENING
+activity
+    Open door( Shaft ) => SIO
+    UI.Door opening( Shaft )
+transitions
+    Door opened > OPEN
+    Passenger close > CLOSING
+--
+state OPEN
+activity
+    UI.Door opened( Shaft )
+    my Bank .= /R4/R2/Bank
+    Time to close -> me after Blocked ?
+        my Bank.Block clear time : my Bank.Passenger load time
+transitions
+    Passenger close > Cancel open delay
+    Time to close > HOLDING OPEN
+--
+state Cancel open delay
+activity
+    Cancel Time to close -> me
+    Open delay canceled -> me
+transitions
+    Open delay canceled > HOLDING OPEN
+--
+state HOLDING OPEN
+activity
+    !Held ? Hold released -> me
+transitions
+    Hold released > CLOSING
+--
+state CLOSING
+activity
+    [!Emergency hold] {
+        Close door( Shaft ) => SIO
+        UI.Door closing( Shaft )
+    }
+    [Emergency hold] Emergency hold -> me
+transitions
+    Door closed > CLOSED
+    Passenger open > OPENING
+    Door blocked > Count block
+    Emergency hold > EMERCENCY HOLD
+--
+state CLOSED
+activity
+    UI.Door closed( Shaft )
+    Close attempts.reset
+    Blocked.unset
+    [Lock requested] Lock -> me
+    Door closed -> /R4/R53/Transfer // May be none
+transitions
+    Lock > LOCKED
+    Passenger open > OPENING
+--
+state LOCKED
+activity
+    // Tell the cabin that we’re ready to go
+    Lock requested.unset
+    Doors secure -> /R4/Cabin
+transitions
+    Unlock > OPENING
+--
+state Count block
+activity
+    (++Close attempts > /R4/R2/Bank.Max close attempts) ?
+        Can’t close door -> me : Blocked.set; Keep trying -> me
+transitions
+    Keep trying > OPENING
+    Cannot close door > CANNOT CLOSE
+--
+state EMERGENCY HOLD
+activity
+    // Wait for service
+--
+state CANNOT CLOSE
+activity
+    // Take the shaft out of service
+    Take out of service -> /R4/R2/Shaft
+--
+
+

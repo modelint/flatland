@@ -1,0 +1,36 @@
+diagram state machine
+notation xUML
+presentation default
+orientation landscape
+sheet C
+color blue steel
+padding l230 b100
+frame Model Integration Diagram
+frame_presentation default
+nodes
+    OPENING 300% 13,2-4
+    OPEN 11,3
+    Cancel open delay 9,3
+    HOLDING OPEN 100% 7,3
+    CLOSING 120% 4,3-4
+    CLOSED 100% 2,2-3
+    LOCKED 8,1
+    Count block 8,5
+    EMERGENCY HOLD/2 4,5-6 >bottom
+    CANNOT CLOSE 8,7
+connectors
+    +Door opened : b-1|OPENING : t*|OPEN
+    +Passenger close : b*|OPEN : t|Cancel open delay
+    +Open delay canceled : b|Cancel open delay : t*|HOLDING OPEN
+    +Time to close-2 : b-2|OPEN : t*|HOLDING OPEN
+    +Hold released : b-2|HOLDING OPEN : t*|CLOSING
+    +Door closed : b*|CLOSING : t|CLOSED
+    -Passenger close-2 : b+2|OPENING : t*|CLOSING
+    -Lock.2+2 : l|CLOSED : b|LOCKED
+    +Unlock.2 : t|LOCKED : l|OPENING
+    +Passenger open : t-2|CLOSED : b*|OPENING
+    +Passenger open+2 : t+2|CLOSING : b*|OPENING
+    -Door blocked.2 : r|CLOSING : b|Count block
+    +Keep trying.2 : t|Count block : r|OPENING
+    -Emergency hold : r-2|CLOSING : l*|EMERGENCY HOLD
+    +Cannot close door-1 : r|Count block : l*|CANNOT CLOSE

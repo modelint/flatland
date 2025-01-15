@@ -1,0 +1,44 @@
+diagram state machine
+notation xUML
+presentation default
+orientation landscape
+sheet D
+color blue steel
+padding l250 b300
+frame Model Integration Diagram
+frame_presentation default
+nodes
+    CREATED 16,3
+    Creating or updating transfer 14,3
+    WAITING FOR CABIN 25% 11,3
+    Changing destination before cabin moves 12,1
+    Dispatching cabin 9,3
+    CABIN IN MOTION 6-7,3
+    Request redirect 8,1
+    Match new destination of cabin 4-5,1
+    Check for cabin reversal 14,6
+    Check for active floor service 11,6
+    CALL IN PROGRESS 11,8
+    Canceling floor service 9-10,8
+    WAITING FOR REQUESTS TO CLEAR 8,6
+    Delete 6,6
+connectors
+    +initial : t|CREATED
+    +Execute : b|CREATED : t*|Creating or updating transfer
+    +Wait for cabin : b|Creating or updating transfer : t*|WAITING FOR CABIN
+    +Dest change request.2-2 : t-2|WAITING FOR CABIN : r|Changing destination before cabin moves
+    +Stationary update.2-2 : b|Changing destination before cabin moves : l|WAITING FOR CABIN
+    +Ready to go : b|WAITING FOR CABIN : t*|Dispatching cabin
+    +Cabin dispatched : b|Dispatching cabin : t*|CABIN IN MOTION
+    +Dest change request.2-2 : b-2|CABIN IN MOTION : r|Request redirect
+    +Redirect requested.2-1 : b|Request redirect : l+1|CABIN IN MOTION
+    +Cabin redirected.2-1 : l-1|CABIN IN MOTION : t|Match new destination of cabin
+    +Update in motion.2+1 : r|Match new destination of cabin : b|CABIN IN MOTION
+    +Cabin at destination.3-2 : r|CABIN IN MOTION : l|Check for cabin reversal : L4R+2
+    -Reversal checked : b|Check for cabin reversal : t*|Check for active floor service
+    +Call in progress-1 : r|Check for active floor service : l*|CALL IN PROGRESS
+    +Door closed : b|CALL IN PROGRESS : t*|Canceling floor service
+    +Wait to clear.2-2 : b|Canceling floor service : r|WAITING FOR REQUESTS TO CLEAR
+    -Wait to clear : b|Check for active floor service : t*|WAITING FOR REQUESTS TO CLEAR
+    -Requests cleared : b|WAITING FOR REQUESTS TO CLEAR : t*|Delete
+    b|Delete
