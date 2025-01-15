@@ -10,6 +10,8 @@ from typing import Dict, List, Tuple
 # Model Integration
 from xsm_parser.state_model_parser import StateModelParser
 from xsm_parser.state_model_visitor import Parameter_a
+from xsm_parser.exceptions import ModelInputFileOpen as XSM_ModelInputFileOpen
+from mls_parser.exceptions import LayoutInputFileOpen as MLS_LayoutInputFileOpen
 from mls_parser.layout_parser import LayoutParser
 
 # Flatland
@@ -53,14 +55,16 @@ class XumlStateMachineDiagram:
         cls.logger.info("Parsing the state model")
         try:
             cls.model = StateModelParser.parse_file(file_input=cls.xuml_model_path, debug=False)
-        except ModelParseError as e:
-            sys.exit(e)
+        except XSM_ModelInputFileOpen as e:
+            cls.logger.error(f"Cannot open state model file: {cls.xuml_model_path}")
+            sys.exit(str(e))
 
         # Layout
         cls.logger.info("Parsing the layout")
         try:
             cls.layout = LayoutParser.parse_file(file_input=cls.flatland_layout_path, debug=False)
-        except LayoutParseError as e:
+        except MLS_LayoutInputFileOpen as e:
+            cls.logger.error(f"Cannot open layout file: {cls.flatland_layout_path}")
             sys.exit(str(e))
 
         # Draw the blank canvas of the appropriate size, diagram type and presentation style
