@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mi-flatland"
-version = "2.0.1"
+version = "2.0.2"
 description = "Model text file + layout text file -> beautiful diagram"
 readme = "README.md"
 authors = [{ name = "Leon Starr", email = "leon_starr@modelint.com" }]
