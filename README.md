@@ -122,22 +122,35 @@ Flatland version: 2.0.2
 
 #### [6] Generate a diagram
 Note: I will write instructions later about how you can get the sample files I am using, but I'll just show you what happens for now.
+
+Initially we see one executable class model (xcm) file and two 
+model layout sheet (mls) files.
 ```
-(flatland) [915] flatland -m aircraft2.xcm -l t001_straight_binary_horiz.mls -d t001.pdf
+(flatland) [915] ls
+elevator.xcm      elevator_xUML.mls    elevator_Starr.mls
+```
+Now we choose the xUML layout and generate a class diagram.
+```
+(flatland) [915] flatland -m elevator.xcm -l elevator_xUML.mls -d elevator_cd.pdf
 (flatland) [917] ls
-aircraft2.xcm      t001_straight_binary_horiz.mls     t001.pdf
+elevator.xcm      elevator_xUML.mls     elevator_Starr.mls   elevator_cd.pdf
 ```
-What we did there was supply a model file *.xcm, a layout file *.mls, and the name of the diagram file we wanted to generate, t1001.pdf
+What we did there was supply a model file *.xcm with the -m arg, a layout file *.mls with the -l arg, and the name of the diagram file we wanted to generate, elevator_cd.pdf with the -d arg.
 
 #### [6a]
 To get those example files, you can request them like so:
 ```
 (flatland) [918] flatland -E
+(flatland) [919] ls
+examples
 ```
 This copies the flatland examples directory into your current working directory. In there
 you will find a variety of example models and layouts. Note that a given layout file
 references model content, so you can only use it with a specific model file.
 
 But you CAN define multiple layouts for the same model. They will be grouped together in subfolders in the examples directory so that you can easily tell which models and layouts can be used together.
+
+By the way, if you are on Mac OS, you will see two directories of YAML configuration files in your $HOME/.config folder named 'flatland' and 'mi_tablet'. Graphics and text style options along with any organization specific logos and other media resources are in the mi_tablet directory and 
+a variety of positional, layout, titleblock and other parameters are in the flatland directory.  You might want to browse through those, but careful if you edit them.  If you mess up, don't worry, just delete the directories and the next time you run flatland it will refresh them. Detailed instructions will be available on the wiki eventually, but you can read the comments in each YAML file for now for guidance.
 
 And there you have it.  See the project wiki for all the various command args you can supply and how to edit layout files and the various types of supported model files.
