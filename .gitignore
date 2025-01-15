@@ -16,3 +16,4 @@ src/mi_tabletqt.egg-info
 .idea/workspace.xml
 *.swp
 /tests/output/
+/src/mi_flatland.egg-info/

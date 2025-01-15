@@ -24,7 +24,7 @@ build = ["build", "twine"]
 dev = ["bump2version", "pytest"]
 
 [project.scripts]
-tablet = "flatland.__main__:main"
+flatland = "flatland.__main__:main"
 
 [project.urls]
 repository    = "https://github.com/modelint/flatland"

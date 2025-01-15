@@ -61,6 +61,8 @@ def parse(cl_input):
                         help='Print the ruler grid so you check canvas positions')
     parser.add_argument('-R', '--rebuild', action='store_true',
                         help='Rebuild the flatland database. Necessary only if corrupted.')
+    parser.add_argument('-X', '--debug', action='store_true',
+                        help='Debug mode -- outputs db and diagnostics to stdout')
     return parser.parse_args(cl_input)
 
 
@@ -123,7 +125,7 @@ def main():
     # Do any configuration tasks necessary before starting up the app
     # The database will be rebuilt if requested
     if not already_configured:
-        FlatlandDB.create_db(rebuild=args.rebuild)
+        FlatlandDB.create_db(debug=args.debug, rebuild=args.rebuild)
 
     # if args.model and args.layout:  # Just making sure we have them both
         model_path = Path(args.model)
@@ -155,7 +157,8 @@ def main():
             )
 
     logger.info("No problemo")  # We didn't die on an exception, basically
-    print("No problemo")
+    if args.debug:
+        print("No problemo")
 
 
 if __name__ == "__main__":

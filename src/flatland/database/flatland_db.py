@@ -66,13 +66,15 @@ class FlatlandDB:
         cls.rel_names = Database.constraint_names(db=app)
 
     @classmethod
-    def create_db(cls, rebuild: bool = True):
+    def create_db(cls, rebuild: bool = True, debug = False):
         """
          1. Initialize a PyRAL session.
          2. Load the Flatland Schema based on the class models defined in the project wiki (with model diagrams
             in the documentation folder of this repository).
          3. Populate each modeled subsystem using any yaml files in the users configuration path.
         """
+        cls.debug = debug
+
         # Create a new PyRAL session
         cls.db = Database.open_session(name='flatland')
 
@@ -95,6 +97,6 @@ class FlatlandDB:
 
         # Print out a depiction of the populated database as a set of filled out tables
         # organized alphabetically by relvar name
-        Relvar.printall('flatland')
-        pass
+        if cls.debug:
+            Relvar.printall('flatland')
 
