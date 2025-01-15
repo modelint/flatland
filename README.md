@@ -50,9 +50,8 @@ if you contact me. If you are adept with your platform, I could use the help tes
 ### Summary
 
 1. Install Python 3.12 on your machine (you might be okay with an earlier version, but all bets are off)
-1. Set up a virtual environment so your path variables, python version, etc are all correct for this installation
-2. Activate that environment so the settings take effect
-3. Update your pip for that environment, always a good idea
+2. Set up a virtual environment so your path variables, python version, etc are all correct for this installation
+3. Activate that environment so the settings take effect
 4. Install flatland
 5. Check version
 6. Generate a diagram from an example file
@@ -63,7 +62,7 @@ if you contact me. If you are adept with your platform, I could use the help tes
 #### [1] Install Python
 Go to https://www.python.org and follow instructions to download Python 3.12 for your machine. It's okay if you already have other versions of Python on your machine. If you have some other way of installing Python on your machine like homebrew that's fine, just get the version right.
 
-#### [2] Set up a virtual environment
+#### [2] Set up a virtual environment (venv)
 Select or create a directory somewhere as the destination of the virutal environment you are about to create. Here's what I did on my machine:
 ```
 [841] /starr/SDEV/Environments
@@ -86,6 +85,7 @@ You'll get a lot of diagnstic stuff, but the final line should be something like
 ```
 Successfully installed distlib-0.3.9 filelock-3.16.1 platformdirs-4.3.6 virtualenv-20.28.1
 ```
+#### [3] Activiate the venv
 Now I have the venv module available which I can use to create my virtual environment (venv)
 ```
 [848] pwd
@@ -101,6 +101,8 @@ Now I activate the environment:
 ```
 Remember that command above, you'll need it whenever you open a terminal window and want to set your environment up to use flatland. You know you've succeeded because it prefixes your shell prompt with the name of the venv while active.
 
+#### [4] Install flatland
+
 Finally! We can install flatland into our environment.
 ```
 (flatland) [851] pip install mi-flatland
@@ -108,6 +110,8 @@ Finally! We can install flatland into our environment.
 Okay, now you can go to any directory you want, say your home directory and try it out.
 I created an empty directory `Ftest` in my home directory earlier, so I go there and
 check to see if flatland will show me it's version.
+
+#### [5] Check version
 ```
 (flatland) [852] cd ~/Ftest
 (flatland) [853] flatland -V
@@ -115,6 +119,8 @@ check to see if flatland will show me it's version.
 Flatland version: 2.0.2
 (flatland) [915] 
 ```
+
+#### [6] Generate a diagram
 Note: I will write instructions later about how you can get the sample files I am using, but I'll just show you what happens for now.
 ```
 (flatland) [915] flatland -m aircraft2.xcm -l t001_straight_binary_horiz.mls -d t001.pdf
