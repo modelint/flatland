@@ -40,17 +40,87 @@ Also, various resources at the [Model Integration](https://modelint.com/mbse) we
 
 ## Installation
 
-Notes here are for those familiar with python installation procedures.  I will write a more detailed set of procedures
-for those who are not in a later release.
+If you are already a pythonista, you can skim these instructions quickly. But I am writing for
+those of you who might not be.
 
-You should also ensure that you have Python 3.12+ installed. A virtual environment is highly recommended.
+And for today (25-1-14) I have only tested this on my MacBook Pro / M2 Max / Sequoia
+A minor adjustment or two may be required for success on Linux and Windows, and I am happy to help you out with that
+if you contact me. If you are adept with your platform, I could use the help testing installation.
 
-You can install the Flatland Model Diagram Editor from [PyPI](https://pypi.org/project/flatland-model-diagram-editor/):
+### Summary
 
-    $ pip install mi-flatland
+1. Install Python 3.12 on your machine (you might be okay with an earlier version, but all bets are off)
+1. Set up a virtual environment so your path variables, python version, etc are all correct for this installation
+2. Activate that environment so the settings take effect
+3. Update your pip for that environment, always a good idea
+4. Install flatland
+5. Check version
+6. Generate a diagram from an example file
+7. For future usage, be sure your environment is activated, or update your shell path environment as necessary
 
-Flatland is supported on Python 3.12 and above
+### Details
 
-## How to use
+#### [1] Install Python
+Go to https://www.python.org and follow instructions to download Python 3.12 for your machine. It's okay if you already have other versions of Python on your machine. If you have some other way of installing Python on your machine like homebrew that's fine, just get the version right.
 
-At this point I refer you to the [wiki](https://github.com/modelint/flatland/wiki) on this site for all of the user documentation. Enjoy (and feel free to contact me if you have any questions.
+#### [2] Set up a virtual environment
+Select or create a directory somewhere as the destination of the virutal environment you are about to create. Here's what I did on my machine:
+```
+[841] /starr/SDEV/Environments
+[842] cd User
+[843] ls
+[844] python -V
+Python 3.12.7
+[845] python -m pip install --user --upgrade pip
+[notice] A new release of pip is available: 24.2 -> 24.3.1
+[notice] To update, run: pip3 install --upgrade pip
+[846] pip3 install --upgrade pip
+```
+Your interaction will be different than above, but I verified that I had the right
+Python and ensured that the package installer pip, was up to date and ready for action.
+On to the virtual environment setup...
+```
+[847] python -m pip install --user virtualenv
+```
+You'll get a lot of diagnstic stuff, but the final line should be something like:
+```
+Successfully installed distlib-0.3.9 filelock-3.16.1 platformdirs-4.3.6 virtualenv-20.28.1
+```
+Now I have the venv module available which I can use to create my virtual environment (venv)
+```
+[848] pwd
+/Users/starr/SDEV/Environments/User
+[849] python -m venv flatland
+```
+Above, the name `flatland` is not actually flatland, but the name of the environment that I am creating for it. You could name it anything like `F1` or `flatland_env` if you like.
+
+Now I activate the environment:
+```
+[850] source flatland/bin/activate
+(flatland) [851]
+```
+Remember that command above, you'll need it whenever you open a terminal window and want to set your environment up to use flatland. You know you've succeeded because it prefixes your shell prompt with the name of the venv while active.
+
+Finally! We can install flatland into our environment.
+```
+(flatland) [851] pip install mi-flatland
+```
+Okay, now you can go to any directory you want, say your home directory and try it out.
+I created an empty directory `Ftest` in my home directory earlier, so I go there and
+check to see if flatland will show me it's version.
+```
+(flatland) [852] cd ~/Ftest
+(flatland) [853] flatland -V
+(flatland) [914] flatland -V
+Flatland version: 2.0.2
+(flatland) [915] 
+```
+Note: I will write instructions later about how you can get the sample files I am using, but I'll just show you what happens for now.
+```
+(flatland) [915] flatland -m aircraft2.xcm -l t001_straight_binary_horiz.mls -d t001.pdf
+(flatland) [917] ls
+aircraft2.xcm      t001_straight_binary_horiz.mls     t001.pdf
+```
+What we did there was supply a model file *.xcm, a layout file *.mls, and the name of the diagram file we wanted to generate, t1001.pdf
+
+And there you have it.  See the project wiki for all the various command args you can supply and how to edit layout files and the various types of supported model files.
