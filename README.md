@@ -129,4 +129,15 @@ aircraft2.xcm      t001_straight_binary_horiz.mls     t001.pdf
 ```
 What we did there was supply a model file *.xcm, a layout file *.mls, and the name of the diagram file we wanted to generate, t1001.pdf
 
+#### [6a]
+To get those example files, you can request them like so:
+```
+(flatland) [918] flatland -E
+```
+This copies the flatland examples diretory into your current working directory. In there
+you will find a variety of example models and layouts. Note that a given layout file
+references model content, so you can only use it with a specific model file.
+
+But you CAN define multiple layouts for the same model. They will be grouped together in subfolders in the examples directory so that you can easily tell which models and layouts can be used together.
+
 And there you have it.  See the project wiki for all the various command args you can supply and how to edit layout files and the various types of supported model files.
