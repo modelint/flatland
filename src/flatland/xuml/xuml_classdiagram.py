@@ -6,10 +6,14 @@ xUML_class_diagram.py – Generates an xuml diagram for an xuml model using the 
 import sys
 import logging
 from pathlib import Path
-from xcm_parser.class_model_parser import ClassModelParser
-from mls_parser.layout_parser import LayoutParser
 from typing import List, Dict, Any, Optional
 from collections import namedtuple
+
+# Model Integration
+from xcm_parser.exceptions import ModelInputFileOpen as XCM_ModelInputFileOpen
+from xcm_parser.class_model_parser import ClassModelParser
+from mls_parser.layout_parser import LayoutParser
+from mls_parser.exceptions import LayoutInputFileOpen as MLS_LayoutInputFileOpen
 
 # Flatland
 from flatland.datatypes.connection_types import NodeFace
@@ -64,14 +68,16 @@ class XumlClassDiagram:
         cls.logger.info("Parsing the class model")
         try:
             cls.model = ClassModelParser.parse_file(file_input=cls.xuml_model_path, debug=False)
-        except ModelParseError as e:
-            sys.exit(e)
+        except XCM_ModelInputFileOpen as e:
+            cls.logger.error(f"Cannot open class model file: {cls.xuml_model_path}")
+            sys.exit(str(e))
 
         # Layout
         cls.logger.info("Parsing the layout")
         try:
             cls.layout = LayoutParser.parse_file(file_input=cls.flatland_layout_path, debug=False)
-        except LayoutParseError as e:
+        except MLS_LayoutInputFileOpen as e:
+            cls.logger.error(f"Cannot open layout file: {cls.flatland_layout_path}")
             sys.exit(str(e))
 
         # Draw the blank canvas of the appropriate size, diagram type and presentation style
