@@ -84,33 +84,37 @@ def main():
     if args.version:
         # Just print the version and quit
         print(f'Flatland version: {version}')
+
+    if args.examples:
+        # Copy the entire example directory into the users local dir if it does not already exist
+        import shutil
+        ex_path = Path(__file__).parent.parent.parent / 'examples'
+        local_ex_path = Path.cwd() / 'examples'
+        if local_ex_path.exists():
+            logger.warning("Examples already exist in the current directory. Delete or move it if you want the latest.")
+        else:
+            logger.info("Copying example directory into user's local directory")
+            shutil.copytree(ex_path, local_ex_path)  # Copy the example directory
+
+    if args.docs:
+        # Copy the entire docs directory into the users local dir if it does not already exist
+        import shutil
+        docs_path = Path(__file__).parent.parent.parent / 'documentation'
+        local_docs_path = Path.cwd() / 'documentation'
+        if local_docs_path.exists():
+            logger.warning("Documentation already exists in the current directory.\
+             Delete or move it if you want the latest.")
+        else:
+            logger.info("Copying doc directory to user's local directory")
+            shutil.copytree(docs_path, local_docs_path)
+
+    if args.docs or args.examples or args.version:
+        # Don't require diagram generation args if user is requesting information
+        # Just quit here
         sys.exit(0)
 
-    # if args.examples:
-    #     # Copy the entire example directory into the users local dir if it does not already exist
-    #     import shutil
-    #     ex_path = Path(__file__).parent / 'examples'
-    #     local_ex_path = Path.cwd() / 'examples'
-    #     if local_ex_path.exists():
-    #         logger.warning("Examples already exist in the current directory. Delete or move it if you want the latest.")
-    #     else:
-    #         logger.info("Copying example directory users local directory")
-    #         shutil.copytree(ex_path, local_ex_path)  # Copy the example directory
-    #         test_gen_path = Path(__file__).parent / 'tests' / 'gen_example_diagrams.py'
-    #         shutil.copy(test_gen_path, local_ex_path)  # Copy the gen_example file into the copied example dir
-    #
-    # if args.docs:
-    #     # Copy the entire docs directory into the users local dir if it does not already exist
-    #     import shutil
-    #     docs_path = Path(__file__).parent / 'documentation'
-    #     local_docs_path = Path.cwd() / 'documentation'
-    #     if local_docs_path.exists():
-    #         logger.warning("Documentation already exists in the current directory.\
-    #          Delete or move it if you want the latest.")
-    #     else:
-    #         logger.info("Copying doc directory to users local directory")
-    #         shutil.copytree(docs_path, local_docs_path)
-    #
+    # User is not requesting information, so they must be trying to generate a diagram
+    # Ensure the necessary args are supplied
     if args.model and not args.layout:
         logger.error("A layout file must be specified for your model.")
         sys.exit(1)
