@@ -85,7 +85,7 @@ You'll get a lot of diagnstic stuff, but the final line should be something like
 ```
 Successfully installed distlib-0.3.9 filelock-3.16.1 platformdirs-4.3.6 virtualenv-20.28.1
 ```
-#### [3] Activiate the venv
+#### [3] Activate the venv
 Now I have the venv module available which I can use to create my virtual environment (venv)
 ```
 [848] pwd
