@@ -38,8 +38,6 @@ def parse(cl_input):
                          references to model file.')
     parser.add_argument('-d', '--diagram', action='store', default='diagram.pdf',
                         help='Name of file to generate, .pdf extension automatically added')
-    parser.add_argument('-D', '--docs', action='store_true',
-                        help='Copy the project documentation directory into the local directory')
     parser.add_argument('-CF', '--configuration', action='store_true',
                         help="Create a new configuration directory in user's flatland home")
     parser.add_argument('-E', '--examples', action='store_true',
@@ -96,19 +94,7 @@ def main():
             logger.info("Copying example directory into user's local directory")
             shutil.copytree(ex_path, local_ex_path)  # Copy the example directory
 
-    if args.docs:
-        # Copy the entire docs directory into the users local dir if it does not already exist
-        import shutil
-        docs_path = Path(__file__).parent / 'documentation'
-        local_docs_path = Path.cwd() / 'documentation'
-        if local_docs_path.exists():
-            logger.warning("Documentation already exists in the current directory.\
-             Delete or move it if you want the latest.")
-        else:
-            logger.info("Copying doc directory to user's local directory")
-            shutil.copytree(docs_path, local_docs_path)
-
-    if args.docs or args.examples or args.version:
+    if args.examples or args.version:
         # Don't require diagram generation args if user is requesting information
         # Just quit here
         sys.exit(0)
