@@ -62,7 +62,7 @@ Model Integration Diagram:
   C-landscape:
     title block placement: { x: 1190, y: 35 }
     fields:
-      Title: { x: 72, y: 1240, max width: 254, max height: 25 }
+      Title: { x: 72, y: 1230, max width: 254, max height: 25 }
       Copyright notice: { x: 605, y: 90, max width: 254, max height: 57 }
       Organization logo: { x: 72, y: 70, max width: 191, max height: 25 }
 

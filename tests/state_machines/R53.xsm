@@ -1,0 +1,63 @@
+metadata
+    Title : R53 / Shaft Multiple Assigner State Machine Diagram
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.10
+    Modification date : May 12, 2019
+    Version : 3.2.4
+    Organization : Model Integration, LLC
+    Copyright notice > MIT
+    Organization logo > mint
+domain Elevator Management
+relationship R53
+events
+    Service requested
+    No destination
+    Transfer created
+    Transfer completed
+    Dest change evaluated
+--
+state NO TRANSFER
+activity
+    // Waiting for service request
+transitions
+    Service requested > Search for new destination
+--
+state Search for new destination
+activity
+    UI.Door opened( Shaft )
+    my Bank .= /R4/R2/Bank
+    Time to close -> me after Blocked ?
+        my Bank.Block clear time : my Bank.Passenger load time
+transitions
+    No destination > NO TRANSFER
+    Transfer created > TRANSFER IN PROGRESS
+--
+state TRANSFER IN PROGRESS
+activity
+    // Active transfer
+transitions
+    Transfer completed > Seach for new destination
+    Service requested > Search for alternate destination
+--
+state Search for alternate destination
+activity
+    cabin in shaft .= /R2/Cabin
+    xfer .= cabin in shaft/R53/Transfer
+    call in progress .= xfer/R49/Floor Service( Direction: cabin in shaft.Travel direction )
+
+    fwd dest .= cabin in shaft.Ping( dir: cabin in shaft.Travel direction )
+    fwd dest? destination aslev .= fwd dest :
+        !call in progress? {
+            // Search opposite the travel direction only if not servicing
+            // a floor request in the current direction
+            rev dest .= cabin in shaft.Ping( dir: Travel direction.opposite )
+            rev dest? cabin in shaft.Travel direction.toggle
+            destination aslev .= rev dest // may be empty
+        }
+
+    (destination aslev and destination aslev.Floor != xfer.Destination floor)?
+        Dest change request( new dest: destination aslev.floor ) -> xfer
+    Dest change evaluated -> me
+transitions
+    Dest change evaluated > TRANSFER IN PROGRESS
+--

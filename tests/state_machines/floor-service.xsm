@@ -1,0 +1,45 @@
+metadata
+    Title : Floor Service State Machine Diagram
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.3
+    Modification date : May 12, 2019
+    Version : 3.1.1
+    Organization : Model Integration, LLC
+    Copyright notice > MIT
+    Organization logo > mint
+domain Elevator Management
+class Floor Service
+events
+    initial
+    Cabin arrived
+    Middle floor
+    Cancel
+    Top_or_bottom floor
+--
+initial transitions
+    initial > WAITING FOR CABIN
+--
+state WAITING FOR CABIN
+activity
+    // Cabin hasn't arrived yet
+transitions
+    Cabin arrived > Check bank level type
+--
+state Check bank level type
+activity
+    /R49/R38/Middle Bank Level ?
+         Middle floor -> : Top or bottom floor -> me
+transitions
+    Middle floor > HOLDING SERVICE DIRECTION
+    Top_or_bottom floor > COMPLETED
+--
+state HOLDING SERVICE DIRECTION
+activity
+    // Service direction won't change
+transitions
+    Cancel > COMPLETED
+--
+state COMPLETED
+activity
+    Serviced floor request( dir: Direction ) -> /R49/Accessible Shaft Level
+--

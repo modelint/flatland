@@ -1,0 +1,20 @@
+diagram state machine
+notation xUML
+presentation default
+orientation landscape
+sheet tabloid
+color blue steel
+padding l250 b120
+frame Model Integration Diagram
+frame_presentation default
+nodes
+    WAITING FOR CABIN 50% 8,2
+    Check bank level type 6,2
+    HOLDING SERVICE DIRECTION 4,2
+    COMPLETED 2,2
+connectors
+    +initial : t|WAITING FOR CABIN
+    +Cabin arrived : b|WAITING FOR CABIN : t*|Check bank level type
+    +Middle floor : b|Check bank level type : t*|HOLDING SERVICE DIRECTION
+    +Cancel : b|HOLDING SERVICE DIRECTION : t*|COMPLETED
+    +Top_or_bottom floor : r|Check bank level type : r|COMPLETED : L3

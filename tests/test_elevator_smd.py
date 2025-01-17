@@ -8,7 +8,9 @@ diagrams = [
     "transfer",
     "door",
     "cabin",
-    "asl"
+    "asl",
+    "floor-service",
+    "R53",
 ]
 
 @pytest.mark.parametrize("model", diagrams)

@@ -1,0 +1,22 @@
+// door.mls – Simplified elevator door state machine diagram
+diagram state machine
+notation xUML
+presentation default
+orientation landscape
+sheet C
+color blue steel
+padding l150 b250
+frame Model Integration Diagram
+frame_presentation default
+nodes
+    NO TRANSFER 75% 8,3
+    Search for new destination 6,3
+    TRANSFER IN PROGRESS 75% 4,3
+    Search for alternate destination 2,3
+connectors
+    -Service requested : b*|NO TRANSFER : t-2|Search for new destination
+    +No destination : t+2|Search for new destination : b*|NO TRANSFER
+    -Transfer created : b|Search for new destination : t*|TRANSFER IN PROGRESS
+    +Transfer completed.3 : r|TRANSFER IN PROGRESS : r|Search for new destination : L4
+    +Service requested : b*|TRANSFER IN PROGRESS : t-2|Search for alternate destination
+    +Dest change evaluated : t+2|Search for alternate destination : b*|TRANSFER IN PROGRESS
