@@ -7,7 +7,8 @@ from flatland.xuml.xuml_statemachine_diagram import XumlStateMachineDiagram
 diagrams = [
     "transfer",
     "door",
-    "cabin"
+    "cabin",
+    "asl"
 ]
 
 @pytest.mark.parametrize("model", diagrams)
