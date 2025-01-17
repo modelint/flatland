@@ -4,6 +4,7 @@
 import logging
 from collections import namedtuple
 from typing import TYPE_CHECKING, Dict
+import math
 
 # Model Integration
 from pyral.relation import Relation
@@ -17,6 +18,7 @@ from flatland.exceptions import FlatlandDBException
 from flatland.names import app
 from flatland.datatypes.geometry_types import HorizAlign
 from flatland.sheet_subsystem.titleblock_placement import draw_titleblock
+from flatland.text.text_block import TextBlock
 
 if TYPE_CHECKING:
     from flatland.node_subsystem.canvas import Canvas
@@ -140,13 +142,37 @@ class Frame:
                 block_size = TextElement.text_block_size(presentation=self.Layer.Presentation, asset=place['Name'],
                                                          text_block=[text])
 
+                # If the databox contains only one Metadata Item and its text is too wide to fit
+                # we can try to wrap it, truncating when we run out of vertical space
+                # But if there is more than one Metadata Item in the databox, we'll just truncate the line
+                # (We don't want to deal with the complexity of shuffling multiple elements around in the same
+                # databox.
+
+                db_block = [text]  # Default assumption is that the line will fit without wrapping
+                max_text_width = box_size.width - 2*h_margin  # Box width minus a horizontal margin on each side
+                adjusted_block_height = block_size.height  # Default assumption that we won't resize the block
+                if block_size.width > max_text_width:
+                    wrap = math.ceil(block_size.width / max_text_width)  # Round up to get number of lines to wrap
+                    wrapped_text = TextBlock(line=text, wrap=wrap).text  # List of wrapped lines
+                    # If multiple Metadata Items in the databox, just truncate by taking the first wrapped line only
+                    db_block = [wrapped_text[0]] if num_regions[int(place['Data_box'])] > 1 else wrapped_text
+                    # Now see if we have enough vertical space
+                    max_text_height = box_size.height - 2*v_margin
+                    wrap_block_size = TextElement.text_block_size(presentation=self.Layer.Presentation,
+                                                                  asset=place['Name'], text_block=db_block)
+                    if wrap_block_size.height > max_text_height:
+                        db_block = [wrapped_text[0]]  # Truncate to the first line only
+                    else:
+                        # Adjust the block height to account for our wrapped text
+                        adjusted_block_height = wrap_block_size.height
+
                 stack_order = int(place['Stack_order'])
                 stack_height = (stack_order - 1) * (region_line_spacing + block_size.height)
 
                 # compute lower left corner position
                 xpos = box_position.x + h_margin
                 if num_regions[int(place['Data_box'])] == 1:
-                    ypos = box_position.y + round((box_size.height - block_size.height) / 2, 2)
+                    ypos = box_position.y + round((box_size.height - adjusted_block_height) / 2, 2)
                 else:
                     ypos = box_position.y + v_margin*2 + stack_height  # Not sure why v_margin is doubled, but it works
                 halign = HorizAlign.LEFT
@@ -155,7 +181,7 @@ class Frame:
                 elif place['H_align'] == 'CENTER':
                     halign = HorizAlign.CENTER
                 TextElement.add_block(layer=self.Layer, asset=place['Name'],
-                                      lower_left=Position(xpos, ypos), text=[text],
+                                      lower_left=Position(xpos, ypos), text=db_block,
                                       align=halign)
 
         # Add a text block to the canvas for any Free Field outside of the title block
