@@ -148,33 +148,34 @@ class Frame:
                 # (We don't want to deal with the complexity of shuffling multiple elements around in the same
                 # databox.
 
-                db_block = [text]  # Default assumption is that the line will fit without wrapping
+                wrapped_text = [text]  # Default assumption is that the line will fit without wrapping
                 max_text_width = box_size.width - 2*h_margin  # Box width minus a horizontal margin on each side
                 adjusted_block_height = block_size.height  # Default assumption that we won't resize the block
                 if block_size.width > max_text_width:
                     wrap = math.ceil(block_size.width / max_text_width)  # Round up to get number of lines to wrap
-                    # TODO: the wrapped block might still be too wide depending on word spacing
-                    # TODO: we need to keep wrapping until we get it right (with a loop?)
-                    wrapped_text = TextBlock(line=text, wrap=wrap).text  # List of wrapped lines
+                    wrapped_block = TextBlock(line=text, wrap=wrap)  # Wrapped text block
                     # If multiple Metadata Items in the databox, just truncate by taking the first wrapped line only
-                    db_block = [wrapped_text[0]] if num_regions[int(place['Data_box'])] > 1 else wrapped_text
+                    wrapped_text = [wrapped_block.text[0]] if num_regions[int(place['Data_box'])] > 1 else wrapped_block.text
                     # Now see if we have enough vertical space
                     max_text_height = box_size.height - 2*v_margin
                     wrap_block_size = TextElement.text_block_size(presentation=self.Layer.Presentation,
-                                                                  asset=place['Name'], text_block=db_block)
+                                                                  asset=place['Name'], text_block=wrapped_text)
                     # It may be the case that the text is split between words such that it is still wider than
                     # the max_text_width. If so let's wrap an extra line and try again until we get a text block
                     # that fits between the horizontal margins in the Data Box.
-                    while wrap_block_size.width > max_text_width:
+                    while wrap_block_size.width > max_text_width and wrapped_block.spaces:
+                        # Note that we ensure that there is at least one space available for additional wrapping
                         wrap = wrap + 1
-                        db_block = TextBlock(line=text, wrap=wrap).text  # List of wrapped lines
-                        wrap_block_size = TextElement.text_block_size(presentation=self.Layer.Presentation,
-                                                                      asset=place['Name'], text_block=db_block)
+                        wrapped_block = TextBlock(line=text, wrap=wrap).text  # List of wrapped lines
+                        wrap_block_size = TextElement.text_block_size(
+                            presentation=self.Layer.Presentation,asset=place['Name'], text_block=wrapped_block.text)
 
-                    if wrap_block_size.height > max_text_height:
-                        # Just print the first and last word with an ellipses in between
-                        overflow_text = f"{wrapped_text[0].split()[0]} ... {wrapped_text[-1].split()[-1]}"
-                        db_block = [overflow_text]
+                    # Last check for fit before we give up and truncate
+                    if wrap_block_size.height > max_text_height or wrap_block_size.width > max_text_width:
+                        # The text can't be wrapped to fit so
+                        # just print up to the first three characters and an ellipsis
+                        overflow_text = f"{wrapped_text[0][:3]}..."
+                        wrapped_text = [overflow_text]
                     else:
                         # Adjust the block height to account for our wrapped text
                         adjusted_block_height = wrap_block_size.height
@@ -194,7 +195,7 @@ class Frame:
                 elif place['H_align'] == 'CENTER':
                     halign = HorizAlign.CENTER
                 TextElement.add_block(layer=self.Layer, asset=place['Name'],
-                                      lower_left=Position(xpos, ypos), text=db_block,
+                                      lower_left=Position(xpos, ypos), text=wrapped_text,
                                       align=halign)
 
         # Add a text block to the canvas for any Free Field outside of the title block

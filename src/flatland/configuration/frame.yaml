@@ -46,11 +46,11 @@ Model Integration Diagram:
         - Version
 
   tabloid-landscape:
-    title block placement: { x: 275, y: 9 }
+    title block placement: { x: 850, y: 20 }
     fields:  # Note that the Title is displayed both in a Data Box and in a Free Field for easy visibility
-      Title: { x: 8, y: 264, max width: 254, max height: 13 }
-      Copyright notice: { x: 8, y: 28, max width: 254, max height: 57 }
-      Organization logo: { x: 8, y: 9, max width: 180, max height: 24 }
+      Title: { x: 25, y: 742, max width: 254, max height: 13 }
+      Copyright notice: { x: 380, y: 65, max width: 254, max height: 57 }
+      Organization logo: { x: 30, y: 40, max width: 180, max height: 24 }
 
   tabloid-portrait:
     title block placement: { x: 150, y: 9 }

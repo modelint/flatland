@@ -16,7 +16,7 @@
 
     scale: # Scaled total size and margins for each Sheet Size Group defined in sheet.yaml
       large: {width: 500, height: 110, margin h: 6, margin v: 2}
-      medium: {width: 120, height: 30, margin h: 3, margin v: 2}
+      medium: {width: 350, height: 90, margin h: 3, margin v: 2}
       small: {width: 80, height: 20, margin h: 6, margin v: 2}
 
     compartment boxes: # A container box that is divided horizontally or vertically

@@ -50,6 +50,9 @@ class TextBlock:
             # Put any left over text in the last line of our block
             self.text.append(line_remaining)
 
+        # True if there is at least one space in one of the lines of text
+        self.spaces = all(" " in s for s in self.text)
+
     def __repr__(self):
         return f'R: {self.wrap} T: {self.text}'
 
