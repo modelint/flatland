@@ -1,4 +1,4 @@
-""" text_xUML_cd_pdf.py - test xUML notation class diagram pdf output"""
+""" text_cd_pdf.py - test xUML notation class diagram pdf output"""
 
 import pytest
 from pathlib import Path
@@ -50,12 +50,28 @@ diagrams = [
 ]
 
 @pytest.mark.parametrize("model, layout", diagrams)
-def test_pdf(flatland_db, model, layout):
+def test_xUML_cd(flatland_db, model, layout):
 
     XumlClassDiagram(
         xuml_model_path=Path(f"class_diagrams/{model}.xcm"),
         flatland_layout_path=Path(f"model_style_sheets/xUML_cd/{layout}.mls"),
         diagram_file_path=Path(f"output/xUML_cd/{layout.split('_')[0]}.pdf"),
+        show_grid=True,
+        nodes_only=False,
+        no_color=False,
+        show_rulers=False,
+        show_ref_types=True
+    )
+
+    assert True
+
+@pytest.mark.parametrize("model, layout", diagrams)
+def test_Starr_cd(flatland_db, model, layout):
+
+    XumlClassDiagram(
+        xuml_model_path=Path(f"class_diagrams/{model}.xcm"),
+        flatland_layout_path=Path(f"model_style_sheets/Starr_cd/{layout}.mls"),
+        diagram_file_path=Path(f"output/Starr_cd/{layout.split('_')[0]}.pdf"),
         show_grid=True,
         nodes_only=False,
         no_color=False,

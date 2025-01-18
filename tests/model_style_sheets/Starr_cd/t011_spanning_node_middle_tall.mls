@@ -1,0 +1,10 @@
+// t011_spanning_node_middle_tall.mss – Just one node in in the middle of the grid in one column spanning two rows
+diagram class
+notation Starr
+presentation default
+orientation landscape
+sheet letter
+frame Model Integration Snippet
+frame_presentation default
+nodes
+    Diagram 2-4,2
