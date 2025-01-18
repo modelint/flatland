@@ -1,0 +1,309 @@
+/// Drawing Domain / Tablet Subsystem
+/// Executable model markup
+// Copied from Flatland and upgrading to an xcm file from xmm
+
+metadata
+    Title : Flatland Drawing Domain / Tablet Subsystem Class Diagram
+    Author : Leon Starr
+    Document ID : mint.flatland.td.6a
+    Version : 0.4.2
+    Modification date : January 18, 2025
+    Organization : Model Integration, LLC / www.modelint.com
+    Copyright notice > MIT
+    Organization logo > mint
+domain Drawing, DRAW
+subsystem Tablet, TAB 1-99
+class Asset
+attributes
+    Name : Asset Name {I}
+    Drawing type : Drawing Type Name {I, R3}
+    Form : Text_Shape
+--
+class Asset Presentation
+attributes
+    Asset : Asset Name {I, R4}
+    Presentation : Presentation Name {I, R4}
+    Drawing type : Drawing Type Name {I, R4}
+--
+class Closed Shape
+attributes
+    ID : Element ID {I, R12}
+    Layer : Layer Name {I, R12}
+--
+class Closed Shape Fill
+attributes
+    Asset : Asset Name {I, R21}
+    Presentation : Presentation Name {I, R21}
+    Drawing type : Drawing Type Name {I, R21}
+    Fill color : Color Name {R21}
+--
+class Color Usage
+attributes
+    Name : Usage Name {I}
+    Color : Color Name {R24}
+--
+class Corner Spec
+attributes
+    Asset : Asset Name {I, R18}
+    Presentation : Presentation Name {I, R18}
+    Drawing type : Drawing Type Name {I, R18}
+    Radius : Distance
+    Top : Boolean
+    Bottom : Boolean
+--
+class Drawing Type
+attributes
+    Name : Drawing Type Name {I}
+--
+class Element
+attributes
+    ID : Element ID {I}
+    Layer : Layer Name {I, R19}
+    Size : Rect Size
+--
+class Layer
+attributes
+    Name : Layer Name {I}
+    Z coord : Ordinal {I2, OR20}
+    Presentation : Presentation Name {R2}
+    Drawing type : Drawing Type Name {R2}
+    Tablet : Tablet ID {R13}
+--
+class Line Pattern
+attributes
+    Name : Line Pattern Name {I}
+    Solid : Points
+    Blank : Points
+--
+class Line Segment
+attributes
+    ID : Element ID {I, R12}
+    Layer : Layer Name {I, R12}
+    From : Tablet Coord
+    To : Tablet Coord
+--
+class Line Style
+attributes
+    Name : Line Style Name {I}
+    Width : Points
+    Pattern : Line Pattern Name {R8}
+    Color : Color Name {R9}
+--
+class Polygon
+attributes
+    ID : Element ID {I, R22}
+    Layer : Layer Name {I, R22}
+--
+class Presentation
+attributes
+    Name : Presentation Name {I}
+    Drawing type : Drawing Type Name {I, R1}
+--
+class Rectangle
+attributes
+    ID : Element ID {I, R22}
+    Layer : Layer Name {I, R22}
+    Size : Rect Size
+    Lower left : Tablet Coord
+--
+class RGB Color
+attributes
+    Name : Color Name {I}
+    Red : Channel
+    Green : Channel
+    Blue : Channel
+--
+class Shape Element
+attributes
+    ID : Element ID {I, R15}
+    Layer : Layer Name {I, R15}
+    Asset : Asset Name {R6}
+    Presentation : Presentation Name {R6}
+    Drawing type : Drawing Type Name {R6}
+--
+class Shape Presentation
+attributes
+    Asset : Asset Name {I, R5}
+    Presentation : Presentation Name {I, R5}
+    Drawing type : Drawing Type Name {I, R5}
+    Line style : Line Style Name {R6}
+--
+class Tablet
+attributes
+    ID : Tablet ID {I}
+    Drawing type : Drawing Type Name {R2}
+    Size : Rect_Size
+--
+class Text Element
+attributes
+    ID {I, R15}
+    Layer {I, R15}
+    Content : Text
+    Lower left : Tablet Coord
+    Text style : Text Style Name {R16}
+--
+class Text Presentation
+attributes
+    Asset : Asset Name {I, R5}
+    Presentation : Presentation Name {I, R5}
+    Drawing type : Drawing Type Name {I, R5}
+    Text style : Text Style Name {R7}
+--
+class Text Style
+attributes
+    Name : Text Style Name {I}
+    Size : Points
+    Slant : Font Slant
+    Weight : Font Weight
+    Leading : Points
+    Typeface : Type Face Name {R11}
+    Color : Color Name {R10}
+--
+class Typeface
+attributes
+    Alias : Type Face Name {I}
+    Name : Font Family {I2}
+--
+class Usage Fill
+attributes
+    Shape asset : Asset Name {I, R23}
+    Presentation : Presentation Name {I, R23}
+    Drawing type : Drawing Type Name {I, R23}
+    Usage : Usage Name {R23}
+--
+class Vertex
+attributes
+    Polygon : Element ID {I, R17}
+    Layer : Layer Name {I, R17}
+    Position : Tablet Coord {I}
+--
+relationships
+    R1
+    defines appearance of, 1 Drawing Type
+    appears as defined by, M Presentation
+    Presentation.Drawing type -> Drawing type.Name
+--
+    R2
+    styles content of, Mc Layer
+    content is styled by, 1 Presentation
+    Layer.(Presentation, Drawing type) -> Presentation.(Name, Drawing type)
+--
+    R3
+    can be drawn on, 1 Drawing Type
+    can draw, M Asset
+    Asset.Drawing type -> Drawing type.Name
+--
+    R4
+    stylizes, M Asset
+    is styled by, M Presentation
+    1 Asset Presentation
+    Asset Presentation.(Presentation, Drawing type) -> Presentation.(Name, Drawing type)
+    Asset Presentation.(Asset, Drawing type) -> Asset.(Name, Drawing type)
+--
+    R5
+    Asset Presentation +
+        Shape Presentation
+        Text Presentation
+    <subclass>.(Asset, Presentation, Drawing type) -> Asset Presentation.(Asset, Presentation, Drawing type)
+--
+    R6
+    is styled by, 1 Shape Presentation
+    styles, Mc Shape Element
+    Shape Element.(Asset, Presentation, Drawing type) -> Shape Element.(Asset, Presentation, Drawing type)
+--
+    R7
+    sets text characteristics for, Mc Text Presentation
+    text characteristics are defined by, 1 Text Style
+    Text Presentation.Text style -> Text Style.Name
+--
+    R8
+    is applied in, Mc Line Style
+    applies, 1 Line Pattern
+    Line Style.Pattern -> Line Pattern.Name
+--
+    R9
+    colors, Mc Line Style
+    is colored by, 1 RGB Color
+    Line Style.Color -> RGB Color.Name
+--
+    R10
+    colors, Mc Text Style
+    is colored by, 1 RGB Color
+    Text Style.Color -> RGB Color.Name
+--
+    R11
+    is styled by, Mc Text Style
+    styles, 1 Typeface
+    Text Style.Typeface -> Typeface.Alias
+--
+    R12
+    Shape Element +
+        Line Segment
+        Closed Shape
+    <subclass>.(ID, Layer) -> Shape Element.(ID, Layer)
+--
+    R13
+    organizes content on z axis with, M Layer
+    holds z axis coordinate content of, 1 Tablet
+    Layer.Tablet -> Tablet.ID
+--
+    R14
+    draws boundary with, 1 Line Style
+    is used to draw boundary for, Mc Shape Presentation
+    Shape Presentation.Line style -> Line Style.Name
+--
+    R15
+    Element +
+        Shape Element
+        Text Element
+    <subclass>.ID -> Element.ID
+--
+    R16
+    presents, Mc Text Element
+    is presented by, 1 Text Style
+    Text Element.Text style -> Text Style.Name
+--
+    R17
+    is start of line segment in, 1 Polygon
+    starts line segment at, M Vertex
+    Vertex.Polygon -> Polygon.ID
+--
+    R18
+    rounds corners of, 1 Shape Presentation
+    has corners rounded by, 1c Corner Spec
+    Corner Spec.(Asset, Presentation, Drawing type) -> Shape Presentation.(Asset, Presentation, Drawing type)
+--
+    R19
+    draws, Mc Asset
+    is drawn on, 1 Layer
+    Element.Layer -> Layer.Name
+--
+    OR20
+    rendered below / rendered above, Layer
+    Z coord : I2
+--
+    R21
+    colors interior of, Mc Shape Presentation
+    interior is colored by, 1c RGB Color
+    1 Closed Shape Fill
+    Closed Shape Fill.(Asset, Presentation, Drawing Type) -> Shape Presentation.(Asset, Presentation, Drawing Type)
+    Closed Shape Fill.Fill color -> RGB Color.Name
+--
+    R22
+    Closed Shape +
+        Rectangle
+        Polygon
+    <subclass>.(ID, Layer) -> Closed Shape.(ID, Layer)
+--
+    R23
+    applies, 1c Color Usage
+    is applied to, Mc Shape Presentation
+    1 Usage Fill
+    Usage Fill.(Shape asset, Presentation, Drawing type) -> Shape Presentation.(Asset, Presentation, Drawing type)
+    Usage Fill.Usage -> Color Usage.Name
+--
+    R24
+    is represented by, 1 RGB Color
+    represents, Mc Color Usage
+    Color Usage.Color -> RGB Color.Name
+--

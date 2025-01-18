@@ -6,6 +6,7 @@ from flatland.xuml.xuml_classdiagram import XumlClassDiagram
 
 diagrams = [
     "sheet_subsystem",
+    "tablet_subsystem"
 ]
 
 @pytest.mark.parametrize("model", diagrams)
