@@ -417,7 +417,7 @@ class Grid:
                 # Check to see if the rightmost column position is now outside the diagram area
                 if self.Row_boundaries[-1] > self.Diagram.Size.height:
                     excess = round(self.Row_boundaries[-1] - self.Diagram.Size.height)
-                    self.logger.error(f"Max diagram width exceeded by {excess}pt at row {len(self.Row_boundaries)}")
+                    self.logger.error(f"Max diagram height exceeded by {excess}pt at row {len(self.Row_boundaries)}")
                     sys.exit(1)
 
         # Add extra rows and columns (must add the rows first)
