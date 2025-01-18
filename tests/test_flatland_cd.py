@@ -1,11 +1,11 @@
-""" text_elevator_cd_pdf.py - test Starr and xUML notation Elevator class diagram pdf output"""
+""" text_flatland_cd_pdf.py - test Starr and xUML notation Flatland class diagram pdf output"""
 
 import pytest
 from pathlib import Path
 from flatland.xuml.xuml_classdiagram import XumlClassDiagram
 
 diagrams = [
-    "elevator",
+    "sheet_subsystem",
 ]
 
 @pytest.mark.parametrize("model", diagrams)

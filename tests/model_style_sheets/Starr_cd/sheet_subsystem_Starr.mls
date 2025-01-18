@@ -1,0 +1,50 @@
+// Flatland Sheet Subsystem Class Diagram
+// Model layout sheet
+diagram class
+notation Starr
+presentation default
+orientation landscape
+color butter
+sheet D
+padding l400 b300
+frame Model Integration Diagram
+frame_presentation default
+nodes
+    Box 6,8
+    Box Placement 7,5
+    Compartment Box 3,7-8
+    Data Box 4-5,10
+    Divider 1,8-9
+    Envelope Box 4-5,7
+    Fitted Frame 12,3-4
+    Frame 25% 11,5
+    Framed Title Block 10,6
+    Free Field 13,5
+    Metadata Item 12,6
+    Partitioned Box 3,9
+    Region 7,10
+    Section Box 4-5,8
+    Sheet 11,2
+    Sheet Size Group 8,2
+    Scaled Title Block 7,4
+    Title Block Field 11,7
+    Title Block Pattern 9,5
+    Title Block Placement 6,2-3
+connectors
+    -R300 : -/1 r|Sheet : -/2 l*|Frame, b|Fitted Frame
+    -R301.2 : -/1 b|Title Block Pattern : -/2 r|Sheet Size Group, t|Scaled Title Block
+    -R302 : +/2 b|Metadata Item : +/2 t*|Framed Title Block, l|Title Block Field
+    +R303.2 : -/3 t|Box : +/3 r|Title Block Pattern
+    +OR304.3+1 : +/1 t+2|Region : -/1 r+1|Region : L7R+2 L11R-2
+    -R305 : -/2 b|Frame : -/2 t*|Title Block Pattern, l|Framed Title Block
+    +R306.2 : +/1 r|Title Block Field : -/1 t|Region
+    +R307 : -/1 r|Fitted Frame : -/1 l*|Metadata Item, b|Free Field
+    +R308 : b|Box { t|Envelope Box, t|Section Box, t-2|Data Box }
+    +R309 : +/1 b|Region : +/1 t*|Data Box
+    +R310.2-1 : +/2 b-2|Partitioned Box : +/2 l-2|Partitioned Box, t|Divider : L2 L8R+2
+    -R311 : -/1 b|Compartment Box : -/1 l|Divider
+    -R312 : t|Compartment Box { b|Envelope Box, b-1|Section Box }
+    +R313 : t|Partitioned Box { b|Data Box, b+1|Section Box }
+    +R315 : +/1 l|Fitted Frame : +/1 l|Scaled Title Block, t|Title Block Placement : L1
+    -R316 : -/1 t|Sheet Size Group : -/1 b*|Sheet
+    +R318 : -/2 l|Box : -/2 r*|Title Block Placement, b|Box Placement
