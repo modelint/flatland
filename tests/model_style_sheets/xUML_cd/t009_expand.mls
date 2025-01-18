@@ -4,5 +4,7 @@ notation xUML
 presentation default
 orientation landscape
 sheet letter
+frame Model Integration Snippet
+frame_presentation default
 nodes
     Thin Node 1,1

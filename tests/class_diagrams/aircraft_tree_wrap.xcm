@@ -1,7 +1,5 @@
 metadata
-    Title : Hello World Example
-    Author : Leon Starr
-    Organization : Model Integration, LLC
+    Title : Two Wide Subclasses
 domain Test, TEST
 subsystem Main, MAIN 1-99
 class Drone

@@ -4,6 +4,8 @@ notation xUML
 presentation default
 orientation portrait
 sheet letter
+frame Model Integration Snippet
+frame_presentation default
 nodes
     Aircraft 1,1  // Both nodes in same column
     Pilot 3,1

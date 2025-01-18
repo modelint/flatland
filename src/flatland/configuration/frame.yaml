@@ -7,23 +7,23 @@ Model Integration Snippet: # Frame name
   letter-landscape: # name-orientation   (name defined in sheets.yaml, orientation either portrait or landscape)
     fields:  # positioned freely on sheet outside of any title block (Free Field)
       # Each key is a Metadata Item defined in metadata.yaml
-      Title: { x: 8, y: 202, max width: 254, max height: 13 }
-      Copyright notice: { x: 8, y: 31, max width: 254, max height: 57 }
-      Organization logo: { x: 5, y: 4, max width: 180, max height: 24 }
-      Author: { x: 280, y: 22, max width: 20, max height: 5 }
-      Modification date: { x: 230, y: 18, max width: 20, max height: 5 }
-      Document ID: { x: 230, y: 14, max width: 20, max height: 5 }
-      Version: { x: 230, y: 10, max width: 20, max height: 5 }
+      Title: { x: 15, y: 575, max width: 254, max height: 13 }
+#      Copyright notice: { x: 8, y: 31, max width: 254, max height: 57 }
+#      Organization logo: { x: 5, y: 4, max width: 180, max height: 24 }
+#      Author: { x: 280, y: 22, max width: 20, max height: 5 }
+#      Modification date: { x: 230, y: 18, max width: 20, max height: 5 }
+      Document ID: { x: 15, y: 550, max width: 200, max height: 10 }
+#      Version: { x: 230, y: 10, max width: 20, max height: 5 }
 
   letter-portrait:
     fields:
-      Title: { x: 8, y: 265, max width: 254, max height: 13 }
-      Copyright notice: { x: 10, y: 31, max width: 254, max height: 57 }
-      Organization logo: { x: 8, y: 5, max width: 180, max height: 24 }
-      Author: { x: 170, y: 22, max width: 20, max height: 5 }
-      Modification date: { x: 170, y: 18, max width: 20, max height: 5 }
-      Document ID: { x: 170, y: 14, max width: 20, max height: 5 }
-      Version: { x: 170, y: 10, max width: 20, max height: 5 }
+      Title: { x: 15, y: 750, max width: 254, max height: 13 }
+#      Copyright notice: { x: 10, y: 31, max width: 254, max height: 57 }
+#      Organization logo: { x: 8, y: 5, max width: 180, max height: 24 }
+#      Author: { x: 170, y: 22, max width: 20, max height: 5 }
+#      Modification date: { x: 170, y: 18, max width: 20, max height: 5 }
+      Document ID: { x: 15, y: 725, max width: 200, max height: 10 }
+#      Version: { x: 170, y: 10, max width: 20, max height: 5 }
 
 Model Integration Diagram:
 # Frame for medium to large diagrams with a Title Block in the lower right corner

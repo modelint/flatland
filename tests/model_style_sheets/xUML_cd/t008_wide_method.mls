@@ -4,6 +4,8 @@ notation xUML
 presentation default
 orientation landscape
 sheet letter
+frame Model Integration Snippet
+frame_presentation default
 nodes
     Traveling Ego Vehicle 4,3
     // Non Traveling Ego Vehicle 1,1

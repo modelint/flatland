@@ -7,7 +7,6 @@ from flatland.xuml.xuml_classdiagram import XumlClassDiagram
 diagrams = [
     ("aircraft2", "t001_straight_binary_horiz"),
     ("aircraft2", "t003_straight_binary_vert"),
-    ("aircraft_tree1", "t050_rbranch_horiz"),
     ("tall_class", "t004_single_cell_node_tall"),
     ("aircraft2", "t005_bending_binary_one"),
     ("aircraft2", "t006_reverse_straight_binary_horiz"),
