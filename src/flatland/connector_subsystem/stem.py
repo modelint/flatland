@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 # Model Integration
 from tabletqt.graphics.text_element import TextElement
 from tabletqt.graphics.symbol import Symbol
-from tabletqt.geometry_types import HorizAlign as TextAlign  # to avoid shadowing flatland HorizAlign enum
+from tabletqt.geometry_types import HorizAlign # to avoid shadowing flatland HorizAlign enum
 from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
 from tabletqt.graphics.text_element import TextBlockCorner
 from pyral.relation import Relation
@@ -23,7 +23,7 @@ from pyral.relation import Relation
 # Flatland
 from flatland.names import app
 from flatland.exceptions import InvalidNameSide, FlatlandDBException
-from flatland.datatypes.geometry_types import Position, HorizAlign
+from flatland.datatypes.geometry_types import Position
 from flatland.datatypes.connection_types import NodeFace, StemName, StemAngle, OppositeFace
 
 
