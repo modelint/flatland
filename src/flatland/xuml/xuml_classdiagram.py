@@ -96,8 +96,12 @@ class XumlClassDiagram:
         cls.logger.info("Drawing the classes")
         cls.nodes = cls.draw_classes()
 
-        # If there are any relationships, draw them
-        if cls.model.rels and not nodes_only:
+        # We verify that there are:
+        #   1. Relationships specified in the model
+        #   2. Nodes only arg was not specified
+        #   3. There is a connector block in the model layout sheet
+        # If so, we process any specified relationships with connection layouts
+        if cls.model.rels and not nodes_only and cls.layout.connector_placement:
             cp = {p['cname']: p for p in cls.layout.connector_placement}
             for r in cls.model.rels:  # r is the model data without any layout info
                 rnum = r['rnum']
