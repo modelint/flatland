@@ -9,7 +9,7 @@ import math
 # Model Integration
 from pyral.relation import Relation
 from tabletqt.graphics.text_element import TextElement
-from tabletqt.graphics.image import ImageE
+from tabletqt.graphics.image import ImageDE
 from tabletqt.geometry_types import Position, Rect_Size, HorizAlign
 from pyral.rtypes import Attribute as pyral_Attribute
 
@@ -226,7 +226,7 @@ class Frame:
             # If there is no data supplied to fill in the field, just leave it blank and move on
             if content and isresource:
                 # Key into resource locator using this size and orientation delimited by an underscore
-                ImageE.add(layer=self.Layer, name=f"{content}-{self.Canvas.Sheet.Size_group}",
+                ImageDE.add(layer=self.Layer, name=f"{content}-{self.Canvas.Sheet.Size_group}",
                            lower_left=f.position, size=f.max_area)
             elif content:  # Text content
                 # Content is a line of text to print directly

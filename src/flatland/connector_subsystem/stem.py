@@ -259,5 +259,4 @@ class Stem:
             # The symbol is on the root end and angle is determined by the node face
             angle = StemAngle[self.Node_face] if self.Root_end else None
 
-        Symbol(app=app, layer=self.Connector.Diagram.Layer, group=symbol_name, name=self.Semantic,
-               pin=location, angle=angle)
+        Symbol(layer=self.Connector.Diagram.Layer, name=self.Semantic, pin=location, angle=angle)

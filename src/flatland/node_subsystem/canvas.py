@@ -108,10 +108,9 @@ class Canvas:
         # we don't change it to title case
         ntitle = notation.title() if len(notation) > 1 and not(
                 notation[0].islower() and notation[1].isupper()) else notation
-        dtype = f"{ntitle} {diagram_type.title()} Diagram"
+        dtype = f"{ntitle} {diagram_type} diagram"
         try:
             self.Tablet = Tablet(
-                app=app,
                 size=self.Size, output_file=drawoutput,
                 # Drawing types include notation such as 'xUML class diagram' since notation affects the choice
                 # of shape and text styles.  An xUML class diagram association class stem is dashed, for example.
