@@ -15,9 +15,16 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 keywords = ["2D", "draw", "graphics", "canvas", "mbse", "xuml", "xtuml", "sysml"]
-dependencies = ['mi-configurator', 'mi-pyral', 'mi-tabletqt', 'mls-parser', 'numpy',
-    'xcm-parser', 'xsm-parser', 'tomli; python_version < "3.12"']
-requires-python = ">=3.12"
+dependencies = [
+    'mi-configurator>=0',
+    'mi-pyral>=0',
+    'mi-tabletqt>=0',
+    'mls-parser>=0',
+    'xcm-parser>=0',
+    'xsm-parser>=0',
+    'numpy~=2.2.2',
+    'tomli; python_version < "3.12"']
+requires-python = ">=3.11, <3.13"
 
 [project.optional-dependencies]
 build = ["build", "twine"]
