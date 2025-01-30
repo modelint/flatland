@@ -16,12 +16,12 @@ classifiers = [
 ]
 keywords = ["2D", "draw", "graphics", "canvas", "mbse", "xuml", "xtuml", "sysml"]
 dependencies = [
-    'mi-configurator>=0',
-    'mi-pyral>=0',
-    'mi-tabletqt>=0',
-    'mls-parser>=0',
-    'xcm-parser>=0',
-    'xsm-parser>=0',
+    'mi-configurator>=0.0.9',
+    'mi-pyral>=1.0.6',
+    'mi-tabletqt>=1.2.2',
+    'mls-parser>=0.0.6',
+    'xcm-parser>=0.2.9',
+    'xsm-parser>=0.1.3',
     'numpy~=2.2.2',
     'tomli; python_version < "3.12"']
 requires-python = ">=3.11, <3.13"
