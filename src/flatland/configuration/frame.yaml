@@ -88,15 +88,15 @@ Model Integration Diagram:
       Organization logo: { x: 19, y: 18, max width: 191, max height: 25 }
 
   E-landscape:
-    title block placement: { x: 1025, y: 38 }
+    title block placement: { x: 2850, y: 50 }
     fields:
-      Title: { x: 30, y: 884, max width: 254, max height: 25 }
-      Copyright notice: { x: 500, y: 38, max width: 254, max height: 57 }
-      Organization logo: { x: 30, y: 38, max width: 191, max height: 25 }
+      Title: { x: 60, y: 2500, max width: 254, max height: 25 }
+      Copyright notice: { x: 1500, y: 100, max width: 254, max height: 57 }
+      Organization logo: { x: 60, y: 80, max width: 191, max height: 25 }
 
   E-portrait:
-    title block placement: { x: 740, y: 25 }
+    title block placement: { x: 1740, y: 25 }
     fields:
-      Title: { x: 30, y: 1180, max width: 254, max height: 25 }
-      Copyright notice: { x: 220, y: 30, max width: 254, max height: 57 }
-      Organization logo: { x: 30, y: 30, max width: 191, max height: 25 }
+      Title: { x: 60, y: 1180, max width: 254, max height: 25 }
+      Copyright notice: { x: 220, y: 80, max width: 254, max height: 57 }
+      Organization logo: { x: 60, y: 50, max width: 191, max height: 25 }
