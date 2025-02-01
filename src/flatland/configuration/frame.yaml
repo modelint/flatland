@@ -80,6 +80,13 @@ Model Integration Diagram:
       Copyright notice: { x: 990, y: 170, max width: 254, max height: 57 }
       Organization logo: { x: 70, y: 150, max width: 191, max height: 25 }
 
+  A1-landscape:
+    title block placement: { x: 1800, y: 30 }
+    fields:
+      Title: { x: 70, y: 1600, max width: 254, max height: 25 }
+      Copyright notice: { x: 900, y: 100, max width: 254, max height: 57 }
+      Organization logo: { x: 70, y: 70, max width: 191, max height: 25 }
+
   D-portrait:
     title block placement: { x: 553, y: 38 }
     fields:
@@ -91,6 +98,13 @@ Model Integration Diagram:
     title block placement: { x: 2850, y: 50 }
     fields:
       Title: { x: 60, y: 2500, max width: 254, max height: 25 }
+      Copyright notice: { x: 1500, y: 100, max width: 254, max height: 57 }
+      Organization logo: { x: 60, y: 80, max width: 191, max height: 25 }
+
+  A0-landscape:
+    title block placement: { x: 2800, y: 50 }
+    fields:
+      Title: { x: 60, y: 2300, max width: 254, max height: 25 }
       Copyright notice: { x: 1500, y: 100, max width: 254, max height: 57 }
       Organization logo: { x: 60, y: 80, max width: 191, max height: 25 }
 

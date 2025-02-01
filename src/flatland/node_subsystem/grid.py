@@ -15,6 +15,7 @@ from pyral.relation import Relation
 from tabletqt.graphics.line_segment import LineSegment
 from tabletqt.graphics.text_element import TextElement
 from tabletqt.graphics.rectangle_se import RectangleSE
+from tabletqt.exceptions import TabletBoundsExceeded
 
 # Flatland
 from flatland.names import app
@@ -155,10 +156,13 @@ class Grid:
             # right_extent = self.Diagram.Origin.x + self.Diagram.Size.width
             right_extent = self.Diagram.Origin.x + self.Col_boundaries[-1]
             for r, h in enumerate(self.Row_boundaries):
-                LineSegment.add(layer=grid_layer, asset='row boundary',
-                                from_here=Position(left_extent, h + self.Diagram.Origin.y),
-                                to_there=Position(right_extent, h + self.Diagram.Origin.y)
-                                )
+                try:
+                    LineSegment.add(layer=grid_layer, asset='row boundary',
+                                    from_here=Position(left_extent, h + self.Diagram.Origin.y),
+                                    to_there=Position(right_extent, h + self.Diagram.Origin.y)
+                                    )
+                except TabletBoundsExceeded as e:
+                    self.logger.exception(f"Grid row boundary exceeds canvas dimensions: {e.message}")
                 ll_y = self.Diagram.Origin.y + h + boundary_label_gap
                 if r < len(self.Row_boundaries)-1:
                     TextElement.add_line(layer=grid_layer, asset='grid label',
