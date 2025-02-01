@@ -73,6 +73,7 @@ class Canvas:
         # ---
 
         self.logger = logging.getLogger(__name__)
+        self.grid = None  # Added later when rendered if grid or rulers option is requested by user
 
         self.Sheet = Sheet(standard_sheet_name)  # Ensure that the user has specified a known sheet size
         if orientation not in ('portrait', 'landscape'):
@@ -106,7 +107,7 @@ class Canvas:
         # Notation title is normally title case, but in weird cases like 'xUML', we don't change the case
         # In an effort to make the rule general, if the first letter is lower case and the second uppercase, then
         # we don't change it to title case
-        ntitle = notation.title() if len(notation) > 1 and not(
+        ntitle = notation.title() if len(notation) > 1 and not (
                 notation[0].islower() and notation[1].isupper()) else notation
         dtype = f"{ntitle} {diagram_type} diagram"
         try:
@@ -130,43 +131,47 @@ class Canvas:
         # self.logger.info("Loading symbol decoration data from flatland database")
         # Symbol(diagram_type=self.Diagram.Diagram_type.Name, notation=self.Diagram.Notation)
 
-    def draw_grid(self):
+    def draw_rulers(self):
         """
         Draw a diagnostic grid to determining spacing of frame elements
         """
         pad = 0
         vgap = 100
         hgap = 100
-        self.grid = self.Tablet.add_layer(name="grid", presentation=self.presentation, drawing_type="Grid Diagnostic")
+
+        self.grid = self.Tablet.layers.get('grid')
+        if not self.grid:
+            self.grid = self.Tablet.add_layer(name="grid", presentation=self.presentation,
+                                              drawing_type="Grid Diagnostic")
         y = 0
         while y <= self.Size.height:
-            LineSegment.add(layer=self.grid, asset='row boundary',
+            LineSegment.add(layer=self.grid, asset='ruler line',
                             from_here=Position(0, y),
                             to_there=Position(self.Size.width, y))
             y = y + vgap
         x = 0
         while x <= self.Size.width:
-            LineSegment.add(layer=self.grid, asset='column boundary',
+            LineSegment.add(layer=self.grid, asset='ruler line',
                             from_here=Position(x, 0),
                             to_there=Position(x, self.Size.height))
             x = x + hgap
 
         # Horizontal top
-        LineSegment.add(layer=self.grid, asset='grid boundary',
+        LineSegment.add(layer=self.grid, asset='ruler line',
                         from_here=Position(pad, self.Size.height),
                         to_there=Position(self.Size.width, self.Size.height))
 
         # Horizontal bottom
-        LineSegment.add(layer=self.grid, asset='grid boundary',
+        LineSegment.add(layer=self.grid, asset='ruler line',
                         from_here=Position(pad, pad),
                         to_there=Position(self.Size.width, pad))
         # vertical left
-        LineSegment.add(layer=self.grid, asset='grid boundary',
+        LineSegment.add(layer=self.grid, asset='ruler line',
                         from_here=Position(pad, self.Size.height),
                         to_there=Position(pad, pad))
 
         # vertical right
-        LineSegment.add(layer=self.grid, asset='grid boundary',
+        LineSegment.add(layer=self.grid, asset='ruler line',
                         from_here=Position(self.Size.width, self.Size.height),
                         to_there=Position(self.Size.width, pad))
 
@@ -179,7 +184,7 @@ class Canvas:
 
         # Draw all added content and output a PDF using whatever graphics library is configured in the Tablet
         if self.show_rulers:
-            self.draw_grid()
+            self.draw_rulers()
         self.Tablet.render()
 
     def __repr__(self):
