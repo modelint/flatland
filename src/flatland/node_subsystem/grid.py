@@ -185,7 +185,7 @@ class Grid:
                                          text=str(c + 1))
 
             # Draw diagram boundary
-            RectangleSE.add(layer=grid_layer, asset='grid boundary',
+            RectangleSE.add(layer=grid_layer, asset='grid border',
                             lower_left=Position(x=self.Diagram.Origin.x, y=self.Diagram.Origin.y),
                             size=self.Diagram.Size)
 
