@@ -158,6 +158,8 @@ class XumlClassDiagram:
         for a in attrs:
             name = a['name']
             # Collect optional attribute tags
+            derived = "/" if a.get('derived') else ""
+            initial_value = "" if not a.get('default_value') else f"= {a['default_value']}"
             itags = a.get('I')  # Participates in one or more identifiers
             rtags = a.get('R')  # Formalizes one or more association or generalization relationships
             ortags = a.get('OR')  # Formalizes an ordinal relationship
@@ -186,7 +188,7 @@ class XumlClassDiagram:
                     tag_text = tag_text + ortext
             tag_text = tag_text.removesuffix(", ")
             tag_text = tag_text + "}" if tag_text else ""
-            a_text = f"{name} {type_name}{tag_text}".rstrip()
+            a_text = f"{derived}{name} {type_name}{tag_text}{initial_value}".rstrip()
             attr_content.append(a_text)
         return attr_content
 
