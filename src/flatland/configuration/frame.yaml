@@ -50,9 +50,23 @@ Model Integration Diagram:
     fields:  # Note that the Title is displayed both in a Data Box and in a Free Field for easy visibility
       Title: { x: 25, y: 742, max width: 254, max height: 13 }
       Copyright notice: { x: 380, y: 65, max width: 254, max height: 57 }
-      Organization logo: { x: 30, y: 40, max width: 180, max height: 24 }
+      Organization logo: { x: 25, y: 40, max width: 180, max height: 24 }
+
+  A3-landscape:
+    title block placement: { x: 820, y: 20 }
+    fields:
+      Title: { x: 25, y: 790, max width: 254, max height: 13 }
+      Copyright notice: { x: 360, y: 65, max width: 254, max height: 57 }
+      Organization logo: { x: 20, y: 40, max width: 180, max height: 24 }
 
   tabloid-portrait:
+    title block placement: { x: 150, y: 9 }
+    fields:
+      Title: { x: 10, y: 415, max width: 254, max height: 13 }
+      Copyright notice: { x: 8, y: 25, max width: 254, max height: 57 }
+      Organization logo: { x: 5, y: 10, max width: 180, max height: 24 }
+
+  A3-portrait:
     title block placement: { x: 150, y: 9 }
     fields:
       Title: { x: 10, y: 415, max width: 254, max height: 13 }
@@ -66,7 +80,21 @@ Model Integration Diagram:
       Copyright notice: { x: 605, y: 90, max width: 254, max height: 57 }
       Organization logo: { x: 72, y: 70, max width: 191, max height: 25 }
 
+  A2-landscape:
+    title block placement: { x: 1260, y: 35 }
+    fields:
+      Title: { x: 60, y: 1120, max width: 254, max height: 25 }
+      Copyright notice: { x: 625, y: 90, max width: 254, max height: 57 }
+      Organization logo: { x: 62, y: 70, max width: 191, max height: 25 }
+
   C-portrait:
+    title block placement: { x: 700, y: 25 }
+    fields:
+      Title: { x: 18, y: 584, max width: 254, max height: 25 }
+      Copyright notice: { x: 400, y: 38, max width: 254, max height: 57 }
+      Organization logo: { x: 19, y: 18, max width: 191, max height: 25 }
+
+  A2-portrait:
     title block placement: { x: 700, y: 25 }
     fields:
       Title: { x: 18, y: 584, max width: 254, max height: 25 }
