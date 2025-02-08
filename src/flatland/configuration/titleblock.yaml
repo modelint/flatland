@@ -15,8 +15,8 @@
 - SE Simple: # Name of a title block pattern
 
     scale: # Scaled total size and margins for each Sheet Size Group defined in sheet.yaml
-      large: {width: 500, height: 110, margin h: 6, margin v: 2}
-      medium: {width: 350, height: 90, margin h: 3, margin v: 2}
+      large: {width: 600, height: 110, margin h: 6, margin v: 2}
+      medium: {width: 400, height: 90, margin h: 3, margin v: 2}
       small: {width: 80, height: 20, margin h: 6, margin v: 2}
 
     compartment boxes: # A container box that is divided horizontally or vertically
@@ -24,7 +24,7 @@
         # Box 1 is split horizontally with a divider 25% of its height moving up the y axis
         # This creates upper Box 2 and lower Box 3
         1: {orientation: H, distance: 0.25, up: 2, down: 3}
-        2: {orientation: V, distance: 0.66, right: 4, left: 5}
+        2: {orientation: V, distance: 0.59, right: 4, left: 5}
         4: {orientation: H, distance: 0.5, up: 6, down: 7}
 
     data boxes: # Box that is not subdivided with metadata assignable in one or more regions

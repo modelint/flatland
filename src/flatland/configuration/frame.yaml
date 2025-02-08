@@ -81,11 +81,11 @@ Model Integration Diagram:
       Organization logo: { x: 72, y: 70, max width: 191, max height: 25 }
 
   A2-landscape:
-    title block placement: { x: 1260, y: 35 }
+    title block placement: { x: 1200, y: 35 }
     fields:
-      Title: { x: 60, y: 1120, max width: 254, max height: 25 }
+      Title: { x: 45, y: 1120, max width: 254, max height: 25 }
       Copyright notice: { x: 625, y: 90, max width: 254, max height: 57 }
-      Organization logo: { x: 62, y: 70, max width: 191, max height: 25 }
+      Organization logo: { x: 45, y: 70, max width: 191, max height: 25 }
 
   C-portrait:
     title block placement: { x: 700, y: 25 }
@@ -95,7 +95,7 @@ Model Integration Diagram:
       Organization logo: { x: 19, y: 18, max width: 191, max height: 25 }
 
   A2-portrait:
-    title block placement: { x: 700, y: 25 }
+    title block placement: { x: 600, y: 25 }
     fields:
       Title: { x: 18, y: 584, max width: 254, max height: 25 }
       Copyright notice: { x: 400, y: 38, max width: 254, max height: 57 }
@@ -109,7 +109,7 @@ Model Integration Diagram:
       Organization logo: { x: 70, y: 150, max width: 191, max height: 25 }
 
   A1-landscape:
-    title block placement: { x: 1800, y: 30 }
+    title block placement: { x: 1700, y: 30 }
     fields:
       Title: { x: 70, y: 1600, max width: 254, max height: 25 }
       Copyright notice: { x: 900, y: 100, max width: 254, max height: 57 }
@@ -130,10 +130,10 @@ Model Integration Diagram:
       Organization logo: { x: 60, y: 80, max width: 191, max height: 25 }
 
   A0-landscape:
-    title block placement: { x: 2800, y: 50 }
+    title block placement: { x: 2600, y: 50 }
     fields:
       Title: { x: 60, y: 2300, max width: 254, max height: 25 }
-      Copyright notice: { x: 1500, y: 100, max width: 254, max height: 57 }
+      Copyright notice: { x: 1300, y: 125, max width: 254, max height: 57 }
       Organization logo: { x: 60, y: 80, max width: 191, max height: 25 }
 
   E-portrait:
