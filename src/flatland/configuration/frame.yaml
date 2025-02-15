@@ -102,7 +102,7 @@ Model Integration Diagram:
       Organization logo: { x: 19, y: 18, max width: 191, max height: 25 }
 
   D-landscape:
-    title block placement: { x: 2050, y: 100 }
+    title block placement: { x: 1900, y: 100 }
     fields:
       Title: { x: 72, y: 1650, max width: 254, max height: 25 }
       Copyright notice: { x: 990, y: 170, max width: 254, max height: 57 }
