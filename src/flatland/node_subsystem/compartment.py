@@ -9,9 +9,10 @@ if TYPE_CHECKING:
 # Model Integration
 from tabletqt.graphics.text_element import TextElement
 from tabletqt.graphics.rectangle_se import RectangleSE
+from tabletqt.geometry_types import HorizAlign, VertAlign
 
 # Flatland
-from flatland.datatypes.geometry_types import Rect_Size, Position, HorizAlign, VertAlign, Alignment, Padding
+from flatland.datatypes.geometry_types import Rect_Size, Position, Alignment, Padding
 from flatland.datatypes.command_interface import New_Compartment
 
 
