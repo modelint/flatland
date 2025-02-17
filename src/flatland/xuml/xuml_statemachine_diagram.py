@@ -85,25 +85,29 @@ class XumlStateMachineDiagram:
         # Index all (if any) event signatures by state
         state_sigs = {s.state.name: s.state.signature for s in cls.model.states if s.state.signature}
 
-        # Index all transitions by state
-        cp = cls.layout.connector_placement
-        cp_dict = {}
-        for c in cp:
-            tstem = c.get('tstem')
-            if tstem:
-                k = tstem['node_ref']
-            else:
-                k = c['ustem']['node_ref']
-            if cp_dict.get(k):
-                cp_dict[k].append(c)
-            else:
-                cp_dict[k] = [c]
+        # We verify that there are:
+        #   1. Nodes only arg was not specified
+        #   2. There is a connector block in the model layout sheet
+        # If so, we process the state transitions, otherwise, skip
 
-        # Create a dictionary of initial states (by looking at the initial transitions)
-        initial_states = {t.to_state: t.event for t in cls.model.initial_transitions}
+        if not nodes_only and cls.layout.connector_placement:
+            # Index all transitions by state
+            cp = cls.layout.connector_placement
+            cp_dict = {}
+            for c in cp:
+                tstem = c.get('tstem')
+                if tstem:
+                    k = tstem['node_ref']
+                else:
+                    k = c['ustem']['node_ref']
+                if cp_dict.get(k):
+                    cp_dict[k].append(c)
+                else:
+                    cp_dict[k] = [c]
 
-        # If there are any transitions, draw them
-        if not nodes_only:
+            # Create a dictionary of initial states (by looking at the initial transitions)
+            initial_states = {t.to_state: t.event for t in cls.model.initial_transitions}
+
             cls.logger.info("Drawing the transitions")
             for state_block in cls.model.states:
                 try:
