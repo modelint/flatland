@@ -134,10 +134,13 @@ class XumlStateMachineDiagram:
                 if state_block.transitions:
                     for t in state_block.transitions:
                         if len(t) == 2:  # Not CH or IG
-                            evname = t[0]
-                            if state_block.state.name in state_sigs:
-                                cname = make_event_cname(evname=evname, signature=state_sigs[state_block.state.name])
+                            evname = t[0]  # Event name
+                            if t.to_state in state_sigs:
+                                # Check the signature of the transition's destination state
+                                # If one is specified, included it in the connector name
+                                cname = make_event_cname(evname=evname, signature=state_sigs[t.to_state])
                             else:
+                                # Otherwise, the connector name is just the event name
                                 cname = evname
                             if evname not in cls.model.events:
                                 # An event is being referenced in some state of the model file that does not correspond

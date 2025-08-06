@@ -1,0 +1,79 @@
+metadata
+    Title : Accessible Shaft Level State Machine Diagram
+    Author : Leon Starr
+    Document ID : mint.elevator3.td.2
+    Modification date : July 29, 2025
+    Version : 3.2.0
+    Organization : Model Integration, LLC
+    Copyright notice > MIT
+    Organization logo > mint
+domain Elevator Management
+class Accessible Shaft Level
+events
+    All requests cleared
+    Stop request
+    Floor calling
+    Floor call registered
+    Stop registered
+    Wait for service
+    Opposite floor call pending
+    Stop serviced
+    Serviced floor request
+    Check stop request
+--
+state NOT REQUESTED
+activity
+    Requests cleared -> /R53/Transfer
+transitions
+    Stop request > Registering stop
+    Floor calling > Registering floor call
+--
+state Registering stop
+activity
+    Stop requested = TRUE
+    Stop registered -> me
+transitions
+    Stop registered > Requesting service
+--
+state Registering floor call( dir: Direction )
+activity
+    *Floor Service(Direction: ^dir) &R49 me, /R3/Bank Level
+    Floor call registered -> me
+transitions
+    Floor call registered > Requesting service
+--
+state Requesting service
+activity
+    Service requested -> R53( /R3/Shaft Level/R28/Shaft )
+    Wait for service -> me
+transitions
+    Wait for service > REQUESTED
+--
+state REQUESTED
+activity
+    // Desired dest for cabin
+transitions
+    Stop request > Registering stop
+    Floor calling > Registering floor call
+    Stop serviced > Clear stop request
+    Serviced floor request > Clear floor request
+--
+state Clear stop request
+activity
+    Stop requested = FALSE
+
+    /R49/Floor Service?
+        Opposite floor call pending -> :
+        All requests cleared -> me
+transitions
+    Opposite floor call pending > REQUESTED
+    All requests cleared > NOT REQUESTED
+--
+state Clear floor request( dir: Direction )
+activity
+    /R49/Bank Level.Clear floor request( ^dir )
+    !* /R49/Floor Service( Direction: ^dir )
+    Check stop request -> me
+transitions
+    Check stop request > Clear stop request
+--
