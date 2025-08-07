@@ -168,7 +168,7 @@ class Frame:
                         wrap = wrap + 1
                         wrapped_block = TextBlock(line=text, wrap=wrap).text  # List of wrapped lines
                         wrap_block_size = TextElement.text_block_size(
-                            presentation=self.Layer.Presentation,asset=place['Name'], text_block=wrapped_block.text)
+                            presentation=self.Layer.Presentation,asset=place['Name'], text_block=wrapped_block)
 
                     # Last check for fit before we give up and truncate
                     if wrap_block_size.height > max_text_height or wrap_block_size.width > max_text_width:
