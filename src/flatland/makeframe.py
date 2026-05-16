@@ -4,9 +4,9 @@
 from pathlib import Path
 
 # Model Integration
-from tabletqt.tablet import Tablet
-from tabletqt.geometry_types import Rect_Size, Position
-from tabletqt.graphics.rectangle_se import RectangleSE
+from tabletsvg.tablet import Tablet
+from tabletsvg.geometry_types import Rect_Size, Position
+from tabletsvg.graphics.rectangle_se import RectangleSE
 
 # Flatland
 from flatland.names import app
@@ -27,7 +27,7 @@ class TestFrame:
         layer_name = "frame"
         pdf = Path.cwd() / "output.pdf"
 
-        t = Tablet(app=app, size=sheet_size, output_file=pdf, drawing_type=dtype, presentation=pres, layer=layer_name)
+        t = Tablet(size=sheet_size, output_file=pdf, drawing_type=dtype, presentation=pres, layer=layer_name)
         layer = t.layers["frame"]
 
         RectangleSE.add(layer=layer, asset='Block border', lower_left=Position(300,100), size=Rect_Size(300,600))

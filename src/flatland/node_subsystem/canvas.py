@@ -7,8 +7,8 @@ from typing import Dict
 from pathlib import Path
 
 # Model Integration
-from tabletqt.tablet import Tablet, Rect_Size, Position
-from tabletqt.graphics.line_segment import LineSegment
+from tabletsvg.tablet import Tablet, Rect_Size, Position
+from tabletsvg.graphics.line_segment import LineSegment
 from pyral.relation import Relation
 
 # Flatland

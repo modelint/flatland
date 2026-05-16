@@ -8,9 +8,9 @@ import math
 
 # Model Integration
 from pyral.relation import Relation
-from tabletqt.graphics.text_element import TextElement
-from tabletqt.graphics.image import ImageDE
-from tabletqt.geometry_types import Position, Rect_Size, HorizAlign
+from tabletsvg.graphics.text_element import TextElement
+from tabletsvg.graphics.image import ImageDE
+from tabletsvg.geometry_types import Position, Rect_Size, HorizAlign
 from pyral.rtypes import Attribute as pyral_Attribute
 
 # Flatland

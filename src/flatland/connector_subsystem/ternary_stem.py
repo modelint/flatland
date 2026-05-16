@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from flatland.connector_subsystem.binary_connector import BinaryConnector
 
 # Model Integration
-from tabletqt.graphics.line_segment import LineSegment
+from tabletsvg.graphics.line_segment import LineSegment
 
 # Flatland
 from flatland.connector_subsystem.anchored_stem import AnchoredStem

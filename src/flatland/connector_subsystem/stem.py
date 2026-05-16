@@ -13,11 +13,11 @@ if TYPE_CHECKING:
     from flatland.node_subsystem.node import Node
 
 # Model Integration
-from tabletqt.graphics.text_element import TextElement
-from tabletqt.graphics.symbol import Symbol
-from tabletqt.geometry_types import HorizAlign # to avoid shadowing flatland HorizAlign enum
-from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
-from tabletqt.graphics.text_element import TextBlockCorner
+from tabletsvg.graphics.text_element import TextElement
+from tabletsvg.graphics.symbol import Symbol
+from tabletsvg.geometry_types import HorizAlign # to avoid shadowing flatland HorizAlign enum
+from tabletsvg.graphics.diagnostic_marker import DiagnosticMarker
+from tabletsvg.graphics.text_element import TextBlockCorner
 from pyral.relation import Relation
 
 # Flatland

@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 
 # Model Integration
 from pyral.relation import Relation
-from tabletqt.graphics.polygon_se import PolygonSE
-from tabletqt.graphics.text_element import TextElement
+from tabletsvg.graphics.polygon_se import PolygonSE
+from tabletsvg.graphics.text_element import TextElement
 
 # Flatland
 from flatland.names import app

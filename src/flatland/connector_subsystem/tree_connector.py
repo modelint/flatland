@@ -7,9 +7,9 @@ from collections import namedtuple
 from typing import Set, Optional
 
 # Model Integration
-from tabletqt.graphics.text_element import TextElement
+from tabletsvg.graphics.text_element import TextElement
 from pyral.relation import Relation
-from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
+from tabletsvg.graphics.diagnostic_marker import DiagnosticMarker
 
 # Flatland
 from flatland.names import app

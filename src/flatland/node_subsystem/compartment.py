@@ -7,9 +7,9 @@ if TYPE_CHECKING:
     from flatland.node_subsystem.node import Node
 
 # Model Integration
-from tabletqt.graphics.text_element import TextElement
-from tabletqt.graphics.rectangle_se import RectangleSE
-from tabletqt.geometry_types import HorizAlign, VertAlign
+from tabletsvg.graphics.text_element import TextElement
+from tabletsvg.graphics.rectangle_se import RectangleSE
+from tabletsvg.geometry_types import HorizAlign, VertAlign
 
 # Flatland
 from flatland.datatypes.geometry_types import Rect_Size, Position, Alignment, Padding

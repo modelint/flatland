@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 
 # Model Integration
 from pyral.relation import Relation
-from tabletqt.graphics.line_segment import LineSegment
-from tabletqt.graphics.text_element import TextElement
+from tabletsvg.graphics.line_segment import LineSegment
+from tabletsvg.graphics.text_element import TextElement
 
 # Flatland
 from flatland.names import app

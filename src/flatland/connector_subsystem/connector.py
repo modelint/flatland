@@ -9,8 +9,8 @@ if TYPE_CHECKING:
     from flatland.node_subsystem.diagram import Diagram
 
 # Model Integration
-from tabletqt.graphics.text_element import TextElement
-from tabletqt.graphics.diagnostic_marker import DiagnosticMarker
+from tabletsvg.graphics.text_element import TextElement
+from tabletsvg.graphics.diagnostic_marker import DiagnosticMarker
 from pyral.relation import Relation
 
 # Flatland

@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 # Model Integration
 from pyral.relation import Relation
-from tabletqt.graphics.rectangle_se import RectangleSE
+from tabletsvg.graphics.rectangle_se import RectangleSE
 
 # Flatland
 from flatland.names import app
@@ -16,7 +16,7 @@ from flatland.datatypes.geometry_types import Position, Rect_Size
 
 if TYPE_CHECKING:
     from flatland.sheet_subsystem.sheet import Sheet
-    from tabletqt.layer import Layer
+    from tabletsvg.layer import Layer
 
 CompartmentBox = namedtuple("_CompartmentBox", "distance upper_box lower_box")
 BoxPlacement = namedtuple("_BoxPlacement", "placement size")
