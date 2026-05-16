@@ -1,19 +1,34 @@
-build/
-dist/
-diagnostics/
-working/
-*.dot
-*.log
+# Ignore PyCharm project files
+.idea/
+
+# Ignore any user-specific PyCharm files
+*.iml
+
+# Ignore Python compiled files
+__pycache__/
 *.pyc
-*.db
-.DS_Store
-src/mi_tabletqt.egg-info
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/**/usage.statistics.xml
-.idea/**/dictionaries
-.idea/**/shelf
-.idea/workspace.xml
+*.pyo
+*.pyd
+
+# Ignore Virtual Environment directories
+venv/
+.env/
+.venv/
+
+# Ignore log and temporary files
 *.swp
-/tests/output/
-/src/mi_flatland.egg-info/
+
+# Ignore MacOS Finder metadata files
+.DS_store
+
+# Ignore distribution/build files
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Ignore working directory
+working/
+
+# Ignore log files
+*.log
