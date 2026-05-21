@@ -2,12 +2,12 @@ metadata
     Title : Door State Machine
     Author : Leon Starr
     Document ID : mint.elevator3.td.7
-    Modification date : May 12, 2019
-    Version : 3.2.1
+    Modification date : April 30, 2026
+    Version : 3.4.4
     Organization : Model Integration, LLC
     Copyright notice > MIT
     Organization logo > mint
-domain Elevator Managment
+domain Elevator Management
 class Door
 events
     Door opened
@@ -21,30 +21,27 @@ events
     Unlock
     Door blocked
     Keep trying
-    Emergency hold
     Cannot close door
 --
 state OPENING
 activity
-    Open door( Shaft ) => SIO
-    UI.Door opening( Shaft )
 transitions
     Door opened > OPEN
     Passenger close > CLOSING
 --
 state OPEN
 activity
-    UI.Door opened( Shaft )
-    my Bank .= /R4/R2/Bank
-    Time to close -> me after Blocked ?
-        my Bank.Block clear time : my Bank.Passenger load time
+    my Bank .= /R4/R2/R1/Bank
+    Blocked? delay = my Bank.Block clear time :
+        delay = my Bank.Passenger load time
+    Time to close -> me @delay
 transitions
     Passenger close > Cancel open delay
     Time to close > HOLDING OPEN
 --
 state Cancel open delay
 activity
-    Cancel Time to close -> me
+    Time to close ->* me
     Open delay canceled -> me
 transitions
     Open delay canceled > HOLDING OPEN
@@ -57,24 +54,18 @@ transitions
 --
 state CLOSING
 activity
-    [!Emergency hold] {
-        Close door( Shaft ) => SIO
-        UI.Door closing( Shaft )
-    }
-    [Emergency hold] Emergency hold -> me
 transitions
     Door closed > CLOSED
     Passenger open > OPENING
     Door blocked > Count block
-    Emergency hold > EMERCENCY HOLD
 --
 state CLOSED
 activity
-    UI.Door closed( Shaft )
     Close attempts.reset
     Blocked.unset
-    [Lock requested] Lock -> me
-    Door closed -> /R4/R53/Transfer // May be none
+    Lock requested? Lock -> me
+    // May be None
+    Door closed -> /R4/R53/Transfer
 transitions
     Lock > LOCKED
     Passenger open > OPENING
@@ -89,20 +80,16 @@ transitions
 --
 state Count block
 activity
-    (++Close attempts > /R4/R2/Bank.Max close attempts) ?
-        Can’t close door -> me : Blocked.set; Keep trying -> me
+    Close attempts.increment
+    (Close attempts > /R4/R2/Bank.Max close attempts) ? Cannot close door -> me : {
+        Blocked.set
+        Keep trying -> me
+    }
 transitions
     Keep trying > OPENING
     Cannot close door > CANNOT CLOSE
 --
-state EMERGENCY HOLD
-activity
-    // Wait for service
---
 state CANNOT CLOSE
 activity
-    // Take the shaft out of service
-    Take out of service -> /R4/R2/Shaft
+    Take out of service -> /R4/Cabin
 --
-
-

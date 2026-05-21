@@ -8,7 +8,7 @@ metadata
     Copyright notice > MIT
     Organization logo > mint
 domain Elevator Management
-relationship R53
+relationship R53 / Shaft
 events
     Service requested
     No destination
@@ -24,10 +24,13 @@ transitions
 --
 state Search for new destination
 activity
-    UI.Door opened( Shaft )
-    my Bank .= /R4/R2/Bank
-    Time to close -> me after Blocked ?
-        my Bank.Block clear time : my Bank.Passenger load time
+    // The Cabin in this Shaft is stationary and has no Transfer
+    cabin in shaft .= /R2/Cabin
+    destination aslev .= cabin in shaft.Ping both ways()
+    destination aslev? {
+        Execute -> *Transfer() &R53 cabin in shaft, destination aslev
+        Transfer created -> me
+    } : No destination -> me
 transitions
     No destination > NO TRANSFER
     Transfer created > TRANSFER IN PROGRESS
@@ -36,28 +39,36 @@ state TRANSFER IN PROGRESS
 activity
     // Active transfer
 transitions
-    Transfer completed > Seach for new destination
+    Transfer completed > Search for new destination
     Service requested > Search for alternate destination
 --
 state Search for alternate destination
 activity
     cabin in shaft .= /R2/Cabin
+    fwd = cabin in shaft.Travel direction
     xfer .= cabin in shaft/R53/Transfer
-    call in progress .= xfer/R49/Floor Service( Direction: cabin in shaft.Travel direction )
+    call in progress .= xfer/R53/Accessible Shaft Level/R49/Floor Service( Direction: fwd )
 
-    fwd dest .= cabin in shaft.Ping( dir: cabin in shaft.Travel direction )
-    fwd dest? destination aslev .= fwd dest :
+    fwd dest .= cabin in shaft.Ping( dir: fwd )
+    fwd dest? dest aslev .= fwd dest :
         !call in progress? {
             // Search opposite the travel direction only if not servicing
             // a floor request in the current direction
-            rev dest .= cabin in shaft.Ping( dir: Travel direction.opposite )
-            rev dest? cabin in shaft.Travel direction.toggle
-            destination aslev .= rev dest // may be empty
+            rev = fwd.opposite
+            rev dest .= cabin in shaft.Ping( dir: rev )
+            rev dest? cabin in shaft.Travel direction = rev
+            // may be empty
+            dest aslev .= rev dest
         }
 
-    (destination aslev and destination aslev.Floor != xfer.Destination floor)?
-        Dest change request( new dest: destination aslev.floor ) -> xfer
+    dest aslev? {
+        dest floor = dest aslev.Floor
+        dest floor != xfer.Destination floor?
+            Dest change request( new dest: dest floor ) -> xfer
+    }
+
     Dest change evaluated -> me
+
 transitions
     Dest change evaluated > TRANSFER IN PROGRESS
 --

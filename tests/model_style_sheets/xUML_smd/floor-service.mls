@@ -2,9 +2,9 @@ diagram state machine
 notation xUML
 presentation default
 orientation landscape
-sheet tabloid
+sheet A3
 color blue steel
-padding l250 b120
+padding l250 b150
 frame Model Integration Diagram
 frame_presentation default
 nodes
@@ -13,8 +13,7 @@ nodes
     HOLDING SERVICE DIRECTION 4,2
     COMPLETED 2,2
 connectors
-    +initial : t|WAITING FOR CABIN
     +Cabin arrived : b|WAITING FOR CABIN : t*|Check bank level type
     +Middle floor : b|Check bank level type : t*|HOLDING SERVICE DIRECTION
     +Cancel : b|HOLDING SERVICE DIRECTION : t*|COMPLETED
-    +Top_or_bottom floor : r|Check bank level type : r|COMPLETED : L3
+    +Top bottom floor : r|Check bank level type : r|COMPLETED : L3
