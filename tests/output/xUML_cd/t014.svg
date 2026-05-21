@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="792" height="612" viewBox="0 0 792 612">
+  <rect width="792" height="612" fill="rgb(255,255,255)" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="456.0" y2="602" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="502" x2="456.0" y2="502" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="402" x2="456.0" y2="402" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="302" x2="456.0" y2="302" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="10" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="140" y1="602" x2="140" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="298.0" y1="602" x2="298.0" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="456.0" y1="602" x2="456.0" y2="20" />
+  <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="10" y="10" width="772" height="592" />
+  <text x="2" y="572" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="2" y="472" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="2" y="372" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="40" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="170" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="328.0" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="15" y="37" font-family="Eurostile BoldExtendedTwo" font-size="11" fill="rgb(0,64,128)">Tall Class</text>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="150" y="386.1" width="296" height="105.9" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="150" y="359.1" width="296" height="27.0" />
+  <text x="155" y="482.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Presentation style : Extremely Extra Wide Style {R26}</text>
+  <text x="155" y="470.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Origin : Position</text>
+  <text x="155" y="458.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Size : Rect Size</text>
+  <text x="155" y="446.90000000000003" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Canvas : Canvas ID {R14}</text>
+  <text x="155" y="435.20000000000005" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Notation : Notation {R30}</text>
+  <text x="155" y="423.50000000000006" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Type : Type Name {R11, R30}</text>
+  <text x="155" y="411.80000000000007" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Grid {R10}</text>
+  <text x="155" y="400.1000000000001" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Nominal {I}</text>
+  <text x="273.0" y="378.6" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Diagram</text>
+</svg>

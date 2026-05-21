@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="792" height="612" viewBox="0 0 792 612">
+  <rect width="792" height="612" fill="rgb(255,255,255)" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="576" y2="602" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="507.6" x2="576" y2="507.6" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="427.6" x2="576" y2="427.6" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="321.5" x2="576" y2="321.5" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="227.10000000000002" x2="576" y2="227.10000000000002" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="10" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="164" y1="602" x2="164" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="274" y1="602" x2="274" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="439" y1="602" x2="439" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="576" y1="602" x2="576" y2="20" />
+  <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="10" y="10" width="772" height="592" />
+  <text x="2" y="572" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="2" y="477.6" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="2" y="397.6" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="2" y="291.5" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">4</text>
+  <text x="40" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="194" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="304" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="469" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">4</text>
+  <text x="15" y="37" font-family="Eurostile BoldExtendedTwo" font-size="11" fill="rgb(0,64,128)">Associative Relationship</text>
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="154" y1="374.55" x2="219.0" y2="374.55" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="219.0" y1="374.55" x2="219.0" y2="467.6" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="219.0" y1="467.6" x2="384.0" y2="467.6" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="384.0" y1="467.6" x2="384.0" y2="554.8" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="384.0" y1="554.8" x2="449" y2="554.8" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="356.5" y1="311.5" x2="356.5" y2="467.6" />
+  <g transform="rotate(90,154,374.55)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="151,365.55 154,374.55 157,365.55" />
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="151,356.55 154,365.55 157,356.55" />
+  </g>
+  <g transform="rotate(270,449,554.8)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="446,545.8 449,554.8 452,545.8" />
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="446,536.8 449,545.8 452,536.8" />
+  </g>
+  <g>
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="353.5,458.6 356.5,467.6 359.5,458.6" />
+  </g>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="358.5" width="134" height="59.1" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="331.5" width="134" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="449" y="544.6" width="117" height="47.4" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="449" y="517.6" width="117" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="284" y="264.1" width="145" height="47.4" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="284" y="237.10000000000002" width="145" height="27.0" />
+  <text x="25" y="407.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Heading : Compass</text>
+  <text x="25" y="395.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Airspeed : Knots</text>
+  <text x="25" y="384.20000000000005" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Altitude : Altitude MSL</text>
+  <text x="25" y="372.5" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Tail number : ACAO {I}</text>
+  <text x="58.5" y="351.0" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Aircraft</text>
+  <text x="454" y="582.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Aircraft : ACAO {R1}</text>
+  <text x="454" y="570.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Hours flown : Hours</text>
+  <text x="454" y="558.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Pilot ID {I}</text>
+  <text x="489.5" y="537.1" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Pilot</text>
+  <text x="289" y="301.5" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Flight time : Duration</text>
+  <text x="289" y="289.8" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Pilot : Pilot ID {I2, R1}</text>
+  <text x="289" y="278.1" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Aircraft : ACAO {I, R1}</text>
+  <text x="335.0" y="256.6" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Flight</text>
+  <text x="164" y="366.55" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">is flying</text>
+  <text x="380" y="571.8" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">is flown by</text>
+  <text x="297.5" y="482.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">R1</text>
+</svg>

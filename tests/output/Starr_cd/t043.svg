@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="792" height="612" viewBox="0 0 792 612">
+  <rect width="792" height="612" fill="rgb(255,255,255)" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="536" y2="602" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="488.1" x2="536" y2="488.1" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="408.1" x2="536" y2="408.1" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="301.99999999999994" x2="536" y2="301.99999999999994" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="10" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="169" y1="602" x2="169" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="323" y1="602" x2="323" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="536" y1="602" x2="536" y2="20" />
+  <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="10" y="10" width="772" height="592" />
+  <text x="2" y="572" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="2" y="458.1" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="2" y="378.1" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="40" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="199" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="353" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="15" y="37" font-family="Eurostile BoldExtendedTwo" font-size="11" fill="rgb(0,64,128)">Two Wide Subclasses</text>
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="89.5" y1="448.1" x2="429.5" y2="448.1" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="429.5" y1="498.1" x2="429.5" y2="448.1" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="89.5" y1="511.75" x2="89.5" y2="448.1" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="246.0" y1="398.1" x2="246.0" y2="448.1" />
+  <g transform="rotate(180,246.0,398.1)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="238.0,386.1 246.0,398.1 254.0,386.1" />
+  </g>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="179" y="339.0" width="134" height="59.1" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="179" y="312.0" width="134" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="554.35" width="139" height="24.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="511.75" width="139" height="42.6" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="333" y="556.3" width="193" height="35.7" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="333" y="498.09999999999997" width="193" height="58.2" />
+  <rect x="250.0" y="416.1" width="26" height="14" fill="rgb(255,255,255)" stroke="none" />
+  <text x="184" y="388.1" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Heading : Compass</text>
+  <text x="184" y="376.4" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Airspeed : Knots</text>
+  <text x="184" y="364.70000000000005" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Altitude : Altitude MSL</text>
+  <text x="184" y="353.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Remote ID {I}</text>
+  <text x="228.0" y="331.5" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Drone</text>
+  <text x="25" y="568.35" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Remote ID {I, R103}</text>
+  <text x="32.0" y="546.85" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Fixed Wing Drone</text>
+  <text x="28.5" y="531.25" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Remote Controlled</text>
+  <text x="338" y="582.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Rotary configuration : Rotor Style</text>
+  <text x="338" y="570.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Remote ID {I, R103}</text>
+  <text x="368.5" y="548.8" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Rotary Wing Drone</text>
+  <text x="393.5" y="533.2" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Controlled</text>
+  <text x="408.0" y="517.6" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Remote</text>
+  <text x="252.0" y="427.1" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">R103</text>
+</svg>

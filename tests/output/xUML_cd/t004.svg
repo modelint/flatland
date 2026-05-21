@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="792" height="612" viewBox="0 0 792 612">
+  <rect width="792" height="612" fill="rgb(255,255,255)" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="326" y2="602" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="449.1" x2="326" y2="449.1" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="10" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="326" y1="602" x2="326" y2="20" />
+  <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="10" y="10" width="772" height="592" />
+  <text x="2" y="572" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="40" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="15" y="37" font-family="Eurostile BoldExtendedTwo" font-size="11" fill="rgb(0,64,128)">Tall Class</text>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="486.1" width="296" height="105.9" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="459.1" width="296" height="27.0" />
+  <text x="25" y="582.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Presentation style : Extremely Extra Wide Style {R26}</text>
+  <text x="25" y="570.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Origin : Position</text>
+  <text x="25" y="558.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Size : Rect Size</text>
+  <text x="25" y="546.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Canvas : Canvas ID {R14}</text>
+  <text x="25" y="535.2" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Notation : Notation {R30}</text>
+  <text x="25" y="523.5" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Type : Type Name {R11, R30}</text>
+  <text x="25" y="511.79999999999995" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Grid {R10}</text>
+  <text x="25" y="500.09999999999997" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Nominal {I}</text>
+  <text x="143.0" y="478.6" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Diagram</text>
+</svg>

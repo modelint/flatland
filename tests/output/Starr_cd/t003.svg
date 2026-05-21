@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="612" height="792" viewBox="0 0 612 792">
+  <rect width="612" height="792" fill="rgb(255,255,255)" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="782" x2="164" y2="782" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="675.9" x2="164" y2="675.9" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="595.9" x2="164" y2="595.9" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="501.5" x2="164" y2="501.5" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="782" x2="10" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="164" y1="782" x2="164" y2="20" />
+  <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="10" y="10" width="592" height="772" />
+  <text x="2" y="752" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="2" y="645.9" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="2" y="565.9" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="40" y="790" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="15" y="42" font-family="Eurostile BoldExtendedTwo" font-size="11" fill="rgb(0,64,128)">Binary Association</text>
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="87.0" y1="685.9" x2="87.0" y2="585.9" />
+  <g>
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="84.0,676.9 87.0,685.9 90.0,676.9" />
+  </g>
+  <g transform="rotate(180,87.0,585.9)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="84.0,576.9 87.0,585.9 90.0,576.9" />
+  </g>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="712.9" width="134" height="59.1" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="685.9" width="134" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="28.5" y="538.5" width="117" height="47.4" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="28.5" y="511.5" width="117" height="27.0" />
+  <text x="25" y="762.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Heading : Compass</text>
+  <text x="25" y="750.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Airspeed : Knots</text>
+  <text x="25" y="738.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Altitude : Altitude MSL</text>
+  <text x="25" y="726.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Tail number : ACAO {I}</text>
+  <text x="58.5" y="705.4" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Aircraft</text>
+  <text x="33.5" y="575.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Aircraft : ACAO {R1}</text>
+  <text x="33.5" y="564.2" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Hours flown : Hours</text>
+  <text x="33.5" y="552.5" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Pilot ID {I}</text>
+  <text x="69.0" y="531.0" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Pilot</text>
+  <text x="95.0" y="675.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">is flying</text>
+  <text x="95.0" y="616.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">flown by</text>
+  <text x="95.0" y="604.9000000000001" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">is</text>
+  <text x="71.0" y="639.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">R1</text>
+</svg>

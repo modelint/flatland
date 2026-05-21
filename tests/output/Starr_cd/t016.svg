@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="792" height="612" viewBox="0 0 792 612">
+  <rect width="792" height="612" fill="rgb(255,255,255)" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="411" y2="602" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="495.9" x2="411" y2="495.9" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="415.9" x2="411" y2="415.9" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="321.5" x2="411" y2="321.5" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="10" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="164" y1="602" x2="164" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="274" y1="602" x2="274" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="411" y1="602" x2="411" y2="20" />
+  <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="10" y="10" width="772" height="592" />
+  <text x="2" y="572" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="2" y="465.9" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="2" y="385.9" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="40" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
+  <text x="194" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
+  <text x="304" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
+  <text x="15" y="37" font-family="Eurostile BoldExtendedTwo" font-size="11" fill="rgb(0,64,128)">Binary Association</text>
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="154" y1="548.95" x2="284" y2="548.95" />
+  <g transform="rotate(90,154,548.95)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="151,539.95 154,548.95 157,539.95" />
+  </g>
+  <g transform="rotate(270,284,548.95)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="281,539.95 284,548.95 287,539.95" />
+  </g>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="532.9" width="134" height="59.1" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="505.9" width="134" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="284" y="538.75" width="117" height="47.4" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="284" y="511.75" width="117" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" stroke-dasharray="9 9" fill="rgb(255,255,255)" x="28.5" y="358.5" width="117" height="47.4" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" stroke-dasharray="9 9" fill="rgb(255,255,255)" x="28.5" y="331.5" width="117" height="27.0" />
+  <text x="25" y="582.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Heading : Compass</text>
+  <text x="25" y="570.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Airspeed : Knots</text>
+  <text x="25" y="558.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Altitude : Altitude MSL</text>
+  <text x="25" y="546.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Tail number : ACAO {I}</text>
+  <text x="58.5" y="525.4" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Aircraft</text>
+  <text x="289" y="576.15" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Aircraft : ACAO {R1}</text>
+  <text x="289" y="564.45" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Hours flown : Hours</text>
+  <text x="289" y="552.75" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Pilot ID {I}</text>
+  <text x="324.5" y="531.25" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Pilot</text>
+  <text x="33.5" y="395.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Aircraft : ACAO {R1}</text>
+  <text x="33.5" y="384.20000000000005" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Hours flown : Hours</text>
+  <text x="33.5" y="372.5" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Pilot ID {I}</text>
+  <text x="69.0" y="351.0" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Pilot</text>
+  <text x="164" y="540.95" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">is flying</text>
+  <text x="231" y="540.95" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">flown by</text>
+  <text x="264" y="529.25" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">is</text>
+  <text x="215.0" y="563.95" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">R1</text>
+</svg>
