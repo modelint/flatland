@@ -37,7 +37,7 @@ def parse(cl_input):
                         help='Flatland layout file defining all layout information with light\
                          references to model file.')
     parser.add_argument('-d', '--diagram', action='store', default='diagram.pdf',
-                        help='Name of file to generate, .pdf extension automatically added')
+                        help='Name of file to generate; the extension selects the format (.pdf or .svg)')
     parser.add_argument('-CF', '--configuration', action='store_true',
                         help="Create a new configuration directory in user's flatland home")
     parser.add_argument('-E', '--examples', action='store_true',

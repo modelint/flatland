@@ -40,117 +40,127 @@ Also, various resources at the [Model Integration](https://modelint.com/mbse) we
 
 ## Installation
 
-If you are already a pythonista, you can skim these instructions quickly. But I am writing for
-those of you who might not be.
+Flatland is a command-line program published on PyPI as **`mi-flatland`**. You install it once into
+an isolated Python *virtual environment* and then run it with the `flatland` command. The steps below
+assume no prior Python experience — if you're already comfortable with Python, just run the commands in
+the code blocks and skip the explanations.
 
-And for today (25-1-14) I have only tested this on my MacBook Pro / M2 Max / Sequoia
-A minor adjustment or two may be required for success on Linux and Windows, and I am happy to help you out with that
-if you contact me. If you are adept with your platform, I could use the help testing installation.
+### What you'll need
 
-### Summary
+- **Python 3.11 or 3.12.** (Python 3.13 and newer are not yet supported.)
+- macOS, Linux, or Windows.
 
-1. Install Python 3.12 on your machine (you might be okay with an earlier version, but all bets are off)
-2. Set up a virtual environment so your path variables, python version, etc are all correct for this installation
-3. Activate that environment so the settings take effect
-4. Install flatland
-5. Check version
-6. Generate a diagram from an example file
-7. For future usage, be sure your environment is activated, or update your shell path environment as necessary
+### 1. Install Python
 
-### Details
+If you don't already have a supported version, download Python 3.12 from
+[python.org](https://www.python.org/downloads/) and run the installer for your platform. Any install
+method is fine (the official installer, Homebrew, etc.) as long as the version is 3.11 or 3.12. Having
+other Python versions already on your machine is not a problem.
 
-#### [1] Install Python
-Go to https://www.python.org and follow instructions to download Python 3.12 for your machine. It's okay if you already have other versions of Python on your machine. If you have some other way of installing Python on your machine like homebrew that's fine, just get the version right.
+Confirm it's available:
 
-#### [2] Set up a virtual environment (venv)
-Select or create a directory somewhere as the destination of the virutal environment you are about to create. Here's what I did on my machine:
 ```
-[841] /starr/SDEV/Environments
-[842] cd User
-[843] ls
-[844] python -V
-Python 3.12.7
-[845] python -m pip install --user --upgrade pip
-[notice] A new release of pip is available: 24.2 -> 24.3.1
-[notice] To update, run: pip3 install --upgrade pip
-[846] pip3 install --upgrade pip
-```
-Your interaction will be different than above, but I verified that I had the right
-Python and ensured that the package installer pip, was up to date and ready for action.
-On to the virtual environment setup...
-```
-[847] python -m pip install --user virtualenv
-```
-You'll get a lot of diagnstic stuff, but the final line should be something like:
-```
-Successfully installed distlib-0.3.9 filelock-3.16.1 platformdirs-4.3.6 virtualenv-20.28.1
-```
-#### [3] Activate the venv
-Now I have the venv module available which I can use to create my virtual environment (venv)
-```
-[848] pwd
-/Users/starr/SDEV/Environments/User
-[849] python -m venv flatland
-```
-Above, the name `flatland` is not actually flatland, but the name of the environment that I am creating for it. You could name it anything like `F1` or `flatland_env` if you like.
-
-Now I activate the environment:
-```
-[850] source flatland/bin/activate
-(flatland) [851]
-```
-Remember that command above, you'll need it whenever you open a terminal window and want to set your environment up to use flatland. You know you've succeeded because it prefixes your shell prompt with the name of the venv while active.
-
-#### [4] Install flatland
-
-Finally! We can install flatland into our environment.
-```
-(flatland) [851] pip install mi-flatland
-```
-Okay, now you can go to any directory you want, say your home directory and try it out.
-I created an empty directory `Ftest` in my home directory earlier, so I go there and
-check to see if flatland will show me it's version.
-
-#### [5] Check version
-```
-(flatland) [852] cd ~/Ftest
-(flatland) [853] flatland -V
-(flatland) [914] flatland -V
-Flatland version: 2.0.2
-(flatland) [915] 
+python3 --version
 ```
 
-#### [6] Generate a diagram
-Note: I will write instructions later about how you can get the sample files I am using, but I'll just show you what happens for now.
+You should see something like `Python 3.12.7`. (On Windows the command is usually `py --version`.)
 
-Initially we see one executable class model (xcm) file and two 
-model layout sheet (mls) files.
-```
-(flatland) [915] ls
-elevator.xcm      elevator_xUML.mls    elevator_Starr.mls
-```
-Now we choose the xUML layout and generate a class diagram.
-```
-(flatland) [915] flatland -m elevator.xcm -l elevator_xUML.mls -d elevator_cd.pdf
-(flatland) [917] ls
-elevator.xcm      elevator_xUML.mls     elevator_Starr.mls   elevator_cd.pdf
-```
-What we did there was supply a model file *.xcm with the -m arg, a layout file *.mls with the -l arg, and the name of the diagram file we wanted to generate, elevator_cd.pdf with the -d arg.
+### 2. Create a virtual environment
 
-#### [6a]
-To get those example files, you can request them like so:
+A virtual environment is just a folder that holds a private copy of Python and the packages flatland
+needs, kept separate from the rest of your system so nothing conflicts. Python has this built in — no
+extra tools required. Create one (here named `flatland-env`, but you can call it anything):
+
+**macOS / Linux**
 ```
-(flatland) [918] flatland -E
-(flatland) [919] ls
-examples
+python3 -m venv ~/flatland-env
 ```
-This copies the flatland examples directory into your current working directory. In there
-you will find a variety of example models and layouts. Note that a given layout file
-references model content, so you can only use it with a specific model file.
 
-But you CAN define multiple layouts for the same model. They will be grouped together in subfolders in the examples directory so that you can easily tell which models and layouts can be used together.
+**Windows (PowerShell)**
+```
+py -m venv $HOME\flatland-env
+```
 
-By the way, if you are on Mac OS, you will see two directories of YAML configuration files in your $HOME/.config folder named 'flatland' and 'mi_tablet'. Graphics and text style options along with any organization specific logos and other media resources are in the mi_tablet directory and 
-a variety of positional, layout, titleblock and other parameters are in the flatland directory.  You might want to browse through those, but careful if you edit them.  If you mess up, don't worry, just delete the directories and the next time you run flatland it will refresh them. Detailed instructions will be available on the wiki eventually, but you can read the comments in each YAML file for now for guidance.
+### 3. Activate the environment
 
-And there you have it.  See the project wiki for all the various command args you can supply and how to edit layout files and the various types of supported model files.
+Activating tells your terminal to use the environment you just created.
+
+**macOS / Linux**
+```
+source ~/flatland-env/bin/activate
+```
+
+**Windows (PowerShell)**
+```
+& $HOME\flatland-env\Scripts\Activate.ps1
+```
+
+Your prompt now starts with `(flatland-env)`, which means it's active. **You'll need to run this
+activate command again each time you open a new terminal** before using flatland.
+
+### 4. Install flatland
+
+```
+pip install --upgrade pip
+pip install mi-flatland
+```
+
+### 5. Check the version
+
+```
+flatland -V
+```
+
+This prints something like `Flatland version: 3.0.0`, confirming the install worked.
+
+### 6. Generate your first diagram
+
+Flatland ships with example models. Copy them into your current folder:
+
+```
+flatland -E
+```
+
+This creates an `examples/` directory. Move into the elevator example and generate a class diagram:
+
+```
+cd examples/elevator
+flatland -m elevator.xcm -l elevator_xUML.mls -d elevator.pdf
+```
+
+That command supplies three things:
+
+- `-m elevator.xcm` — the **model** file (`.xcm` = class model, `.xsm` = state-machine model)
+- `-l elevator_xUML.mls` — the **layout** file (`.mls`), which positions everything
+- `-d elevator.pdf` — the **output** file to generate
+
+**The extension you give to `-d` selects the output format.** Use `.pdf` for PDF or `.svg` for SVG —
+so the same model and layout produce an SVG just by changing the name:
+
+```
+flatland -m elevator.xcm -l elevator_xUML.mls -d elevator.svg
+```
+
+A layout file refers to specific model content, so each `.mls` only works with its matching model. A
+single model can have several layouts (e.g. `elevator_xUML.mls` and `elevator_Starr.mls` here), grouped
+together so you can tell which files belong with which.
+
+Run `flatland -h` to see every option (grid overlay, rulers, no-color, and more).
+
+### Where your settings live
+
+The first time you run flatland it creates two folders of YAML configuration files under your home
+directory at `~/.config`:
+
+- **`flatland`** — layout, title-block, and positional parameters.
+- **`mi_tablet`** — graphics and text styles, plus any logos or other media.
+
+You can browse and edit these (each file has explanatory comments), but edit carefully. If anything
+breaks, just delete the folder and flatland will recreate the defaults on its next run.
+
+### Coming back later
+
+Whenever you open a new terminal, re-activate the environment (step 3) before running `flatland`.
+Prefer not to activate every time? Installing with [pipx](https://pipx.pypa.io)
+(`pipx install mi-flatland`) puts the `flatland` command on your PATH globally while keeping it
+isolated.
