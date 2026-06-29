@@ -14,6 +14,12 @@ from flatland.datatypes.geometry_types import Position
 
 scale = 2  # For float rounding errors (change to 3 or 4 if errors are visible on drawings)
 
+# Tolerance, in points, for treating a parallel segment as overlapping a point along the extent axis.
+# Node positions drift by sub-point amounts as font metrics change between rendering backends/versions,
+# so a ternary stem whose root lands a hair outside a connector segment's extent should still attach to it
+# rather than fail. A few points is visually negligible and absorbs this drift.
+extent_overlap_tolerance = 3
+
 def nearest_parallel_segment(psegs: Set[tuple], point: Position, ascending: bool) -> float:
     """
     Given a set of parallel segments a point and a +/- direction, find the segment that yields the
@@ -41,7 +47,8 @@ def nearest_parallel_segment(psegs: Set[tuple], point: Position, ascending: bool
     isegs = []  # Those segments that overlap the point along the axis (so that a normal segment will intersect)
     for s in fsegs:
         a, b = sorted([s[0][extent_coord], s[1][extent_coord]])  # Order all segment extents along axis low to high
-        if a <= point[extent_coord] <= b:
+        # Allow a small tolerance so sub-point drift in node positions still counts as an overlap
+        if a - extent_overlap_tolerance <= point[extent_coord] <= b + extent_overlap_tolerance:
             isegs.append(s)  # It's possible to intersect the point from this segment
     if ascending:  # Now select the closest axis value to the point
         axis_value = min({s[0][axis_coord] for s in isegs})

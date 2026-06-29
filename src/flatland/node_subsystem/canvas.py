@@ -118,7 +118,6 @@ class Canvas:
                 drawing_type=dtype,
                 presentation=presentation,
                 layer='diagram',
-                show_window=False,
                 background_color=background_color
             )
         except NonSystemInitialLayer:
