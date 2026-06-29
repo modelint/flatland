@@ -22,7 +22,7 @@ dependencies = [
     'mls-parser>=0',
     'xcm-parser>=0',
     'xsm-parser>=0',
-    'numpy~=2.2.2',
+    'numpy>=2.2.2',
     'tomli; python_version < "3.12"']
 requires-python = ">=3.11, <3.13"
 
