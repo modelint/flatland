@@ -1,64 +1,64 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="792" height="612" viewBox="0 0 792 612">
   <rect width="792" height="612" fill="rgb(255,255,255)" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="587" y2="602" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="519.3" x2="587" y2="519.3" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="439.3" x2="587" y2="439.3" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="333.2" x2="587" y2="333.2" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="238.8" x2="587" y2="238.8" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="144.40000000000003" x2="587" y2="144.40000000000003" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="457" y2="602" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="519.3" x2="457" y2="519.3" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="439.3" x2="457" y2="439.3" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="333.2" x2="457" y2="333.2" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="238.8" x2="457" y2="238.8" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="144.40000000000003" x2="457" y2="144.40000000000003" />
   <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="10" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="164" y1="602" x2="164" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="296" y1="602" x2="296" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="455" y1="602" x2="455" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="587" y1="602" x2="587" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="130" y1="602" x2="130" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="235" y1="602" x2="235" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="355" y1="602" x2="355" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="457" y1="602" x2="457" y2="20" />
   <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="10" y="10" width="772" height="592" />
-  <text x="2" y="572" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
-  <text x="2" y="489.3" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
-  <text x="2" y="409.3" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
-  <text x="2" y="303.2" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">4</text>
-  <text x="2" y="208.8" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">5</text>
-  <text x="40" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
-  <text x="194" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
-  <text x="326" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
-  <text x="485" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">4</text>
-  <text x="15" y="37" font-family="Eurostile BoldExtendedTwo" font-size="11" fill="rgb(0,64,128)">Four Subclasses</text>
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="211.33333333333331" y1="560.65" x2="211.33333333333331" y2="228.8" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="319.5" y1="386.25" x2="211.33333333333331" y2="386.25" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="154" y1="386.25" x2="211.33333333333331" y2="386.25" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="306" y1="560.65" x2="211.33333333333331" y2="560.65" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="465" y1="286.0" x2="211.33333333333331" y2="286.0" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="211.33333333333331" y1="228.8" x2="211.33333333333331" y2="228.8" />
-  <g transform="rotate(90,154,386.25)">
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="146,374.25 154,386.25 162,374.25" />
+  <text x="2" y="572" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">1</text>
+  <text x="2" y="489.3" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">2</text>
+  <text x="2" y="409.3" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">3</text>
+  <text x="2" y="303.2" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">4</text>
+  <text x="2" y="208.8" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">5</text>
+  <text x="40" y="610" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">1</text>
+  <text x="160" y="610" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">2</text>
+  <text x="265" y="610" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">3</text>
+  <text x="385" y="610" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">4</text>
+  <text x="15" y="37" font-family="Verdana" font-size="11" fill="rgb(0,64,128)" font-weight="bold">Four Subclasses</text>
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="168.33333333333334" y1="560.65" x2="168.33333333333334" y2="228.8" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="249.5" y1="386.25" x2="168.33333333333334" y2="386.25" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="168.33333333333334" y1="228.8" x2="168.33333333333334" y2="228.8" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="245" y1="560.65" x2="168.33333333333334" y2="560.65" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="365" y1="286.0" x2="168.33333333333334" y2="286.0" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="120" y1="386.25" x2="168.33333333333334" y2="386.25" />
+  <g transform="rotate(90,120,386.25)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="112,374.25 120,386.25 128,374.25" />
   </g>
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="370.2" width="134" height="59.1" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="343.20000000000005" width="134" height="27.0" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="174" y="181.4" width="112" height="47.4" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="174" y="154.40000000000003" width="112" height="27.0" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="465" y="275.8" width="112" height="47.4" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="465" y="248.8" width="112" height="27.0" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="319.5" y="387.75" width="112" height="24.0" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="319.5" y="360.75" width="112" height="27.0" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="306" y="556.3" width="139" height="35.7" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="306" y="529.3" width="139" height="27.0" />
-  <rect x="172" y="390.25" width="15" height="14" fill="rgb(255,255,255)" stroke="none" />
-  <text x="25" y="419.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Heading : Compass</text>
-  <text x="25" y="407.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Airspeed : Knots</text>
-  <text x="25" y="395.90000000000003" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Altitude : Altitude MSL</text>
-  <text x="25" y="384.20000000000005" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Tail number : ACAO {I}</text>
-  <text x="58.5" y="362.70000000000005" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Aircraft</text>
-  <text x="179" y="218.8" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Landing pad {R4}</text>
-  <text x="179" y="207.10000000000002" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Landing gear : Gear</text>
-  <text x="179" y="195.40000000000003" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Tail number {I, R1}</text>
-  <text x="194.0" y="173.90000000000003" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Helicopter</text>
-  <text x="470" y="313.2" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Runway {R5}</text>
-  <text x="470" y="301.5" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Weight : Category</text>
-  <text x="470" y="289.8" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Tail number {I, R1}</text>
-  <text x="485.0" y="268.3" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Fixed Wing</text>
-  <text x="324.5" y="401.75" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Tail number {I, R1}</text>
-  <text x="336.0" y="380.25" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Hybrid Wing</text>
-  <text x="311" y="582.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">R2 unit status : Boolean</text>
-  <text x="311" y="570.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Tail number {I, R1}</text>
-  <text x="354.0" y="548.8" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">X Wing</text>
-  <text x="174" y="401.25" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">R1</text>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="370.2" width="100" height="59.1" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="343.20000000000005" width="100" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="140" y="181.4" width="85" height="47.4" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="140" y="154.40000000000003" width="85" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="365" y="275.8" width="82" height="47.4" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="365" y="248.8" width="82" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="249.5" y="387.75" width="91" height="24.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="249.5" y="360.75" width="91" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="245" y="556.3" width="100" height="35.7" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="245" y="529.3" width="100" height="27.0" />
+  <rect x="138" y="390.25" width="15" height="14" fill="rgb(255,255,255)" stroke="none" />
+  <text x="25" y="419.3" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Heading : Compass</text>
+  <text x="25" y="407.6" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Airspeed : Knots</text>
+  <text x="25" y="395.90000000000003" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Altitude : Altitude MSL</text>
+  <text x="25" y="384.20000000000005" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Tail number : ACAO {I}</text>
+  <text x="45.5" y="362.70000000000005" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Aircraft</text>
+  <text x="145" y="218.8" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Landing pad {R4}</text>
+  <text x="145" y="207.10000000000002" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Landing gear : Gear</text>
+  <text x="145" y="195.40000000000003" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Tail number {I, R1}</text>
+  <text x="149.0" y="173.90000000000003" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Helicopter</text>
+  <text x="370" y="313.2" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Runway {R5}</text>
+  <text x="370" y="301.5" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Weight : Category</text>
+  <text x="370" y="289.8" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Tail number {I, R1}</text>
+  <text x="371.0" y="268.3" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Fixed Wing</text>
+  <text x="254.5" y="401.75" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Tail number {I, R1}</text>
+  <text x="254.5" y="380.25" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Hybrid Wing</text>
+  <text x="250" y="582.0" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">R2 unit status : Boolean</text>
+  <text x="250" y="570.3" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Tail number {I, R1}</text>
+  <text x="271.5" y="548.8" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">X Wing</text>
+  <text x="140" y="401.25" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">R1</text>
 </svg>

@@ -49,13 +49,14 @@ diagrams = [
     # ("flatland_node_subsystem", "t100_flatland_node_subsystem"),
 ]
 
+@pytest.mark.parametrize("ext", ["pdf", "svg"])
 @pytest.mark.parametrize("model, layout", diagrams)
-def test_xUML_cd(flatland_db, model, layout):
+def test_xUML_cd(flatland_db, model, layout, ext):
 
     XumlClassDiagram(
         xuml_model_path=Path(f"class_diagrams/{model}.xcm"),
         flatland_layout_path=Path(f"model_style_sheets/xUML_cd/{layout}.mls"),
-        diagram_file_path=Path(f"output/xUML_cd/{layout.split('_')[0]}.pdf"),
+        diagram_file_path=Path(f"output/xUML_cd/{layout.split('_')[0]}.{ext}"),
         show_grid=True,
         nodes_only=False,
         no_color=False,
@@ -65,13 +66,14 @@ def test_xUML_cd(flatland_db, model, layout):
 
     assert True
 
+@pytest.mark.parametrize("ext", ["pdf", "svg"])
 @pytest.mark.parametrize("model, layout", diagrams)
-def test_Starr_cd(flatland_db, model, layout):
+def test_Starr_cd(flatland_db, model, layout, ext):
 
     XumlClassDiagram(
         xuml_model_path=Path(f"class_diagrams/{model}.xcm"),
         flatland_layout_path=Path(f"model_style_sheets/Starr_cd/{layout}.mls"),
-        diagram_file_path=Path(f"output/Starr_cd/{layout.split('_')[0]}.pdf"),
+        diagram_file_path=Path(f"output/Starr_cd/{layout.split('_')[0]}.{ext}"),
         show_grid=True,
         nodes_only=False,
         no_color=False,

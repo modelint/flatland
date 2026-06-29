@@ -1,36 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="792" height="612" viewBox="0 0 792 612">
   <rect width="792" height="612" fill="rgb(255,255,255)" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="362" y2="602" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="484.2" x2="362" y2="484.2" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="384.2" x2="362" y2="384.2" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="322" y2="602" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="484.2" x2="322" y2="484.2" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="384.2" x2="322" y2="384.2" />
   <line stroke="rgb(51,235,186)" stroke-width="1" x1="10" y1="602" x2="10" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="212" y1="602" x2="212" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="362" y1="602" x2="362" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="172" y1="602" x2="172" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="322" y1="602" x2="322" y2="20" />
   <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="10" y="10" width="772" height="592" />
-  <text x="2" y="572" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
-  <text x="2" y="454.2" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
-  <text x="40" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
-  <text x="242" y="610" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
-  <text x="15" y="37" font-family="Eurostile BoldExtendedTwo" font-size="11" fill="rgb(0,64,128)">Reflexive Association</text>
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="171.66666666666666" y1="494.2" x2="171.66666666666666" y2="467.5333333333333" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="171.66666666666666" y1="467.5333333333333" x2="237.0" y2="467.5333333333333" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="237.0" y1="467.5333333333333" x2="237.0" y2="510.5" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="237.0" y1="510.5" x2="202" y2="510.5" />
+  <text x="2" y="572" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">1</text>
+  <text x="2" y="454.2" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">2</text>
+  <text x="40" y="610" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">1</text>
+  <text x="202" y="610" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">2</text>
+  <text x="15" y="37" font-family="Verdana" font-size="11" fill="rgb(0,64,128)" font-weight="bold">Reflexive Association</text>
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="138.33333333333334" y1="494.2" x2="138.33333333333334" y2="467.5333333333333" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="138.33333333333334" y1="467.5333333333333" x2="197.0" y2="467.5333333333333" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="197.0" y1="467.5333333333333" x2="197.0" y2="510.5" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="197.0" y1="510.5" x2="162" y2="510.5" />
   <g>
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="168.66666666666666,485.2 171.66666666666666,494.2 174.66666666666666,485.2" />
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="135.33333333333334,485.2 138.33333333333334,494.2 141.33333333333334,485.2" />
   </g>
-  <g transform="rotate(90,202,510.5)">
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="199,501.5 202,510.5 205,501.5" />
+  <g transform="rotate(90,162,510.5)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="159,501.5 162,510.5 165,501.5" />
   </g>
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="521.2" width="182" height="70.80000000000001" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="494.20000000000005" width="182" height="27.0" />
-  <text x="25" y="582.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Next waypoint : Waypoint ID {R1}</text>
-  <text x="25" y="570.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Action : Action ID {R27}</text>
-  <text x="25" y="558.6" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Longitude : Long</text>
-  <text x="25" y="546.9" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Latitude : Lat</text>
-  <text x="25" y="535.2" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">ID : Nominal {I, OR1}</text>
-  <text x="82.5" y="513.7" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Waypoint</text>
-  <text x="137.66666666666666" y="484.2" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">after</text>
-  <text x="212" y="527.5" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">before</text>
-  <text x="243.0" y="493.01666666666665" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">R1</text>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="521.2" width="142" height="70.80000000000001" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="20" y="494.20000000000005" width="142" height="27.0" />
+  <text x="25" y="582.0" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Next waypoint : Waypoint ID {R1}</text>
+  <text x="25" y="570.3" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Action : Action ID {R27}</text>
+  <text x="25" y="558.6" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Longitude : Long</text>
+  <text x="25" y="546.9" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Latitude : Lat</text>
+  <text x="25" y="535.2" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">ID : Nominal {I, OR1}</text>
+  <text x="60.0" y="513.7" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Waypoint</text>
+  <text x="113.33333333333334" y="484.2" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">after</text>
+  <text x="172" y="527.5" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">before</text>
+  <text x="203.0" y="493.01666666666665" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">R1</text>
 </svg>

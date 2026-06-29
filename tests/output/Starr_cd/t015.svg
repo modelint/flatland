@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2592" height="1728" viewBox="0 0 2592 1728">
   <rect width="2592" height="1728" fill="rgb(255,255,255)" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1368" x2="1960" y2="1368" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1288" x2="1960" y2="1288" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1208" x2="1960" y2="1208" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1128" x2="1960" y2="1128" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1048" x2="1960" y2="1048" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="968" x2="1960" y2="968" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="888" x2="1960" y2="888" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="808" x2="1960" y2="808" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="728" x2="1960" y2="728" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="598.5" x2="1960" y2="598.5" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="480.70000000000005" x2="1960" y2="480.70000000000005" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1368" x2="1796" y2="1368" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1288" x2="1796" y2="1288" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1208" x2="1796" y2="1208" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1128" x2="1796" y2="1128" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1048" x2="1796" y2="1048" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="968" x2="1796" y2="968" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="888" x2="1796" y2="888" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="808" x2="1796" y2="808" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="728" x2="1796" y2="728" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="598.5" x2="1796" y2="598.5" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="480.70000000000005" x2="1796" y2="480.70000000000005" />
   <line stroke="rgb(51,235,186)" stroke-width="1" x1="110" y1="1368" x2="110" y2="20" />
   <line stroke="rgb(51,235,186)" stroke-width="1" x1="220" y1="1368" x2="220" y2="20" />
   <line stroke="rgb(51,235,186)" stroke-width="1" x1="330" y1="1368" x2="330" y2="20" />
@@ -22,73 +22,73 @@
   <line stroke="rgb(51,235,186)" stroke-width="1" x1="990" y1="1368" x2="990" y2="20" />
   <line stroke="rgb(51,235,186)" stroke-width="1" x1="1100" y1="1368" x2="1100" y2="20" />
   <line stroke="rgb(51,235,186)" stroke-width="1" x1="1210" y1="1368" x2="1210" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="1445" y1="1368" x2="1445" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="1555" y1="1368" x2="1555" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="1790" y1="1368" x2="1790" y2="20" />
-  <line stroke="rgb(51,235,186)" stroke-width="1" x1="1960" y1="1368" x2="1960" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="1381" y1="1368" x2="1381" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="1491" y1="1368" x2="1491" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="1662" y1="1368" x2="1662" y2="20" />
+  <line stroke="rgb(51,235,186)" stroke-width="1" x1="1796" y1="1368" x2="1796" y2="20" />
   <rect stroke="rgb(125,51,235)" stroke-width="2" fill="none" x="110" y="10" width="2472" height="1358" />
-  <text x="90" y="1338" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
-  <text x="90" y="1258" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
-  <text x="90" y="1178" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
-  <text x="90" y="1098" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">4</text>
-  <text x="90" y="1018" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">5</text>
-  <text x="90" y="938" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">6</text>
-  <text x="90" y="858" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">7</text>
-  <text x="90" y="778" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">8</text>
-  <text x="90" y="698" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">9</text>
-  <text x="90" y="568.5" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">10</text>
-  <text x="140" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">1</text>
-  <text x="250" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">2</text>
-  <text x="360" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">3</text>
-  <text x="470" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">4</text>
-  <text x="580" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">5</text>
-  <text x="690" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">6</text>
-  <text x="800" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">7</text>
-  <text x="910" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">8</text>
-  <text x="1020" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">9</text>
-  <text x="1130" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">10</text>
-  <text x="1240" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">11</text>
-  <text x="1475" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">12</text>
-  <text x="1585" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">13</text>
-  <text x="1820" y="1388" font-family="Verdana" font-size="16" fill="rgb(255,255,255)">14</text>
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="1435" y1="539.5999999999999" x2="1800" y2="539.5999999999999" />
-  <line stroke="rgb(0,0,0)" stroke-width="1" x1="1672.5" y1="608.5" x2="1672.5" y2="539.5999999999999" />
-  <g transform="rotate(90,1435,539.5999999999999)">
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="1432,530.5999999999999 1435,539.5999999999999 1438,530.5999999999999" />
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="1432,521.5999999999999 1435,530.5999999999999 1438,521.5999999999999" />
+  <text x="90" y="1338" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">1</text>
+  <text x="90" y="1258" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">2</text>
+  <text x="90" y="1178" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">3</text>
+  <text x="90" y="1098" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">4</text>
+  <text x="90" y="1018" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">5</text>
+  <text x="90" y="938" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">6</text>
+  <text x="90" y="858" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">7</text>
+  <text x="90" y="778" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">8</text>
+  <text x="90" y="698" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">9</text>
+  <text x="90" y="568.5" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">10</text>
+  <text x="140" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">1</text>
+  <text x="250" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">2</text>
+  <text x="360" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">3</text>
+  <text x="470" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">4</text>
+  <text x="580" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">5</text>
+  <text x="690" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">6</text>
+  <text x="800" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">7</text>
+  <text x="910" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">8</text>
+  <text x="1020" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">9</text>
+  <text x="1130" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">10</text>
+  <text x="1240" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">11</text>
+  <text x="1411" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">12</text>
+  <text x="1521" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">13</text>
+  <text x="1692" y="1388" font-family="Courier New" font-size="12" fill="rgb(236,10,30)">14</text>
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="1371" y1="539.5999999999999" x2="1672" y2="539.5999999999999" />
+  <line stroke="rgb(0,0,0)" stroke-width="1" x1="1576.5" y1="608.5" x2="1576.5" y2="539.5999999999999" />
+  <g transform="rotate(90,1371,539.5999999999999)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="1368,530.5999999999999 1371,539.5999999999999 1374,530.5999999999999" />
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="1368,521.5999999999999 1371,530.5999999999999 1374,521.5999999999999" />
   </g>
-  <g transform="rotate(270,1800,539.5999999999999)">
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="1797,530.5999999999999 1800,539.5999999999999 1803,530.5999999999999" />
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="1797,521.5999999999999 1800,530.5999999999999 1803,521.5999999999999" />
+  <g transform="rotate(270,1672,539.5999999999999)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="1669,530.5999999999999 1672,539.5999999999999 1675,530.5999999999999" />
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" points="1669,521.5999999999999 1672,530.5999999999999 1675,521.5999999999999" />
   </g>
-  <g transform="rotate(180,1672.5,539.5999999999999)">
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="1669.5,530.5999999999999 1672.5,539.5999999999999 1675.5,530.5999999999999" />
-    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="1669.5,521.5999999999999 1672.5,530.5999999999999 1675.5,521.5999999999999" />
+  <g transform="rotate(180,1576.5,539.5999999999999)">
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="1573.5,530.5999999999999 1576.5,539.5999999999999 1579.5,530.5999999999999" />
+    <polygon stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(0,0,0)" points="1573.5,521.5999999999999 1576.5,530.5999999999999 1579.5,521.5999999999999" />
   </g>
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="1220" y="517.7" width="215" height="70.80000000000001" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="1220" y="490.70000000000005" width="215" height="27.0" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="1565" y="635.5" width="215" height="82.5" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="1565" y="608.5" width="215" height="27.0" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" stroke-dasharray="9 9" fill="rgb(255,255,255)" x="1800" y="529.4000000000002" width="150" height="47.4" />
-  <rect stroke="rgb(0,0,0)" stroke-width="1" stroke-dasharray="9 9" fill="rgb(255,255,255)" x="1800" y="502.4000000000001" width="150" height="27.0" />
-  <text x="1225" y="578.5" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Stroke : Stroke Style</text>
-  <text x="1225" y="566.8" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Notation : Notation Name {I, R55}</text>
-  <text x="1225" y="555.0999999999999" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Diagram type : Dtype Name {I, R55}</text>
-  <text x="1225" y="543.3999999999999" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Semantic : Semantic Name {I, R55}</text>
-  <text x="1225" y="531.6999999999998" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Stem position : Stem Position {I, R55}</text>
-  <text x="1277.5" y="510.20000000000005" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Decorated Stem</text>
-  <text x="1570" y="708.0" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">End : Root Vine {I}</text>
-  <text x="1570" y="696.3" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Symbol : Symbol Name {I, R58}</text>
-  <text x="1570" y="684.5999999999999" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Notation : Notation Name {I, R58}</text>
-  <text x="1570" y="672.8999999999999" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Diagram type : Dtype Name {I, R58}</text>
-  <text x="1570" y="661.1999999999998" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Semantic : Semantic Name {I, R58}</text>
-  <text x="1570" y="649.4999999999998" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Stem position : Stem Position {I, R58}</text>
-  <text x="1604.5" y="628.0" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Stem End Decoration</text>
-  <text x="1805" y="566.8000000000002" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">(See Decoration subsystem)</text>
-  <text x="1805" y="555.1000000000001" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)"> </text>
-  <text x="1805" y="543.4000000000001" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">Name : Symbol Name {I}</text>
-  <text x="1853.5" y="521.9000000000001" font-family="Palatino Sans Informal LT Pro" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Symbol</text>
-  <text x="1445" y="531.5999999999999" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">terminates</text>
-  <text x="1704" y="531.5999999999999" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">is terminated by</text>
-  <text x="1613.5" y="533.5999999999999" font-family="Palatino Sans Informal LT Pro" font-size="9" fill="rgb(0,0,0)">R58</text>
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="1220" y="517.7" width="151" height="70.80000000000001" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="1220" y="490.70000000000005" width="151" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="1501" y="635.5" width="151" height="82.5" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" fill="rgb(255,255,255)" x="1501" y="608.5" width="151" height="27.0" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" stroke-dasharray="9 9" fill="rgb(255,255,255)" x="1672" y="529.4000000000002" width="114" height="47.4" />
+  <rect stroke="rgb(0,0,0)" stroke-width="1" stroke-dasharray="9 9" fill="rgb(255,255,255)" x="1672" y="502.4000000000001" width="114" height="27.0" />
+  <text x="1225" y="578.5" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Stroke : Stroke Style</text>
+  <text x="1225" y="566.8" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Notation : Notation Name {I, R55}</text>
+  <text x="1225" y="555.0999999999999" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Diagram type : Dtype Name {I, R55}</text>
+  <text x="1225" y="543.3999999999999" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Semantic : Semantic Name {I, R55}</text>
+  <text x="1225" y="531.6999999999998" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Stem position : Stem Position {I, R55}</text>
+  <text x="1245.0" y="510.20000000000005" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Decorated Stem</text>
+  <text x="1506" y="708.0" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">End : Root Vine {I}</text>
+  <text x="1506" y="696.3" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Symbol : Symbol Name {I, R58}</text>
+  <text x="1506" y="684.5999999999999" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Notation : Notation Name {I, R58}</text>
+  <text x="1506" y="672.8999999999999" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Diagram type : Dtype Name {I, R58}</text>
+  <text x="1506" y="661.1999999999998" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Semantic : Semantic Name {I, R58}</text>
+  <text x="1506" y="649.4999999999998" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Stem position : Stem Position {I, R58}</text>
+  <text x="1509.5" y="628.0" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Stem End Decoration</text>
+  <text x="1677" y="566.8000000000002" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">(See Decoration subsystem)</text>
+  <text x="1677" y="555.1000000000001" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)"> </text>
+  <text x="1677" y="543.4000000000001" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">Name : Symbol Name {I}</text>
+  <text x="1706.0" y="521.9000000000001" font-family="Gill Sans" font-size="12" fill="rgb(0,0,0)" font-weight="bold">Symbol</text>
+  <text x="1381" y="531.5999999999999" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">terminates</text>
+  <text x="1601" y="531.5999999999999" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">is terminated by</text>
+  <text x="1517.5" y="533.5999999999999" font-family="Gill Sans" font-size="9" fill="rgb(0,0,0)">R58</text>
 </svg>

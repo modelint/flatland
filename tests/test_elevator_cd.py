@@ -24,13 +24,14 @@ diagrams = [
 #
 #     assert True
 
+@pytest.mark.parametrize("ext", ["pdf", "svg"])
 @pytest.mark.parametrize("model", diagrams)
-def test_Starr_pdf(flatland_db, model):
+def test_Starr_pdf(flatland_db, model, ext):
 
     XumlClassDiagram(
         xuml_model_path=Path(f"class_diagrams/{model}.xcm"),
         flatland_layout_path=Path(f"model_style_sheets/Starr_cd/{model}{"_Starr"}.mls"),
-        diagram_file_path=Path(f"output/Starr_cd/{model}{"_Starr"}.pdf"),
+        diagram_file_path=Path(f"output/Starr_cd/{model}{"_Starr"}.{ext}"),
         show_grid=False,
         nodes_only=False,
         no_color=False,
