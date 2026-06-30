@@ -1,42 +1,44 @@
-# Flatland Model Diagram (non) Editor
+# Flatland Model Diagram 
 
-NEW Status January 13, 2025
+### June 29, 2026 -- 3.0 Released with SVG and PDF Diagram Output
 
-I have recently rebuilt the entire application based on a series of modules available on GitHub and PyPI. 
-Will be deploying in ernest in the coming days.
+Flatland generates beautiful, readable model diagrams from plain text — laid out exactly the way you
+want, without pushing a single pixel.
 
-Am de-commisioning the old version on GitHub and PyPI named 'flatland-model-diagram-editor'
-Now it is just 'flatland' here on GitHub and 'mi-flatland' on PyPI
+You write two text files for each diagram:
 
-Ah yes, yet another tool for generating diagrams from text. But this one is different (otherwise I wouldn't have wasted all this time building it!)
+- a **model file** that captures only the semantics — classes, states, transitions, generalizations, and so on, and
+- a **layout file** that describes how to arrange those elements on the page.
 
-I built Flatland because the following benefits are critical for productive model development:
+Flatland combines them to produce **SVG or PDF**. Want to change the layout? Edit the layout file. Want
+to change the model? Edit the model, and adjust the layout only if you need to. Because the two are
+separate, a version-control diff tells you immediately whether a change touched the model itself or
+merely its presentation.
 
-1. Complete separation of the model semantics from the diagram layout
-2. Complete separation of model semantics from model notation
-3. Consistent layout of model diagrams without forcing the user to accept or hack awkard, non-sensical placements of nodes and connectors (yeah, I'm lookin at YOU PlantUML)
-4. Maximum layout power with minimal specification:  No more carpal tunnel pixel pushing!
-5. Beautiful, readable diagram output in many output formats (pdf, svg, etc)
-6. Support for industrial strength modeling (many hundreds and thousands of model elements)
-7. Use your favorite text editor and all the advanced facilities of it and whatever IDE you like without having to learn yet another draw tool that makes you and your team's life difficult.
-8. And since we're here on GitHub, wouldn't it be nice if all of your models were under proper configuration management where you and your team can diff and merge to your heart's content? Wouldn't it be nice to update a diagram layout without touching the underlying model (and vice versa)?
+Layout is specified with a single, simple row-and-column markup — a kind of spreadsheet for your
+diagram — that works across every model type. No pixel coordinates, no fragile alignment or stacking
+rules. You get precise control with a minimum of specification.
 
-Basically, I have wasted way too many hours of my career pushing pixels around and I just couldn't take it anymore!
+I built Flatland after years of frustration with the two usual options: wrestling the wonky GUI of a
+monolithic modeling tool (good luck maintaining and version-controlling a large model set), or
+accepting the minimal layout control of text-based tools like PlantUML. Flatland gives you the
+text-first workflow *and* the layout you actually want.
 
-Flatland is a model diagram non-editor written by me [Leon Starr](mailto:leon_starr@modelint.com) that generates
-beautiful PDFs (and other output formats) based on two very
-human-readable input text files. The model file specifies model semantics
-(state transitions, generalizations, classes etc)
-while the layout file specifies (node placement and alignment, connector anchors) and lightly refers to some elements
-in the model file. You can think of the layout file as a "style sheet" for your models.
-Some benefits:
+### Benefits
 
-Follow me on BlueSky and [LinkedIn](https://linkedin.com/in/modelint) for updates.
-
-## Models to Code
-
-In the meantime, if you are curious about the whole MBSE thing that this tool supports, take a look at our [book](https://modelstocode.com).
-Also, various resources at the [Model Integration](https://modelint.com/mbse) website.
+- **Model and layout stay fully separate.** Edit one without disturbing the other, and diff your models
+  with the layout excluded to see whether the meaning changed or just the picture.
+- **Precise layout, minimal specification.** A spreadsheet-style row/column markup places nodes,
+  connectors, and text exactly where you want them — no pixel pushing, no carpal tunnel.
+- **One layout language for every model type.** If your model can be expressed as nodes and labeled
+  connectors — most can — the same markup applies.
+- **Built for industrial-scale models.** Stays consistent and readable across hundreds or thousands of
+  model elements.
+- **Text-first and toolchain-friendly.** Use your favorite editor and IDE, and put your models under
+  proper configuration management — diff, branch, and merge like any other source.
+- **AI-ready.** Feed a model alone for lean, low-token prompting and code generation, or hand the AI an
+  SVG to refine the layout by updating the markup. (UML / SysML v2 standards support is easily added.)
+- **Beautiful output in multiple formats.** SVG and PDF today, with more to come.
 
 ## Installation
 
