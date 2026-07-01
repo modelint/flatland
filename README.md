@@ -1,4 +1,4 @@
-# Flatland Model Diagram 
+# Flatland Model Diagram Generator
 
 ### June 29, 2026 -- 3.0 Released with SVG and PDF Diagram Output
 
